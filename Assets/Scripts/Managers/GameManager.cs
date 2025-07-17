@@ -6,8 +6,6 @@ public class GameManager : MonoBehaviour, IJsonSaveable
 {
     public static GameManager Instance { get; private set; }
     
-    [SerializeField] private StoreDetailsUI storeDetailsUI;
-    
     private string saloonName = "NULL";
 
     private void Awake()
@@ -36,7 +34,6 @@ public class GameManager : MonoBehaviour, IJsonSaveable
     public void SetSaloonName(string name)
     {
         saloonName = name;
-        storeDetailsUI.SetSaloonName(name);
     }
 
     public JToken CaptureAsJToken()

@@ -1,21 +1,9 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class StoreUI : MonoBehaviour
 {
-    [SerializeField] private Button storeButton;
-    [SerializeField] private Button closeStorePanelButton;
-    [SerializeField] private GameObject storePanel;
-    
     [SerializeField] private GameObject itemCardPrefab;
     [SerializeField] private GameObject contentPanel;
-    
-    
-    void Start()
-    {
-        storeButton.onClick.AddListener(ToggleStore);
-        closeStorePanelButton.onClick.AddListener(ToggleStore);
-    }
 
     public void ListAllItems(ItemSO[] storeData)
     {
@@ -31,16 +19,8 @@ public class StoreUI : MonoBehaviour
         }
     }
 
-    public void ToggleStore()
+    public void OnCloseAnimationEndedAnimationEvent()
     {
-        if (storePanel.activeSelf)
-        {
-            storePanel.SetActive(false);
-        }
-        else
-        {
-            storePanel.SetActive(true);
-        }
+        
     }
-    
 }
