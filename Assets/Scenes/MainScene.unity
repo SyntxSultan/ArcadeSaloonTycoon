@@ -1877,7 +1877,6 @@ GameObject:
   - component: {fileID: 776510316}
   - component: {fileID: 776510315}
   - component: {fileID: 776510317}
-  - component: {fileID: 776510318}
   - component: {fileID: 776510319}
   m_Layer: 5
   m_Name: StoreUI
@@ -1965,28 +1964,6 @@ MonoBehaviour:
   tabPanels:
   - {fileID: 670159747}
   - {fileID: 963122380}
---- !u!95 &776510318
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 776510313}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 3d385e02e3961e24cbc5ddb55e37de85, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &776510319
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3592,10 +3569,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enterSaloonNameUI: {fileID: 29157062}
-  storeUIPanel: {fileID: 776510319}
+  storeUIPanel: {fileID: 776510314}
   storeOpenButton: {fileID: 130886568}
   closeStorePanelButton: {fileID: 1157948455}
-  storeAnimator: {fileID: 776510318}
 --- !u!4 &1183716626
 Transform:
   m_ObjectHideFlags: 0

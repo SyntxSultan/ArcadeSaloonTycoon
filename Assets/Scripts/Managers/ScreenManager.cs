@@ -1,19 +1,17 @@
+using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class ScreenManager : MonoBehaviour
 {
     public static ScreenManager Instance { get; private set; }
     
-    [FormerlySerializedAs("enterNameScreen")] 
     [SerializeField] private EnterNameScreen enterSaloonNameUI;
     
     [Header("Store UI")]
-    [SerializeField] private StoreUI storeUIPanel;
+    [SerializeField] private RectTransform storeUIPanel;
     [SerializeField] private Button storeOpenButton;
     [SerializeField] private Button closeStorePanelButton;
-    [SerializeField] private Animator storeAnimator;
     
     private void Awake()
     {
@@ -26,21 +24,34 @@ public class ScreenManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
     
-    void Start()
+    private void Start()
     {
         storeOpenButton.onClick.AddListener(OpenStoreUI);
         closeStorePanelButton.onClick.AddListener(CloseStoreUI);
     }
 
-    public void OpenStoreUI()
+    private void OpenStoreUI()
     {
         storeUIPanel.gameObject.SetActive(true);
-        storeAnimator.SetTrigger("OpenStore");
+
+        Vector2 startPos = storeUIPanel.anchoredPosition;
+        storeUIPanel.anchoredPosition = new Vector2(startPos.x, -316f);
+
+        Sequence seq = DOTween.Sequence();
+        seq.Append(
+            storeUIPanel.DOAnchorPosY(303f, 0.5f).SetEase(Ease.OutBack)
+        );
     }
 
-    public void CloseStoreUI()
+    private void CloseStoreUI()
     {
-        storeUIPanel.gameObject.SetActive(false);
+        DOTween.Sequence().Append(
+            storeUIPanel.DOAnchorPosY(-316f, 0.5f).SetEase(Ease.InBack).OnComplete(() =>
+            {
+                storeUIPanel.gameObject.SetActive(false);
+                
+            })
+        );
     }
     
     public void ShowEnterNameScreen()

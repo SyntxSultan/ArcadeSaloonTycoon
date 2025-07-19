@@ -18,9 +18,4 @@ public class StoreUI : MonoBehaviour
             instanceItem.GetComponent<ItemCard>().InitializeItemCard(item.icon, item.name, item.cost, item.starAmount);
         }
     }
-
-    public void OnCloseAnimationEndedAnimationEvent()
-    {
-        
-    }
 }
