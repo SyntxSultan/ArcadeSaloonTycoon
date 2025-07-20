@@ -16,7 +16,6 @@ public class GameManager : MonoBehaviour, IJsonSaveable
             return;
         }
         Instance = this;
-        DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
@@ -31,9 +30,9 @@ public class GameManager : MonoBehaviour, IJsonSaveable
         }
     }
 
-    public void SetSaloonName(string name)
+    public void SetSaloonName(string salonNewName)
     {
-        saloonName = name;
+        saloonName = salonNewName;
     }
 
     public JToken CaptureAsJToken()

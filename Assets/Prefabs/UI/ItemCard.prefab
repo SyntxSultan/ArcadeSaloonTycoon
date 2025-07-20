@@ -720,6 +720,7 @@ MonoBehaviour:
   starContainer: {fileID: 1726131021331037989}
   costText: {fileID: 3243147781236902603}
   starPrefab: {fileID: 1599963663857773755, guid: a24dbe847c5980044857c7f02c882233, type: 3}
+  emptyStarPrefab: {fileID: 1599963663857773755, guid: 47f7c427439763f43beb1e56646d46fd, type: 3}
 --- !u!1 &8508599473062454533
 GameObject:
   m_ObjectHideFlags: 0

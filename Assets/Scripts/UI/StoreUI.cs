@@ -1,21 +1,37 @@
+using System;
 using UnityEngine;
 
 public class StoreUI : MonoBehaviour
 {
     [SerializeField] private GameObject itemCardPrefab;
-    [SerializeField] private GameObject contentPanel;
+    [SerializeField] private GameObject machinesContentPanel;
+    [SerializeField] private GameObject decorationsContentPanel;
+
+    [SerializeField] private ItemDatabase itemDB;
+
+    private void OnEnable()
+    {
+        ListAllItems(itemDB.GetItemList());
+    }
 
     public void ListAllItems(ItemSO[] storeData)
     {
-        //TODO: Separate items based on category
-        foreach (Transform child in contentPanel.transform)
-        {
-            Destroy(child.gameObject);
-        }
+        ClearAllChildren(machinesContentPanel.transform);
+        ClearAllChildren(decorationsContentPanel.transform);
+        
         foreach (ItemSO item in storeData)
         {
-            GameObject instanceItem = Instantiate(itemCardPrefab, contentPanel.transform);
-            instanceItem.GetComponent<ItemCard>().InitializeItemCard(item.icon, item.name, item.cost, item.starAmount);
+            Transform contentPanel = item.category == ItemCategory.Machine ? machinesContentPanel.transform : decorationsContentPanel.transform;
+            GameObject instanceItem = Instantiate(itemCardPrefab, contentPanel);
+            instanceItem.GetComponent<ItemCard>().InitializeItemCard(item);
+        }
+    }
+
+    private void ClearAllChildren(Transform parent)
+    {
+        foreach (Transform child in parent.transform)
+        {
+            Destroy(child.gameObject);
         }
     }
 }

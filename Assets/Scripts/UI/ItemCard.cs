@@ -9,19 +9,39 @@ public class ItemCard : MonoBehaviour
     [SerializeField] private GameObject starContainer;
     [SerializeField] private TextMeshProUGUI costText;
     [SerializeField] private GameObject starPrefab;
+    [SerializeField] private GameObject emptyStarPrefab;
 
-    public void InitializeItemCard(Sprite icon, string name, float cost, int starAmount)
+    private Button itemButton;
+    private ItemSO itemSO;
+    
+    private void Start()
     {
-        this.icon.sprite = icon;
-        nameText.text = name;
-        costText.text = $"${cost.ToString()}";
+        itemButton = GetComponent<Button>();
+        itemButton.onClick.AddListener(OnClickedItem);
+    }
+
+    public void InitializeItemCard(ItemSO itemSO)
+    {
+        this.itemSO = itemSO;
+        icon.sprite = itemSO.icon;
+        nameText.text = itemSO.itemName;
+        costText.text = $"${itemSO.cost.ToString()}";
         foreach (Transform child in starContainer.transform)
         {
             Destroy(child.gameObject);
         }
-        for (int i = 0; i < starAmount; i++)
+        for (int i = 0; i < itemSO.starAmount; i++)
         {
             Instantiate(starPrefab, starContainer.transform);
         }
+        for (int i = 0; i < 5 - itemSO.starAmount; i++)
+        {
+            Instantiate(emptyStarPrefab, starContainer.transform);
+        }
+    }
+
+    private void OnClickedItem()
+    {
+        ScreenManager.Instance.OpenItemDetailsPopup(itemSO);
     }
 }

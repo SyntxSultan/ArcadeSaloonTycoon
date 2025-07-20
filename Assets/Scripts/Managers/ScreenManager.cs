@@ -6,12 +6,18 @@ public class ScreenManager : MonoBehaviour
 {
     public static ScreenManager Instance { get; private set; }
     
+    [Header("Enter Name UI")]
     [SerializeField] private EnterNameScreen enterSaloonNameUI;
     
     [Header("Store UI")]
     [SerializeField] private RectTransform storeUIPanel;
     [SerializeField] private Button storeOpenButton;
     [SerializeField] private Button closeStorePanelButton;
+    
+    [Header("Item Details UI")]
+    [SerializeField] private RectTransform itemDetailsPanel;
+    [SerializeField] private Button closeItemDetailsButton;
+    private Sequence itemDetailsPanelSeq;
     
     private void Awake()
     {
@@ -21,13 +27,20 @@ public class ScreenManager : MonoBehaviour
             return;
         }
         Instance = this;
-        DontDestroyOnLoad(gameObject);
     }
     
     private void Start()
     {
+        CloseAllUI();
+
+        BindButtons();
+    }
+
+    private void BindButtons()
+    {
         storeOpenButton.onClick.AddListener(OpenStoreUI);
         closeStorePanelButton.onClick.AddListener(CloseStoreUI);
+        closeItemDetailsButton.onClick.AddListener(CloseItemDetailsPopup);
     }
 
     private void OpenStoreUI()
@@ -58,8 +71,47 @@ public class ScreenManager : MonoBehaviour
     {
         enterSaloonNameUI.gameObject.SetActive(true);
     }
+    
     public void HideEnterNameScreen()
     {
         enterSaloonNameUI.gameObject.SetActive(false);
+    }
+
+    public void OpenItemDetailsPopup(ItemSO itemSO)
+    {
+        itemDetailsPanel.gameObject.SetActive(true);
+        
+        itemDetailsPanel.gameObject.GetComponent<ItemDetailsPopup>().SetItemDetails(itemSO);
+        
+        CloseStoreUI();
+        
+        if (itemDetailsPanelSeq != null && itemDetailsPanelSeq.IsActive())
+        {
+            itemDetailsPanelSeq.Kill();
+        }
+        itemDetailsPanel.localScale = Vector3.one;
+        itemDetailsPanelSeq = DOTween.Sequence();
+        itemDetailsPanelSeq.Append(itemDetailsPanel.DOPunchScale(
+            new Vector3(0.15f, 0.15f, 0),
+            0.35f,                       
+            4,                          
+            0.5f                       
+        ));
+    }
+
+    private void CloseItemDetailsPopup()
+    {
+        if (itemDetailsPanelSeq != null && itemDetailsPanelSeq.IsActive())
+            itemDetailsPanelSeq.Kill();
+
+        itemDetailsPanelSeq = DOTween.Sequence();
+        itemDetailsPanelSeq.Append(itemDetailsPanel.DOScale(Vector3.zero, 0.15f))
+            .OnComplete(() => itemDetailsPanel.gameObject.SetActive(false));
+    }
+
+    private void CloseAllUI()
+    {
+        storeUIPanel.gameObject.SetActive(false);
+        itemDetailsPanel.gameObject.SetActive(false);
     }
 }
