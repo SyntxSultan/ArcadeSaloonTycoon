@@ -1,4 +1,3 @@
-using System;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 
@@ -20,6 +19,8 @@ public class GameManager : MonoBehaviour, IJsonSaveable
 
     private void Start()
     {
+        Application.targetFrameRate = 90;
+        
         if (!SaveManager.Instance.HasSave())
         {
             ScreenManager.Instance.ShowEnterNameScreen();

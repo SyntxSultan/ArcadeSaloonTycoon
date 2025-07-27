@@ -1,11 +1,12 @@
-using System;
+using SaveSystem;
 using UnityEngine;
 
 [RequireComponent(typeof(JsonSavingSystem))]
+
 public class SaveManager : MonoBehaviour
 {
     public static SaveManager Instance { get; private set; }
-    
+
     private const string saveFile = "save";
     private const float saveInterval = 5f;
     private float timeSinceLastSave;
@@ -18,9 +19,10 @@ public class SaveManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
         Instance = this;
     }
-    
+
     private void Start()
     {
         saveSystem = GetComponent<JsonSavingSystem>();
@@ -33,7 +35,7 @@ public class SaveManager : MonoBehaviour
         {
             saveSystem.Save(saveFile);
             timeSinceLastSave = 0f;
-            Debug.Log("Saved");
+            //Debug.Log("Saved");
         }
     }
 
@@ -47,6 +49,7 @@ public class SaveManager : MonoBehaviour
         return saveSystem.SaveExists(saveFile);
     }
 
+    [System.Diagnostics.Conditional("UNITY_EDITOR")]
     public void DBG_ClearSave()
     {
         saveSystem.Delete(saveFile);

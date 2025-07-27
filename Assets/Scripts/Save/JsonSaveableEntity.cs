@@ -3,7 +3,9 @@ using Newtonsoft.Json.Linq;
 using UnityEditor;
 using UnityEngine;
 
-[ExecuteAlways]
+namespace SaveSystem
+{
+    [ExecuteAlways]
 public class JsonSaveableEntity : MonoBehaviour
     {
     
@@ -25,7 +27,7 @@ public class JsonSaveableEntity : MonoBehaviour
             {
                 JToken token = jsonSaveable.CaptureAsJToken();
                 string component = jsonSaveable.GetType().ToString();
-                Debug.Log($"{name} Capture {component} = {token.ToString()}");
+                //Debug.Log($"{name} Capture {component} = {token.ToString()}");
                 stateDict[jsonSaveable.GetType().ToString()] = token;
             }
             return state;
@@ -41,7 +43,7 @@ public class JsonSaveableEntity : MonoBehaviour
                 if (stateDict.ContainsKey(component))
                 {
 
-                    Debug.Log($"{name} Restore {component} =>{stateDict[component].ToString()}");
+                    //Debug.Log($"{name} Restore {component} =>{stateDict[component].ToString()}");
                     jsonSaveable.RestoreFromJToken(stateDict[component]);
                 }
             }
@@ -89,3 +91,5 @@ public class JsonSaveableEntity : MonoBehaviour
     
     }
 
+
+}

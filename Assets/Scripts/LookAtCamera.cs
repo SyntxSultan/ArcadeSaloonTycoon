@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class LookAtCamera : MonoBehaviour
 {
-    enum Mode
+    private enum Mode
     {
         LookAt,
         LookAtInverted, 
@@ -19,8 +19,9 @@ public class LookAtCamera : MonoBehaviour
         cam = Camera.main;
     }
 
-    void LateUpdate()
+    private void LateUpdate()
     {
+        /*
         switch (mode)
         {
             case Mode.LookAt:
@@ -36,6 +37,6 @@ public class LookAtCamera : MonoBehaviour
             case Mode.CameraForwardInverted:
                 transform.forward = -cam.transform.forward;
                 break;
-        }
+        }*/
     }
 }

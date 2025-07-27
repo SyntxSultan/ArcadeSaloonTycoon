@@ -6,10 +6,12 @@ using Newtonsoft.Json.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class JsonSavingSystem : MonoBehaviour
+namespace SaveSystem
+{
+    public class JsonSavingSystem : MonoBehaviour
     {
         private const string extension = ".json";
-        
+
         /// <summary>
         /// Will load the last scene that was saved and restore the state. This
         /// must be run as a coroutine.
@@ -18,12 +20,13 @@ public class JsonSavingSystem : MonoBehaviour
         public IEnumerator LoadLastScene(string saveFile)
         {
             JObject state = LoadJsonFromFile(saveFile);
-            IDictionary<string, JToken> stateDict = state; 
+            IDictionary<string, JToken> stateDict = state;
             int buildIndex = SceneManager.GetActiveScene().buildIndex;
             if (stateDict.ContainsKey("lastSceneBuildIndex"))
             {
                 buildIndex = (int)stateDict["lastSceneBuildIndex"];
             }
+
             yield return SceneManager.LoadSceneAsync(buildIndex);
             RestoreFromToken(state);
         }
@@ -37,7 +40,7 @@ public class JsonSavingSystem : MonoBehaviour
             CaptureAsToken(state);
             SaveFileAsJSon(saveFile, state);
         }
-        
+
         /// <summary>
         /// Checks if a save file exists for the given name.
         /// </summary>
@@ -82,7 +85,7 @@ public class JsonSavingSystem : MonoBehaviour
             {
                 return new JObject();
             }
-            
+
             using (var textReader = File.OpenText(path))
             {
                 using (var reader = new JsonTextReader(textReader))
@@ -98,7 +101,7 @@ public class JsonSavingSystem : MonoBehaviour
         private void SaveFileAsJSon(string saveFile, JObject state)
         {
             string path = GetPathFromSaveFile(saveFile);
-            print("Saving to " + path);
+            //print("Saving to " + path);
             using (var textWriter = File.CreateText(path))
             {
                 using (var writer = new JsonTextWriter(textWriter))
@@ -141,3 +144,4 @@ public class JsonSavingSystem : MonoBehaviour
             return Path.Combine(Application.persistentDataPath, saveFile + extension);
         }
     }
+}

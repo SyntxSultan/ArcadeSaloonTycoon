@@ -46,26 +46,7 @@ public class ItemDetailsPopup : MonoBehaviour
 
     private void SpawnPreviewPrefab(GameObject prefab)
     {
-        
         PreviewSpawner.Instance.SpawnPreview(prefab);
-        /*
-        if (prefab == null)
-        {
-            Debug.LogWarning($"Prefab null: {itemSO.name}");
-            return;
-        }
-        
-        void SetLayerRecursively(GameObject go, int layer)
-        {
-            go.layer = layer;
-            foreach (Transform child in go.transform)
-                SetLayerRecursively(child.gameObject, layer);
-        }
-        
-        GameObject instantiatedPrefab = Instantiate(prefab, previewItemSpawnPoint);
-        SetLayerRecursively(instantiatedPrefab, LayerMask.NameToLayer("PreviewLayer"));
-        */
-        //instantiatedPrefab.layer = LayerMask.NameToLayer("PreviewLayer");
     }
 
     private void OnBuyButtonClicked()

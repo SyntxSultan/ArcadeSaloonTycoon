@@ -5,7 +5,7 @@ public class ModelAutoScaler : MonoBehaviour
 {
     [Header("Target Scale Settings")]
     [Tooltip("Target size for all models (width, height, depth)")]
-    public Vector3 targetSize = new Vector3(2f, 2f, 2f);
+    public Vector3 targetSize = new Vector3(2.5f, 2.5f, 2.5f);
     
     [Tooltip("Use uniform scaling (maintains proportions)")]
     public bool uniformScaling = true;
@@ -136,9 +136,7 @@ public class ModelAutoScaler : MonoBehaviour
     }
 }
 
-// Editor utility for batch scaling (optional)
 #if UNITY_EDITOR
-
 
 [CustomEditor(typeof(ModelAutoScaler))]
 public class ModelAutoScalerEditor : Editor

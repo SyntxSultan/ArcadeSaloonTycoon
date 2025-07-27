@@ -13,6 +13,8 @@ public class PreviewSpawner : MonoBehaviour
     [SerializeField] private string previewLayerName = "PreviewLayer";
     [SerializeField] private float previewScale = 1f;
 
+    private GameObject spawnedGO;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -21,6 +23,8 @@ public class PreviewSpawner : MonoBehaviour
             return;
         }
         Instance = this;
+        
+        previewCamera.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -30,33 +34,38 @@ public class PreviewSpawner : MonoBehaviour
     {
         // Clear existing previews
         foreach (Transform c in previewRoot) Destroy(c.gameObject);
+        
+        previewCamera.gameObject.SetActive(true);
 
         // Spawn new preview
-        var go = Instantiate(prefab, previewRoot);
+        spawnedGO = Instantiate(prefab, previewRoot);
 
         // Set layer
         int layer = LayerMask.NameToLayer(previewLayerName);
-        SetLayerRecursively(go, layer);
+        SetLayerRecursively(spawnedGO, layer);
 
         // Reset transform
-        go.transform.localPosition = Vector3.zero;
-        go.transform.localRotation = Quaternion.identity;
-        go.transform.localScale = Vector3.one * previewScale;
+        spawnedGO.transform.localPosition = Vector3.zero;
+        spawnedGO.transform.localRotation = Quaternion.identity;
+        spawnedGO.transform.localScale = Vector3.one * previewScale;
 
         // Center the model BEFORE applying camera-based rotation
-        CenterOnPivot(go);
+        CenterOnPivot(spawnedGO);
 
         // Apply camera-based rotation
         if (previewCamera != null)
         {
             Vector3 camForward = previewCamera.transform.forward;
-            go.transform.rotation = Quaternion.LookRotation(-camForward, Vector3.up);
+            spawnedGO.transform.rotation = Quaternion.LookRotation(-camForward, Vector3.up);
         }
-
-        Debug.Log($"Spawned and centered {go.name}");
         
-        // Invoke event to notify subscribers (like PreviewRotator)
-        OnPreviewSpawned?.Invoke(go);
+        OnPreviewSpawned?.Invoke(spawnedGO);
+    }
+
+    public void OnPreviewClosed()
+    {
+        previewCamera.gameObject.SetActive(false);
+        Destroy(spawnedGO);
     }
 
     private void SetLayerRecursively(GameObject obj, int layer)

@@ -26,6 +26,7 @@ public class PreviewRotator : MonoBehaviour, IPointerDownHandler, IDragHandler
         // Unsubscribe to prevent memory leaks
         if (PreviewSpawner.Instance != null)
         {
+            PreviewSpawner.Instance.OnPreviewClosed();
             PreviewSpawner.Instance.OnPreviewSpawned -= SetTarget;
         }
     }
