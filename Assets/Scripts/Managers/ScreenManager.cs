@@ -62,7 +62,6 @@ public class ScreenManager : MonoBehaviour
             storeUIPanel.DOAnchorPosY(-316f, 0.5f).SetEase(Ease.InBack).OnComplete(() =>
             {
                 storeUIPanel.gameObject.SetActive(false);
-                
             })
         );
     }
@@ -90,6 +89,7 @@ public class ScreenManager : MonoBehaviour
             itemDetailsPanelSeq.Kill();
         }
         itemDetailsPanel.localScale = Vector3.one;
+        
         itemDetailsPanelSeq = DOTween.Sequence();
         itemDetailsPanelSeq.Append(itemDetailsPanel.DOPunchScale(
             new Vector3(0.15f, 0.15f, 0),
@@ -102,11 +102,14 @@ public class ScreenManager : MonoBehaviour
     private void CloseItemDetailsPopup()
     {
         if (itemDetailsPanelSeq != null && itemDetailsPanelSeq.IsActive())
+        {
             itemDetailsPanelSeq.Kill();
+        }
 
         itemDetailsPanelSeq = DOTween.Sequence();
-        itemDetailsPanelSeq.Append(itemDetailsPanel.DOScale(Vector3.zero, 0.15f))
-            .OnComplete(() => itemDetailsPanel.gameObject.SetActive(false));
+        itemDetailsPanelSeq.Append(itemDetailsPanel.DOScale(Vector3.zero, 0.15f)).OnComplete(() => 
+            itemDetailsPanel.gameObject.SetActive(false)
+        );
     }
 
     private void CloseAllUI()

@@ -25,6 +25,7 @@ public class CameraController : MonoBehaviour
     private void Update()
     {
         HandleTouchZoom();
+        
         #if UNITY_EDITOR
             HandleMouseZoom();
         #endif
