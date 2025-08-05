@@ -1,3 +1,4 @@
+using SoulGames.EasyGridBuilderPro;
 using UnityEngine;
 
 public enum ItemCategory
@@ -15,5 +16,6 @@ public class ItemSO : ScriptableObject
     public GameObject prefab;
     public Vector2Int size;
     public ItemCategory category;
+    public BuildableGridObjectTypeSO gridItemData;
 }
 

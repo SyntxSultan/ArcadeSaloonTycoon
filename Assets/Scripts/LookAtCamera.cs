@@ -21,7 +21,7 @@ public class LookAtCamera : MonoBehaviour
 
     private void LateUpdate()
     {
-        /*
+        
         switch (mode)
         {
             case Mode.LookAt:
@@ -37,6 +37,6 @@ public class LookAtCamera : MonoBehaviour
             case Mode.CameraForwardInverted:
                 transform.forward = -cam.transform.forward;
                 break;
-        }*/
+        }
     }
 }

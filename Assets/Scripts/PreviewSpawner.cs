@@ -27,9 +27,6 @@ public class PreviewSpawner : MonoBehaviour
         previewCamera.gameObject.SetActive(false);
     }
 
-    /// <summary>
-    /// Yeni bir preview objesi spawn eder ve ayarlarını yapar.
-    /// </summary>
     public void SpawnPreview(GameObject prefab)
     {
         // Clear existing previews
@@ -42,17 +39,15 @@ public class PreviewSpawner : MonoBehaviour
 
         // Set layer
         int layer = LayerMask.NameToLayer(previewLayerName);
-        SetLayerRecursively(spawnedGO, layer);
+        ASTLibrary.SetLayerRecursive(spawnedGO, layer);
 
         // Reset transform
         spawnedGO.transform.localPosition = Vector3.zero;
         spawnedGO.transform.localRotation = Quaternion.identity;
         spawnedGO.transform.localScale = Vector3.one * previewScale;
 
-        // Center the model BEFORE applying camera-based rotation
         CenterOnPivot(spawnedGO);
 
-        // Apply camera-based rotation
         if (previewCamera != null)
         {
             Vector3 camForward = previewCamera.transform.forward;
@@ -66,13 +61,6 @@ public class PreviewSpawner : MonoBehaviour
     {
         previewCamera.gameObject.SetActive(false);
         Destroy(spawnedGO);
-    }
-
-    private void SetLayerRecursively(GameObject obj, int layer)
-    {
-        obj.layer = layer;
-        foreach (Transform child in obj.transform)
-            SetLayerRecursively(child.gameObject, layer);
     }
 
     private void CenterOnPivot(GameObject obj)
@@ -100,7 +88,5 @@ public class PreviewSpawner : MonoBehaviour
         {
             child.position -= centerOffset;
         }
-
-        Debug.Log($"Centered {obj.name} with offset: {centerOffset}");
     }
 }

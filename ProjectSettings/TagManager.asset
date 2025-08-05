@@ -3,16 +3,17 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - Grid
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - PreviewLayer
   - Water
   - UI
   - Ground
-  - PreviewLayer
+  - Walls
   - 
   - 
   - 
@@ -36,7 +37,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - Grid Surface
   m_SortingLayers:
   - name: Default
     uniqueID: 0

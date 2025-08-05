@@ -51,7 +51,9 @@ public class ItemDetailsPopup : MonoBehaviour
 
     private void OnBuyButtonClicked()
     {
-        Debug.LogError($"Buy: {itemNameText.text}");
+        GridBridge.Instance.OnBuildableItemBought(itemSO.gridItemData);
+        ScreenManager.Instance.CloseItemDetailsPopup();
+        ScreenManager.Instance.ShowBuildingUI();
     }
 
     private void SpawnStars()

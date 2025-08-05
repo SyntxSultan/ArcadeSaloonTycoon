@@ -19,6 +19,9 @@ public class ScreenManager : MonoBehaviour
     [SerializeField] private Button closeItemDetailsButton;
     private Sequence itemDetailsPanelSeq;
     
+    [Header("Build Confirm Popup")]
+    [SerializeField] private RectTransform buildingUI;
+    
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -31,7 +34,7 @@ public class ScreenManager : MonoBehaviour
     
     private void Start()
     {
-        CloseAllUI();
+        CloseAllUIWithoutAnimation();
 
         BindButtons();
     }
@@ -76,6 +79,21 @@ public class ScreenManager : MonoBehaviour
         enterSaloonNameUI.gameObject.SetActive(false);
     }
 
+    public void ShowBuildingUI()
+    {
+        buildingUI.gameObject.SetActive(true);
+        DOTween.Sequence().Append(
+            buildingUI.DOAnchorPosX(-100, 0.5f).SetEase(Ease.OutBack));
+    }
+
+    public void HideBuildingUI()
+    {
+        DOTween.Sequence().Append(
+            buildingUI.DOAnchorPosX(100, 0.15f).SetEase(Ease.InBack).OnComplete(()=>
+                buildingUI.gameObject.SetActive(false)));
+        
+    }
+
     public void OpenItemDetailsPopup(ItemSO itemSO)
     {
         itemDetailsPanel.gameObject.SetActive(true);
@@ -99,7 +117,7 @@ public class ScreenManager : MonoBehaviour
         ));
     }
 
-    private void CloseItemDetailsPopup()
+    public void CloseItemDetailsPopup()
     {
         if (itemDetailsPanelSeq != null && itemDetailsPanelSeq.IsActive())
         {
@@ -112,9 +130,10 @@ public class ScreenManager : MonoBehaviour
         );
     }
 
-    private void CloseAllUI()
+    private void CloseAllUIWithoutAnimation()
     {
         storeUIPanel.gameObject.SetActive(false);
         itemDetailsPanel.gameObject.SetActive(false);
+        buildingUI.gameObject.SetActive(false);
     }
 }

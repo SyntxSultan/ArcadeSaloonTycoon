@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using SaveSystem;
+using SoulGames.EasyGridBuilderPro;
 using UnityEngine;
 
 [RequireComponent(typeof(JsonSavingSystem))]
@@ -8,9 +10,10 @@ public class SaveManager : MonoBehaviour
     public static SaveManager Instance { get; private set; }
 
     private const string saveFile = "save";
-    private const float saveInterval = 5f;
+    private const float saveInterval = 60f;
     private float timeSinceLastSave;
     private JsonSavingSystem saveSystem;
+    private List<EasyGridBuilderPro> gridList;
 
     private void Awake()
     {
@@ -26,22 +29,35 @@ public class SaveManager : MonoBehaviour
     private void Start()
     {
         saveSystem = GetComponent<JsonSavingSystem>();
+        gridList = MultiGridManager.Instance.easyGridBuilderProList;
     }
 
-    void Update()
+    private void Update()
     {
         timeSinceLastSave += Time.deltaTime;
         if (timeSinceLastSave > saveInterval)
         {
-            saveSystem.Save(saveFile);
-            timeSinceLastSave = 0f;
-            //Debug.Log("Saved");
+            Save();
         }
     }
 
     public void LoadSave()
     {
         saveSystem.Load(saveFile);
+        foreach(EasyGridBuilderPro easyGridBuilderPro in gridList)
+        {
+            easyGridBuilderPro.TriggerGridLoad();
+        }
+    }
+
+    public void Save()
+    {
+        saveSystem.Save(saveFile);
+        timeSinceLastSave = 0f;
+        foreach(EasyGridBuilderPro easyGridBuilderPro in gridList)
+        {
+            easyGridBuilderPro.TriggerGridSave();
+        }
     }
 
     public bool HasSave()

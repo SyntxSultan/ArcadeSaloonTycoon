@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b5b21f1869c4dc43a52857b3276703f, type: 3}
+  m_Name: RacingArcadeMachine
+  m_EditorClassIdentifier: 
+  itemName: XRacer 9500
+  icon: {fileID: 21300000, guid: 5e462b0a71b44db4b9d9213f8b1c00e7, type: 3}
+  cost: 450
+  starAmount: 5
+  prefab: {fileID: 2399159389815391040, guid: 2c2e3272b91d8a7418625e44e4a76880, type: 3}
+  size: {x: 1, y: 2}
+  category: 0
+  gridItemData: {fileID: 11400000, guid: 8e5ac05dc5c8f6040bb6f0c480915e9e, type: 2}
+  maxCoinCapacity: 50
+  coinPerUse: 5
+  durability: 65
+  arcadeCategory: 0
+  playTime: 25
