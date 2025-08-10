@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using SoulGames.Utilities;
-using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
 
 namespace SoulGames.EasyGridBuilderPro
 {
@@ -84,7 +81,7 @@ namespace SoulGames.EasyGridBuilderPro
                     visual = null;
                 }
             }
-
+            
             if (!MultiGridManager.Instance.onGrid)
             {
                 if (visual != null)

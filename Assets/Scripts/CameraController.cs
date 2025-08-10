@@ -6,15 +6,15 @@ public class CameraController : MonoBehaviour
 {
     [Header("Zoom Settings")]
     [SerializeField] private float zoomSpeedTouch = 0.1f;
-    [SerializeField] private float zoomSpeedMouse = 5f;
     [SerializeField] private float minFOV = 15f;
     [SerializeField] private float maxFOV = 50f;
     [SerializeField] private float targetTiltX = 50f;
     
     [Header("Movement Settings")]
-    [SerializeField] private float movementSpeed = 0.1f;
+    [SerializeField] private float movementSpeed = 0.01f;
     [SerializeField] private float maxMoveDistance = 10f;
     
+    private const float zoomSpeedMouse = 5f;
     private Camera cam;
     private float initialTiltX;
     private float lastFOV;
@@ -33,9 +33,9 @@ public class CameraController : MonoBehaviour
     {
         HandleTouchInput();
         
-        #if UNITY_EDITOR
-            HandleMouseZoom();
-        #endif
+#if UNITY_EDITOR
+        HandleMouseZoom();
+#endif
         
         if (Mathf.Abs(cam.fieldOfView - lastFOV) > 0.001f)
         {
@@ -46,9 +46,17 @@ public class CameraController : MonoBehaviour
 
     private void HandleTouchInput()
     {
-        if (Touchscreen.current == null) return;
+        if (Touchscreen.current == null || GridBridge.Instance.IsGridModeBuilding()) return;
         
-        int touchCount = Touchscreen.current.touches.Count;
+        int touchCount = 0;
+        for (int i = 0; i < Touchscreen.current.touches.Count; i++)
+        {
+            var touch = Touchscreen.current.touches[i];
+            if (touch.phase.ReadValue() != UnityEngine.InputSystem.TouchPhase.None)
+            {
+                touchCount++;
+            }
+        }
         
         if (touchCount == 1)
         {
@@ -68,30 +76,15 @@ public class CameraController : MonoBehaviour
         {
             Vector2 touchDelta = touch.delta.ReadValue();
             
-            // Debug to see if touch is being detected
-            if (touchDelta.magnitude > 0.1f)
-            {
-                Debug.Log($"Touch Delta: {touchDelta}, Magnitude: {touchDelta.magnitude}");
-            }
-            
-            // Convert touch delta to world movement
             Vector3 movement = new Vector3(-touchDelta.x * movementSpeed, 0, -touchDelta.y * movementSpeed);
             
-            // Apply movement to camera position
             Vector3 newPosition = cam.gameObject.transform.position + movement;
             
-            // Clamp position to stay within max distance from initial position
             Vector3 offset = newPosition - initialPosition;
             offset = Vector3.ClampMagnitude(offset, maxMoveDistance);
             newPosition = initialPosition + offset;
             
             cam.gameObject.transform.position = newPosition;
-            
-            // Debug position change
-            if (movement.magnitude > 0.01f)
-            {
-                Debug.Log($"Camera moved to: {newPosition}");
-            }
         }
     }
 
@@ -120,6 +113,7 @@ public class CameraController : MonoBehaviour
         }
     }
 
+    #if UNITY_EDITOR
     private void HandleMouseZoom()
     {
         Vector2 scrollValue = Mouse.current.scroll.ReadValue();
@@ -130,6 +124,7 @@ public class CameraController : MonoBehaviour
             cam.fieldOfView = Mathf.Clamp(cam.fieldOfView, minFOV, maxFOV);
         }
     }
+    #endif
     
     private void UpdateTiltBasedOnFOV()
     {

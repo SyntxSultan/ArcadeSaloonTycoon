@@ -256,6 +256,7 @@ namespace SoulGames.EasyGridBuilderPro
         //public UnityEvent OnObjectStoppedMovingUnityEvent;
         
         private Camera mainCam;
+        private Vector3 lastValidSnappedPosition = new Vector3(-99999, -99999, -99999);
 
 
         public class GridObjectXZ
@@ -716,6 +717,12 @@ namespace SoulGames.EasyGridBuilderPro
             if (Application.isPlaying)
             {
                 localMousePosition = GetMouseWorldPosition();
+                
+                if (!ASTLibrary.IsPointerOverUI())
+                {
+                    lastValidSnappedPosition = GetMouseWorldSnappedPosition();
+                }
+                
                 HandleAutoGridHeightDetection();
                 HandleBuildableTypeSOChangeEvents();
 
@@ -1197,6 +1204,7 @@ namespace SoulGames.EasyGridBuilderPro
         public void TriggerBuildablePlacement() //This function handles 'buildableGridObjectTypeSO' object placement
         {
             buildablePlacementKeyHolding = true;
+            
             if (!MultiGridManager.Instance.onGrid || MultiGridManager.Instance.activeGridSystem != this) return;
             
             if (useBuildModeActivationKey == false)
@@ -1212,9 +1220,9 @@ namespace SoulGames.EasyGridBuilderPro
                     {
                         if (buildableGridObjectTypeSO.holdToPlace && !buildableGridObjectTypeSO.placeAndDeselect)
                         {
-                            if (isBuildableBuildActive && buildableGridObjectTypeSO != null && !ASTLibrary.IsPointerOverUI())
+                            if (isBuildableBuildActive && buildableGridObjectTypeSO != null)
                             {
-                                Vector3 mousePosition = GetMouseWorldPosition(); //Call function 'GetMouseWorldPosition' and assign value to 'mousePosition'
+                                Vector3 mousePosition = GetEffectivePlacementPosition(); //Call function 'GetMouseWorldPosition' and assign value to 'mousePosition'
                                 if (useBuildableDistance)
                                 {
                                     if (!distanceCheckObject) distanceCheckObject = mainCam.transform;
@@ -1235,9 +1243,9 @@ namespace SoulGames.EasyGridBuilderPro
                         }
                         else
                         {
-                            if (isBuildableBuildActive && buildableGridObjectTypeSO != null && !ASTLibrary.IsPointerOverUI())
+                            if (isBuildableBuildActive && buildableGridObjectTypeSO != null)
                             {
-                                Vector3 mousePosition = GetMouseWorldPosition(); //Call function 'GetMouseWorldPosition' and assign value to 'mousePosition'
+                                Vector3 mousePosition = GetEffectivePlacementPosition(); //Call function 'GetMouseWorldPosition' and assign value to 'mousePosition'
                                 if (useBuildableDistance)
                                 {
                                     if (!distanceCheckObject) distanceCheckObject = mainCam.transform;
@@ -2051,7 +2059,7 @@ namespace SoulGames.EasyGridBuilderPro
             if (canBuild) //If 'canBuild' is true
             {
                 Vector2Int rotationOffset = buildableGridObjectTypeSO.GetRotationOffset(dir, passedGridXZ.GetCellSize()); //Call 'GetRotationOffset' function in 'buildableGridObjectTypeSO' and assign value to 'rotationOffset'
-                Vector3 mousePosition = GetMouseWorldPosition(); //Call function 'GetMouseWorldPosition' and cache it in 'mousePosition'
+                //Vector3 mousePosition = GetMouseWorldPosition(); //Call function 'GetMouseWorldPosition' and cache it in 'mousePosition'
                 Vector3 placedObjectWorldPositionOld = passedGridXZ.GetWorldPosition(placedObjectOrigin.x, placedObjectOrigin.y) + new Vector3(rotationOffset.x, transform.localPosition.y, rotationOffset.y) * passedGridXZ.GetCellSize(); //Call 'GetWorldPosition' in 'grid' and assign value to 'placedObjectWorldPosition'
                 Vector3 placedObjectWorldPosition = new Vector3(placedObjectWorldPositionOld.x, gridOriginXZ.y, placedObjectWorldPositionOld.z);
 
@@ -2145,7 +2153,7 @@ namespace SoulGames.EasyGridBuilderPro
             if (canBuild) //If 'canBuild' is true
             {
                 Vector2Int rotationOffset = buildableGridObjectTypeSO.GetRotationOffset(dir, passedGridXY.GetCellSize()); //Call 'GetRotationOffset' function in 'buildableGridObjectTypeSO' and assign value to 'rotationOffset'
-                Vector3 mousePosition = GetMouseWorldPosition(); //Call function 'GetMouseWorldPosition' and cache it in 'mousePosition'
+                //Vector3 mousePosition = GetMouseWorldPosition(); //Call function 'GetMouseWorldPosition' and cache it in 'mousePosition'
                 Vector3 placedObjectWorldPositionOld = passedGridXY.GetWorldPosition(placedObjectOrigin.x, placedObjectOrigin.y) + new Vector3(rotationOffset.x, rotationOffset.y, transform.localPosition.z) * passedGridXY.GetCellSize(); //Call 'GetWorldPosition' in 'grid' and assign value to 'placedObjectWorldPosition'
                 Vector3 placedObjectWorldPosition = new Vector3(placedObjectWorldPositionOld.x, placedObjectWorldPositionOld.y, gridOriginXY.z);
 
@@ -2978,13 +2986,8 @@ namespace SoulGames.EasyGridBuilderPro
                         }
                     }
                 }
+                
 
-                if (Pointer.current == null)
-                {
-                    Debug.LogError("Pointer Null!");
-                }
-
-                Ray ray = mainCam.ScreenPointToRay(Pointer.current.position.ReadValue());
                 if (useBuildableDistance)
                 {
                     if (!distanceCheckObject) distanceCheckObject = mainCam.transform;
@@ -2997,13 +3000,6 @@ namespace SoulGames.EasyGridBuilderPro
                     }
                 }
 
-                // if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f))
-                // {
-                //     if (raycastHit.collider.GetComponent<BuildableObjectAreaBlocker>())
-                //     {
-                //         valid = false;
-                //     }
-                // }
 
                 if (buildableAreaBlockerHit)
                 {
@@ -4089,6 +4085,18 @@ namespace SoulGames.EasyGridBuilderPro
             if (ownSystem == this)
             {
                 //if (enableUnityEvents) OnObjectStoppedMovingUnityEvent?.Invoke();
+            }
+        }
+        
+        private Vector3 GetEffectivePlacementPosition()
+        {
+            if (ASTLibrary.IsPointerOverUI())
+            {
+                return lastValidSnappedPosition;
+            }
+            else
+            {
+                return GetMouseWorldSnappedPosition();
             }
         }
 

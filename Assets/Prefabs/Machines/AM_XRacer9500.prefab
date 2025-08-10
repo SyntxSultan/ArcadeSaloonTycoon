@@ -171,7 +171,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetSize: {x: 2.5, y: 2.5, z: 2.5}
   uniformScaling: 1
-  scaleOnStart: 0
+  scaleOnStart: 1
   includeInactive: 0
   showDebugInfo: 0
 --- !u!114 &1683943652565329911

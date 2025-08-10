@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using SoulGames.EasyGridBuilderPro;
 using UnityEngine;
 
@@ -57,5 +58,10 @@ public class GridBridge : MonoBehaviour
             easyGridBuilderPro.TriggerGhostRotateRight();
             easyGridBuilderPro.TriggerGhostRotateRightCancelled();
         }
+    }
+
+    public bool IsGridModeBuilding()
+    {
+        return gridList.Select(easyGridBuilderPro => easyGridBuilderPro.GetGridMode() == GridMode.Build).FirstOrDefault();
     }
 }

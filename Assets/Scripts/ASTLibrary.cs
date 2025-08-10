@@ -20,8 +20,10 @@ public static class ASTLibrary
     
         foreach (RaycastResult r in results)
         {
-            if (r.gameObject.GetComponent<RectTransform>() != null) 
+            if (r.gameObject.GetComponent<RectTransform>() != null)
+            {
                 return true;
+            }
         }
         return false;
     }

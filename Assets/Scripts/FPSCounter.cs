@@ -23,7 +23,7 @@ namespace DebugsUtilities
                 timer = 0f;
             }
 
-            fpsText.text = fps.ToString("F1");
+            fpsText.text = fps.ToString("F0");
         }
 
     }

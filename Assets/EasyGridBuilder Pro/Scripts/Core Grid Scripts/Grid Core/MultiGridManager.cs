@@ -45,6 +45,7 @@ namespace SoulGames.EasyGridBuilderPro
                 Debug.Log("<color=Red>Grid objects not found - Multi Grid Manager</color>");
                 return;
             }
+            if (ASTLibrary.IsPointerOverUI()) return;
             if (activeGridSystem != GetUsingGrid())
             {
                 activeGridSystem = GetUsingGrid();
