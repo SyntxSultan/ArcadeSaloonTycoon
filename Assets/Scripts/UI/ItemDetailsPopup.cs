@@ -13,6 +13,8 @@ public class ItemDetailsPopup : MonoBehaviour
     [SerializeField] private TextMeshProUGUI playTimeText;
     [SerializeField] private TextMeshProUGUI sizeText;
     [SerializeField] private TextMeshProUGUI priceText;
+    [SerializeField] private Color canBuyColor;
+    [SerializeField] private Color cantBuyColor;
     [SerializeField] private Button buyButton;
     [SerializeField] private Transform previewItemSpawnPoint;
     [SerializeField] private GameObject starPrefab;
@@ -38,10 +40,26 @@ public class ItemDetailsPopup : MonoBehaviour
         categoryText.text = "Category: " +machineSO.arcadeCategory.ToString();
         playTimeText.text = "Play Time: " + machineSO.playTime.ToString() + "sec";
         sizeText.text = $"Size: {machineSO.size.x}x{machineSO.size.y}y";
-        priceText.text = $"${item.cost.ToString()}";
+        CheckMoneyAndSetUI(machineSO);
         
         buyButton.onClick.AddListener(OnBuyButtonClicked);
         SpawnPreviewPrefab(machineSO.prefab);
+    }
+
+    private void CheckMoneyAndSetUI(ItemSO item)
+    {
+        if (CurrencyManager.Instance.CanBuy(item.cost))
+        {
+            priceText.text = $"${item.cost.ToString()}";
+            priceText.color = canBuyColor;
+            buyButton.interactable = true;
+        }
+        else
+        {
+            priceText.text = $"${item.cost.ToString()}";
+            priceText.color = cantBuyColor;
+            buyButton.interactable = false;
+        }
     }
 
     private void SpawnPreviewPrefab(GameObject prefab)
@@ -52,6 +70,7 @@ public class ItemDetailsPopup : MonoBehaviour
     private void OnBuyButtonClicked()
     {
         GridBridge.Instance.OnBuildableItemBought(itemSO.gridItemData);
+        CurrencyManager.Instance.SetPlacingItemForMoneyDraw(itemSO);
         ScreenManager.Instance.CloseItemDetailsPopup();
         ScreenManager.Instance.ShowBuildingUI();
     }

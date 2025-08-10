@@ -7,6 +7,7 @@ public class GridBridge : MonoBehaviour
     public static GridBridge Instance { get; private set; }
     
     [SerializeField]private GridObjectSelector gridObjectSelector;
+    
     private List<EasyGridBuilderPro> gridList;
     
     private void Start()
@@ -27,20 +28,18 @@ public class GridBridge : MonoBehaviour
 
     public void ConfirmBuilding()
     {
-        
         foreach(EasyGridBuilderPro easyGridBuilderPro in gridList)
         {
-            Debug.Log("Confirm called");
             easyGridBuilderPro.TriggerBuildablePlacement();
             easyGridBuilderPro.SetGridModeReset();
             easyGridBuilderPro.SetSelectedBuildableGridObjectType(null);
         }
         gridObjectSelector.SetGridModeReset();
         ScreenManager.Instance.HideBuildingUI();
+        CurrencyManager.Instance.WithdrawMoneyFromCachedItem();
     }
     public void CancelBuilding()
     {
-        Debug.Log("Cancel called");
         foreach(EasyGridBuilderPro easyGridBuilderPro in gridList)
         {
             easyGridBuilderPro.TriggerBuildablePlacementCancelled();
@@ -49,10 +48,10 @@ public class GridBridge : MonoBehaviour
         }
         gridObjectSelector.SetGridModeReset();
         ScreenManager.Instance.HideBuildingUI();
+        CurrencyManager.Instance.SetPlacingItemForMoneyDraw(null);
     }
     public void RotateBuilding()
     {
-        Debug.Log("Rotate called");
         foreach(EasyGridBuilderPro easyGridBuilderPro in gridList)
         {
             easyGridBuilderPro.TriggerGhostRotateRight();

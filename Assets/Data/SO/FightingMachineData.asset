@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Xboks 720
   icon: {fileID: 21300000, guid: 9840daa11a7f17244b68442a28d60d96, type: 3}
-  cost: 250
+  cost: 100
   starAmount: 2
   prefab: {fileID: 6189114151371766670, guid: a051ab913243b7e46960463edecf636e, type: 3}
   size: {x: 1, y: 1}

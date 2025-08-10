@@ -4,27 +4,34 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Camera))]
 public class CameraController : MonoBehaviour
 {
+    [Header("Zoom Settings")]
     [SerializeField] private float zoomSpeedTouch = 0.1f;
     [SerializeField] private float zoomSpeedMouse = 5f;
-    [SerializeField] private float minFOV = 30f;
-    [SerializeField] private float maxFOV = 60f;
+    [SerializeField] private float minFOV = 15f;
+    [SerializeField] private float maxFOV = 50f;
     [SerializeField] private float targetTiltX = 50f;
+    
+    [Header("Movement Settings")]
+    [SerializeField] private float movementSpeed = 0.1f;
+    [SerializeField] private float maxMoveDistance = 10f;
     
     private Camera cam;
     private float initialTiltX;
     private float lastFOV;
+    private Vector3 initialPosition;
 
     private void Start()
     {
         cam = GetComponent<Camera>();
         initialTiltX = cam.gameObject.transform.eulerAngles.x;
+        initialPosition = cam.gameObject.transform.position;
         lastFOV = cam.fieldOfView;
         UpdateTiltBasedOnFOV();
     }
 
     private void Update()
     {
-        HandleTouchZoom();
+        HandleTouchInput();
         
         #if UNITY_EDITOR
             HandleMouseZoom();
@@ -37,10 +44,59 @@ public class CameraController : MonoBehaviour
         }
     }
 
+    private void HandleTouchInput()
+    {
+        if (Touchscreen.current == null) return;
+        
+        int touchCount = Touchscreen.current.touches.Count;
+        
+        if (touchCount == 1)
+        {
+            HandleSingleTouchMovement();
+        }
+        else if (touchCount >= 2)
+        {
+            HandleTouchZoom();
+        }
+    }
+
+    private void HandleSingleTouchMovement()
+    {
+        var touch = Touchscreen.current.touches[0];
+        
+        if (touch.isInProgress)
+        {
+            Vector2 touchDelta = touch.delta.ReadValue();
+            
+            // Debug to see if touch is being detected
+            if (touchDelta.magnitude > 0.1f)
+            {
+                Debug.Log($"Touch Delta: {touchDelta}, Magnitude: {touchDelta.magnitude}");
+            }
+            
+            // Convert touch delta to world movement
+            Vector3 movement = new Vector3(-touchDelta.x * movementSpeed, 0, -touchDelta.y * movementSpeed);
+            
+            // Apply movement to camera position
+            Vector3 newPosition = cam.gameObject.transform.position + movement;
+            
+            // Clamp position to stay within max distance from initial position
+            Vector3 offset = newPosition - initialPosition;
+            offset = Vector3.ClampMagnitude(offset, maxMoveDistance);
+            newPosition = initialPosition + offset;
+            
+            cam.gameObject.transform.position = newPosition;
+            
+            // Debug position change
+            if (movement.magnitude > 0.01f)
+            {
+                Debug.Log($"Camera moved to: {newPosition}");
+            }
+        }
+    }
+
     private void HandleTouchZoom()
     {
-        if (!(Touchscreen.current?.touches.Count >= 2)) return;
-        
         var touch0 = Touchscreen.current.touches[0];
         var touch1 = Touchscreen.current.touches[1];
             

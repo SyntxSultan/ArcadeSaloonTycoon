@@ -19,8 +19,6 @@ public class GameManager : MonoBehaviour, IJsonSaveable
 
     private void Start()
     {
-        Application.targetFrameRate = 90;
-        
         if (!SaveManager.Instance.HasSave())
         {
             ScreenManager.Instance.ShowEnterNameScreen();

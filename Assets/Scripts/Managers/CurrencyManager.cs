@@ -4,16 +4,55 @@ using UnityEngine;
 
 public class CurrencyManager : MonoBehaviour, IJsonSaveable
 {
-    [SerializeField] private CurrencyUI currencyUI;
+    public static CurrencyManager Instance { get; private set; }
     
-    [SerializeField] private float money = 100f;
-    [SerializeField] private float coin = 10f;
+    public event Action<int> OnMoneyChanged;
+    public event Action<int> OnCoinChanged;
+    
+    [SerializeField] private int money = 100;
+    [SerializeField] private int coin = 10;
+    private ItemSO cachedItem;
 
-
+    private void Awake()
+    {
+        Instance = this;
+    }
+    
     private void Start()
     {
-        currencyUI.UpdateMoneyText(money);
-        currencyUI.UpdateCoinText(coin);
+        OnMoneyChanged?.Invoke(money);
+        OnCoinChanged?.Invoke(coin);
+    }
+    
+    public void AddMoney(int amount)
+    {
+        money += amount;
+        OnMoneyChanged?.Invoke(money);
+    }
+    public void RemoveMoney(int amount)
+    {
+        money -= amount;
+        OnMoneyChanged?.Invoke(money);
+    }
+    public void AddCoin(int amount)
+    {
+        coin += amount;
+        OnCoinChanged?.Invoke(coin); 
+    }
+
+    public bool CanBuy(int cost)
+    {
+        return money >= cost;
+    }
+
+    public void SetPlacingItemForMoneyDraw(ItemSO itemSO)
+    {
+        cachedItem = itemSO;
+    }
+
+    public void WithdrawMoneyFromCachedItem()
+    {
+        RemoveMoney(cachedItem.cost);
     }
 
     public JToken CaptureAsJToken()
@@ -29,11 +68,11 @@ public class CurrencyManager : MonoBehaviour, IJsonSaveable
         JObject stateObj = (JObject)state;
         if (stateObj.TryGetValue("money", out JToken moneyToken))
         {
-            money = moneyToken.Value<float>();
+            money = moneyToken.Value<int>();
         }
         if (stateObj.TryGetValue("coin", out JToken coinToken))
         {
-            coin = coinToken.Value<float>();
+            coin = coinToken.Value<int>();
         }
     }
 }

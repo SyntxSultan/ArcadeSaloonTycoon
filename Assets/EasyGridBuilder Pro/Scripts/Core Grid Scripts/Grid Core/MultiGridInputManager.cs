@@ -93,8 +93,8 @@ namespace SoulGames.EasyGridBuilderPro
             easyGridBuilderProInputsSO.gridModeResetKey.performed += context => GridModeResetKey(context);
             easyGridBuilderProInputsSO.gridHeightChangeKey.performed += context => GridHeightChangeKey(context);
             easyGridBuilderProInputsSO.buildModeActivationKey.performed += context => BuildModeActivationKey(context);
-            //easyGridBuilderProInputsSO.buildablePlacementKey.performed += context => BuildablePlacementKey(context);
-            //easyGridBuilderProInputsSO.buildablePlacementKey.canceled += context => BuildablePlacementKeyCancelled(context);
+            easyGridBuilderProInputsSO.buildablePlacementKey.performed += context => BuildablePlacementKey(context);
+            easyGridBuilderProInputsSO.buildablePlacementKey.canceled += context => BuildablePlacementKeyCancelled(context);
             easyGridBuilderProInputsSO.buildableListScrollKey.performed += context => BuildableListScrollKey(context);
             easyGridBuilderProInputsSO.ghostRotateLeftKey.performed += context => GhostRotateLeftKey(context);
             easyGridBuilderProInputsSO.ghostRotateLeftKey.canceled += context => GhostRotateLeftKeyCancelled(context);

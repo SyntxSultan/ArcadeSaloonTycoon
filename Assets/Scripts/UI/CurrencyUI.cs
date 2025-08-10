@@ -5,12 +5,18 @@ public class CurrencyUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI moneyTextbox;
     [SerializeField] private TextMeshProUGUI coinTextbox;
-    
-    public void UpdateMoneyText(float money)
+
+    private void Start()
+    {
+        CurrencyManager.Instance.OnMoneyChanged += UpdateMoneyText;
+        CurrencyManager.Instance.OnCoinChanged += UpdateCoinText;
+    }
+
+    private void UpdateMoneyText(int money)
     {
         moneyTextbox.text = $"{money.ToString()}";
     }
-    public void UpdateCoinText(float coin)
+    private void UpdateCoinText(int coin)
     {
         coinTextbox.text = $"{coin.ToString()}";
     }
