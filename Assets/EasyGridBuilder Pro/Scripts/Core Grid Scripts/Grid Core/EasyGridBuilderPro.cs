@@ -257,6 +257,7 @@ namespace SoulGames.EasyGridBuilderPro
         
         private Camera mainCam;
         private Vector3 lastValidSnappedPosition = new Vector3(-99999, -99999, -99999);
+        private Vector3 lastValidMousePosition = new Vector3(-99999, -99999, -99999);
 
 
         public class GridObjectXZ
@@ -721,6 +722,7 @@ namespace SoulGames.EasyGridBuilderPro
                 if (!ASTLibrary.IsPointerOverUI())
                 {
                     lastValidSnappedPosition = GetMouseWorldSnappedPosition();
+                    lastValidMousePosition = localMousePosition;
                 }
                 
                 HandleAutoGridHeightDetection();
@@ -1222,7 +1224,7 @@ namespace SoulGames.EasyGridBuilderPro
                         {
                             if (isBuildableBuildActive && buildableGridObjectTypeSO != null)
                             {
-                                Vector3 mousePosition = GetEffectivePlacementPosition(); //Call function 'GetMouseWorldPosition' and assign value to 'mousePosition'
+                                Vector3 mousePosition = GetEffectiveMouseWorldPosition(); //Call function 'GetMouseWorldPosition' and assign value to 'mousePosition'
                                 if (useBuildableDistance)
                                 {
                                     if (!distanceCheckObject) distanceCheckObject = mainCam.transform;
@@ -1245,7 +1247,7 @@ namespace SoulGames.EasyGridBuilderPro
                         {
                             if (isBuildableBuildActive && buildableGridObjectTypeSO != null)
                             {
-                                Vector3 mousePosition = GetEffectivePlacementPosition(); //Call function 'GetMouseWorldPosition' and assign value to 'mousePosition'
+                                Vector3 mousePosition = GetEffectiveMouseWorldPosition(); //Call function 'GetMouseWorldPosition' and assign value to 'mousePosition'
                                 if (useBuildableDistance)
                                 {
                                     if (!distanceCheckObject) distanceCheckObject = mainCam.transform;
@@ -4097,6 +4099,18 @@ namespace SoulGames.EasyGridBuilderPro
             else
             {
                 return GetMouseWorldSnappedPosition();
+            }
+        }
+
+        private Vector3 GetEffectiveMouseWorldPosition()
+        {
+            if (ASTLibrary.IsPointerOverUI())
+            {
+                return lastValidMousePosition;
+            }
+            else
+            {
+                return GetMouseWorldPosition();
             }
         }
 

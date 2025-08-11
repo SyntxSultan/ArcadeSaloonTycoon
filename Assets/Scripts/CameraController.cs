@@ -52,7 +52,11 @@ public class CameraController : MonoBehaviour
         for (int i = 0; i < Touchscreen.current.touches.Count; i++)
         {
             var touch = Touchscreen.current.touches[i];
-            if (touch.phase.ReadValue() != UnityEngine.InputSystem.TouchPhase.None)
+            var phase = touch.phase.ReadValue();
+            if (phase is 
+                UnityEngine.InputSystem.TouchPhase.Began or 
+                UnityEngine.InputSystem.TouchPhase.Moved or 
+                UnityEngine.InputSystem.TouchPhase.Stationary)
             {
                 touchCount++;
             }
