@@ -7,16 +7,24 @@ public class CoinPurchaseService : MonoBehaviour, IPurchaseService
     [SerializeField] private int maxCoins = 20;
     [SerializeField] private float purchaseDelay = 2f;
     
-    public float PurchaseDelay => purchaseDelay;
+    private CurrencyManager currencyManager;
     
+    public float PurchaseDelay => purchaseDelay;
+
+    private void Start()
+    {
+        currencyManager = CurrencyManager.Instance;
+    }
+
     public int GetRandomCoinAmount()
     {
-        return UnityEngine.Random.Range(minCoins, maxCoins + 1);
+        int customerWantedCoins = UnityEngine.Random.Range(minCoins, maxCoins + 1);
+        return currencyManager.CanBuyCoin(customerWantedCoins) ? customerWantedCoins : currencyManager.GetCoin();
     }
     
     public bool CanPurchase(int amount)
     {
-        return amount > 0; // In a real scenario, check player money
+        return true;
     }
 
     public void ProcessPurchase(int amount, Action<bool> onComplete)
@@ -27,7 +35,9 @@ public class CoinPurchaseService : MonoBehaviour, IPurchaseService
     private System.Collections.IEnumerator ProcessPurchaseCoroutine(int amount, Action<bool> onComplete)
     {
         yield return new WaitForSeconds(purchaseDelay);
-        //Check if player had enough coins   
+        //TODO
+        //currencyManager.RemoveCoin(amount);
+        currencyManager.AddMoney(currencyManager.GetMoneyForCoin(amount));
         onComplete?.Invoke(true);
     }
 }

@@ -11,6 +11,10 @@ public class CurrencyManager : MonoBehaviour, IJsonSaveable
     
     [SerializeField] private int money = 100;
     [SerializeField] private int coin = 10;
+    [SerializeField] private int moneyPerCoin = 10;
+
+    public int GetCoin() => coin;
+    
     private ItemSO cachedItem;
 
     private void Awake()
@@ -24,9 +28,11 @@ public class CurrencyManager : MonoBehaviour, IJsonSaveable
         OnCoinChanged?.Invoke(coin);
     }
     
+    /* Public Setters */
     public void AddMoney(int amount)
     {
         money += amount;
+        AudioManager.Instance.PlaySFX(SFX.GainMoney);
         OnMoneyChanged?.Invoke(money);
     }
     public void RemoveMoney(int amount)
@@ -39,12 +45,29 @@ public class CurrencyManager : MonoBehaviour, IJsonSaveable
         coin += amount;
         OnCoinChanged?.Invoke(coin); 
     }
+    public void RemoveCoin(int amount)
+    {
+        coin -= amount;
+        OnCoinChanged?.Invoke(coin);
+    }
 
+    /* Public Getters */
     public bool CanBuy(int cost)
     {
         return money >= cost;
     }
 
+    public bool CanBuyCoin(int amount)
+    {
+        return coin >= amount;
+    }
+
+    public int GetMoneyForCoin(int coinAmount)
+    {
+        return coinAmount * moneyPerCoin;
+    }
+
+    //Caching For purchase 
     public void SetPlacingItemForMoneyDraw(ItemSO itemSO)
     {
         cachedItem = itemSO;
@@ -55,6 +78,7 @@ public class CurrencyManager : MonoBehaviour, IJsonSaveable
         RemoveMoney(cachedItem.cost);
     }
 
+    //Saving
     public JToken CaptureAsJToken()
     {
         JObject state = new JObject();

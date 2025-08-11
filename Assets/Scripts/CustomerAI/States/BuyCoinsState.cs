@@ -17,7 +17,7 @@ public class BuyCoinsState : ICustomerState
         {
             purchaseStarted = true;
             purchaseStartTime = Time.time;
-            purchaseDuration = context.PurchaseService.PurchaseDelay; // Fixed duration for visual feedback
+            purchaseDuration = context.PurchaseService.PurchaseDelay;
             
             context.PurchaseService.ProcessPurchase(coinsToBuy, (success) => {
                 if (success)
