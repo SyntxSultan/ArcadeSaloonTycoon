@@ -29,21 +29,23 @@ public class CurrencyManager : MonoBehaviour, IJsonSaveable
     }
     
     /* Public Setters */
-    public void AddMoney(int amount)
+    public void AddMoney(int amount, bool playSound = true)
     {
         money += amount;
-        AudioManager.Instance.PlaySFX(SFX.GainMoney);
+        if (playSound && AudioManager.Instance) AudioManager.Instance.PlaySFX(SFX.GainMoney);
         OnMoneyChanged?.Invoke(money);
     }
     public void RemoveMoney(int amount)
     {
         money -= amount;
+        if (AudioManager.Instance) AudioManager.Instance.PlaySFX(SFX.LoseMoney);
         OnMoneyChanged?.Invoke(money);
     }
-    public void AddCoin(int amount)
+    public void AddCoin(int amount, bool playSound = true)
     {
         coin += amount;
-        OnCoinChanged?.Invoke(coin); 
+        if (playSound && AudioManager.Instance) AudioManager.Instance.PlaySFX(SFX.GainCoin);
+        OnCoinChanged?.Invoke(coin);
     }
     public void RemoveCoin(int amount)
     {

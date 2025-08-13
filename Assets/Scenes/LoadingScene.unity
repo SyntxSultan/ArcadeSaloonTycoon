@@ -1053,11 +1053,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9485973f7b4849e4c8cf1283fe985e96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneAName: MainScene
-  sceneBName: CityScene
+  sceneBuildIndex: 1
   progressBar: {fileID: 1368415214}
   percentText: {fileID: 1225637599}
   unloadLoadingSceneAfter: 1
+  minimumLoadTime: 5
+  interpolationSpeed: 2
 --- !u!4 &1477854677
 Transform:
   m_ObjectHideFlags: 0
@@ -1148,6 +1149,73 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1933591741}
   m_CullTransparentMesh: 1
+--- !u!1 &2013623887
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2013623889}
+  - component: {fileID: 2013623888}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2013623888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2013623887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebd67f437ac123944901b4daadb97fec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicItems:
+  - id: 1
+    clip: {fileID: 8300000, guid: 21a76cecd9415f44a9e0999f1e7d1a9d, type: 3}
+    baseVolume: 0.5
+    loop: 1
+  sfxItems:
+  - id: 2
+    clip: {fileID: 8300000, guid: e20e203227e71634c912a72b2375d7bd, type: 3}
+    baseVolume: 1
+    loop: 0
+  - id: 5
+    clip: {fileID: 8300000, guid: bf8ddd85594ed0542a334ff04b23b719, type: 3}
+    baseVolume: 1
+    loop: 0
+  - id: 1
+    clip: {fileID: 8300000, guid: cc9e89fc6c8b0bb41bc4e9f59a32a856, type: 3}
+    baseVolume: 0.572
+    loop: 0
+  - id: 3
+    clip: {fileID: 8300000, guid: 78be2b2487172c3439c8fc142f297afe, type: 3}
+    baseVolume: 1
+    loop: 0
+  sfxPoolSize: 5
+--- !u!4 &2013623889
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2013623887}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2036164181
 GameObject:
   m_ObjectHideFlags: 0
@@ -1231,3 +1299,4 @@ SceneRoots:
   - {fileID: 136745955}
   - {fileID: 1297639365}
   - {fileID: 1477854677}
+  - {fileID: 2013623889}

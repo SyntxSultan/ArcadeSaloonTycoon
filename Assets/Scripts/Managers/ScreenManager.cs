@@ -22,6 +22,16 @@ public class ScreenManager : MonoBehaviour
     [Header("Build Confirm Popup")]
     [SerializeField] private RectTransform buildingUI;
     
+    [Header("Settings Popup")]
+    [SerializeField] private Button settingsButton;
+    [SerializeField] private RectTransform settingsPopup;
+    private Sequence settingsPopupSeq;
+    
+    [Header("Daily Rewards UI")]
+    [SerializeField] private Button dailyRewardsButton;
+    [SerializeField] private RectTransform dailyRewardsUI;
+    private Sequence dailyRewardsSeq;
+    
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -30,12 +40,11 @@ public class ScreenManager : MonoBehaviour
             return;
         }
         Instance = this;
+        CloseAllUIWithoutAnimation();
     }
     
     private void Start()
     {
-        CloseAllUIWithoutAnimation();
-
         BindButtons();
     }
 
@@ -44,6 +53,56 @@ public class ScreenManager : MonoBehaviour
         storeOpenButton.onClick.AddListener(OpenStoreUI);
         closeStorePanelButton.onClick.AddListener(CloseStoreUI);
         closeItemDetailsButton.onClick.AddListener(CloseItemDetailsPopup);
+        settingsButton.onClick.AddListener(OpenSettingsPopup);
+        dailyRewardsButton.onClick.AddListener(OpenDailyRewardsUI);
+    }
+
+    public void OpenDailyRewardsUI()
+    {
+        dailyRewardsUI.gameObject.SetActive(true);
+        
+        if (dailyRewardsSeq != null && dailyRewardsSeq.IsActive())
+        {
+            dailyRewardsSeq.Kill();
+        }
+        dailyRewardsUI.localScale = Vector3.one;
+        
+        dailyRewardsSeq = DOTween.Sequence();
+
+        DOTween.Sequence().Append(dailyRewardsUI.DOPunchScale(
+            new Vector3(0.15f, 0.15f, 0),
+            0.35f,
+            4,
+            0.5f));
+    }
+
+    public void CloseDailyRewardsUI()
+    {
+        dailyRewardsUI.gameObject.SetActive(false);
+    }
+
+    private void OpenSettingsPopup()
+    {
+        settingsPopup.gameObject.SetActive(true);
+        
+        if (settingsPopupSeq != null && settingsPopupSeq.IsActive())
+        {
+            settingsPopupSeq.Kill();
+        }
+        settingsPopup.localScale = Vector3.one;
+        
+        settingsPopupSeq = DOTween.Sequence();
+
+        DOTween.Sequence().Append(settingsPopup.DOPunchScale(
+            new Vector3(0.15f, 0.15f, 0),
+            0.35f,
+            4,
+            0.5f));
+    }
+    
+    public void CloseSettingsPopup()
+    {
+        settingsPopup.gameObject.SetActive(false);
     }
 
     private void OpenStoreUI()
@@ -135,5 +194,7 @@ public class ScreenManager : MonoBehaviour
         storeUIPanel.gameObject.SetActive(false);
         itemDetailsPanel.gameObject.SetActive(false);
         buildingUI.gameObject.SetActive(false);
+        settingsPopup.gameObject.SetActive(false);
+        dailyRewardsUI.gameObject.SetActive(false);
     }
 }

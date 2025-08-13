@@ -67,11 +67,6 @@ public class LoadingManager : MonoBehaviour
         yield return new WaitForSeconds(0.2f); // Brief pause to show 100%
 
         loadOperation.allowSceneActivation = true;
-        Scene loadedScene = SceneManager.GetSceneByBuildIndex(sceneBuildIndex);
-        if (loadedScene.IsValid())
-        {
-            SceneManager.SetActiveScene(loadedScene);
-        }
 
         yield return StartCoroutine(BuildNavMeshesWithProgress());
         

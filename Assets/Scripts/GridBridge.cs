@@ -38,6 +38,8 @@ public class GridBridge : MonoBehaviour
         gridObjectSelector.SetGridModeReset();
         ScreenManager.Instance.HideBuildingUI();
         CurrencyManager.Instance.WithdrawMoneyFromCachedItem();
+        if (AudioManager.Instance) AudioManager.Instance.PlaySFX(SFX.LoseMoney);
+        SaveManager.Instance.Save();
     }
     public void CancelBuilding()
     {

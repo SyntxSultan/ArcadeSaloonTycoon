@@ -6,6 +6,12 @@ public class GameManager : MonoBehaviour, IJsonSaveable
     public static GameManager Instance { get; private set; }
     
     private string saloonName = "NULL";
+    
+    private void OnEnable()
+    {
+        MobileNotificationHelper.Initialize();
+        MobileNotificationHelper.CancelAllNotifications();
+    }
 
     private void Awake()
     {
@@ -20,7 +26,6 @@ public class GameManager : MonoBehaviour, IJsonSaveable
     private void Start()
     {
         Application.targetFrameRate = 60;
-        AudioManager.Instance.PlayMusic(MusicTrack.MainTheme, 5f);
         if (!SaveManager.Instance.HasSave())
         {
             ScreenManager.Instance.ShowEnterNameScreen();
