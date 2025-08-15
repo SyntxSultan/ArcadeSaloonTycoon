@@ -61,7 +61,7 @@ public class CameraController : MonoBehaviour
                 touchCount++;
             }
         }
-        
+        if (ASTLibrary.IsPointerOverUI()) return;
         if (touchCount == 1)
         {
             HandleSingleTouchMovement();

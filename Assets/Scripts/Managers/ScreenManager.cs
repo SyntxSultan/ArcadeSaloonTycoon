@@ -5,6 +5,8 @@ using UnityEngine.UI;
 public class ScreenManager : MonoBehaviour
 {
     public static ScreenManager Instance { get; private set; }
+
+    [SerializeField] private Button uiOverlay;
     
     [Header("Enter Name UI")]
     [SerializeField] private EnterNameScreen enterSaloonNameUI;
@@ -32,6 +34,11 @@ public class ScreenManager : MonoBehaviour
     [SerializeField] private RectTransform dailyRewardsUI;
     private Sequence dailyRewardsSeq;
     
+    [Header("Coin Price UI")]
+    [SerializeField] private Button coinPriceButton;   
+    [SerializeField] private RectTransform coinPriceUI;
+    private Sequence coinPriceSeq;
+    
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -52,57 +59,86 @@ public class ScreenManager : MonoBehaviour
     {
         storeOpenButton.onClick.AddListener(OpenStoreUI);
         closeStorePanelButton.onClick.AddListener(CloseStoreUI);
-        closeItemDetailsButton.onClick.AddListener(CloseItemDetailsPopup);
         settingsButton.onClick.AddListener(OpenSettingsPopup);
         dailyRewardsButton.onClick.AddListener(OpenDailyRewardsUI);
+        coinPriceButton.onClick.AddListener(OpenCoinPriceUI);
+        
+        uiOverlay.onClick.AddListener(CloseStoreUI);
+        uiOverlay.onClick.AddListener(CloseItemDetailsPopup);
+        uiOverlay.onClick.AddListener(CloseCoinPriceUI);
+        uiOverlay.onClick.AddListener(CloseDailyRewardsUI);
+        uiOverlay.onClick.AddListener(CloseSettingsPopup);
     }
 
+    private void OpenCoinPriceUI()
+    {
+        coinPriceUI.gameObject.SetActive(true);
+        uiOverlay.gameObject.SetActive(true);
+        
+        IfSequenceActiveKillAndReset(ref coinPriceSeq);
+        
+        coinPriceSeq.Append(coinPriceUI.DOJumpAnchorPos(
+            new Vector2(0, 100),
+            10f,
+            1,
+            0.5f
+            ));
+    }
+    private void CloseCoinPriceUI()
+    {
+        coinPriceUI.gameObject.SetActive(false);
+        uiOverlay.gameObject.SetActive(false);
+    }
     public void OpenDailyRewardsUI()
     {
         dailyRewardsUI.gameObject.SetActive(true);
+        uiOverlay.gameObject.SetActive(true);
         
-        if (dailyRewardsSeq != null && dailyRewardsSeq.IsActive())
-        {
-            dailyRewardsSeq.Kill();
-        }
+        IfSequenceActiveKillAndReset(ref dailyRewardsSeq);
+        
         dailyRewardsUI.localScale = Vector3.one;
-        
-        dailyRewardsSeq = DOTween.Sequence();
 
-        DOTween.Sequence().Append(dailyRewardsUI.DOPunchScale(
+        dailyRewardsSeq.Append(dailyRewardsUI.DOPunchScale(
             new Vector3(0.15f, 0.15f, 0),
             0.35f,
             4,
             0.5f));
     }
 
-    public void CloseDailyRewardsUI()
+    private void CloseDailyRewardsUI()
     {
-        dailyRewardsUI.gameObject.SetActive(false);
+        IfSequenceActiveKillAndReset(ref dailyRewardsSeq);
+        
+        dailyRewardsSeq.Append(dailyRewardsUI.DOScale(Vector3.zero, 0.15f)).OnComplete(() =>
+        {
+            dailyRewardsUI.gameObject.SetActive(false);
+            uiOverlay.gameObject.SetActive(false);
+        });
     }
 
     private void OpenSettingsPopup()
     {
         settingsPopup.gameObject.SetActive(true);
+        uiOverlay.gameObject.SetActive(true);
         
-        if (settingsPopupSeq != null && settingsPopupSeq.IsActive())
-        {
-            settingsPopupSeq.Kill();
-        }
         settingsPopup.localScale = Vector3.one;
         
-        settingsPopupSeq = DOTween.Sequence();
-
-        DOTween.Sequence().Append(settingsPopup.DOPunchScale(
+        IfSequenceActiveKillAndReset(ref settingsPopupSeq);
+        
+        settingsPopupSeq.Append(settingsPopup.DOPunchScale(
             new Vector3(0.15f, 0.15f, 0),
             0.35f,
             4,
             0.5f));
     }
     
-    public void CloseSettingsPopup()
+    private void CloseSettingsPopup()
     {
-        settingsPopup.gameObject.SetActive(false);
+        IfSequenceActiveKillAndReset(ref settingsPopupSeq);
+            
+        settingsPopupSeq.Append(settingsPopup.DOScale(Vector3.zero, 0.15f)).OnComplete(() => 
+            settingsPopup.gameObject.SetActive(false)
+        );
     }
 
     private void OpenStoreUI()
@@ -156,18 +192,16 @@ public class ScreenManager : MonoBehaviour
     public void OpenItemDetailsPopup(ItemSO itemSO)
     {
         itemDetailsPanel.gameObject.SetActive(true);
+        uiOverlay.gameObject.SetActive(true);
         
         itemDetailsPanel.gameObject.GetComponent<ItemDetailsPopup>().SetItemDetails(itemSO);
         
         CloseStoreUI();
         
-        if (itemDetailsPanelSeq != null && itemDetailsPanelSeq.IsActive())
-        {
-            itemDetailsPanelSeq.Kill();
-        }
         itemDetailsPanel.localScale = Vector3.one;
         
-        itemDetailsPanelSeq = DOTween.Sequence();
+        IfSequenceActiveKillAndReset(ref itemDetailsPanelSeq);
+        
         itemDetailsPanelSeq.Append(itemDetailsPanel.DOPunchScale(
             new Vector3(0.15f, 0.15f, 0),
             0.35f,                       
@@ -178,15 +212,13 @@ public class ScreenManager : MonoBehaviour
 
     public void CloseItemDetailsPopup()
     {
-        if (itemDetailsPanelSeq != null && itemDetailsPanelSeq.IsActive())
+        IfSequenceActiveKillAndReset(ref itemDetailsPanelSeq);
+        
+        itemDetailsPanelSeq.Append(itemDetailsPanel.DOScale(Vector3.zero, 0.15f)).OnComplete(() =>
         {
-            itemDetailsPanelSeq.Kill();
-        }
-
-        itemDetailsPanelSeq = DOTween.Sequence();
-        itemDetailsPanelSeq.Append(itemDetailsPanel.DOScale(Vector3.zero, 0.15f)).OnComplete(() => 
-            itemDetailsPanel.gameObject.SetActive(false)
-        );
+            itemDetailsPanel.gameObject.SetActive(false);
+            uiOverlay.gameObject.SetActive(false);
+        });
     }
 
     private void CloseAllUIWithoutAnimation()
@@ -196,5 +228,17 @@ public class ScreenManager : MonoBehaviour
         buildingUI.gameObject.SetActive(false);
         settingsPopup.gameObject.SetActive(false);
         dailyRewardsUI.gameObject.SetActive(false);
+        coinPriceUI.gameObject.SetActive(false);
+        uiOverlay.gameObject.SetActive(false);
+    }
+    
+    private void IfSequenceActiveKillAndReset(ref Sequence seq)
+    {
+        if (seq != null && seq.IsActive())
+        {
+            seq.Kill();
+        }
+
+        seq = DOTween.Sequence();
     }
 }

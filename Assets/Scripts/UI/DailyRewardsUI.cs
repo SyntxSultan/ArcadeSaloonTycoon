@@ -8,7 +8,6 @@ public class DailyRewardsUI : MonoBehaviour
 {
     [Header("UI References")]
     [SerializeField] private Button[] dayButtons;                // button0 == Day 1
-    [SerializeField] private Button CloseDailyRewardsButton;
     [SerializeField] private RectTransform daysPopup;           // container with all day buttons
     [SerializeField] private RectTransform collectPopup;        // popup shown after collecting or info
     [SerializeField] private TMP_Text collectText;              // text inside collectPopup (no icon)
@@ -61,8 +60,6 @@ public class DailyRewardsUI : MonoBehaviour
 
     private void SetupButtons()
     {
-        if (CloseDailyRewardsButton != null)
-            CloseDailyRewardsButton.onClick.AddListener(() => ScreenManager.Instance.CloseDailyRewardsUI());
 
         if (CloseAllButton != null)
             CloseAllButton.onClick.AddListener(CloseCollectPopup);

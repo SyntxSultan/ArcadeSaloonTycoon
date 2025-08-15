@@ -53,6 +53,11 @@ public class CurrencyManager : MonoBehaviour, IJsonSaveable
         OnCoinChanged?.Invoke(coin);
     }
 
+    public void SetMoneyPerCoin(int amount)
+    {
+        moneyPerCoin = amount;
+    }
+
     /* Public Getters */
     public bool CanBuy(int cost)
     {
@@ -67,6 +72,11 @@ public class CurrencyManager : MonoBehaviour, IJsonSaveable
     public int GetMoneyForCoin(int coinAmount)
     {
         return coinAmount * moneyPerCoin;
+    }
+
+    public int GetMoneyPerCoin()
+    {
+        return moneyPerCoin;
     }
 
     //Caching For purchase 
