@@ -34,6 +34,7 @@ public class CurrencyManager : MonoBehaviour, IJsonSaveable
         money += amount;
         if (playSound && AudioManager.Instance) AudioManager.Instance.PlaySFX(SFX.GainMoney);
         OnMoneyChanged?.Invoke(money);
+        QuestManager.Instance.UpdateQuestProgress(QuestType.EarnMoney, amount);
     }
     public void RemoveMoney(int amount)
     {

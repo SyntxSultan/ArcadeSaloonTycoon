@@ -1,1 +1,1 @@
-{"placedObjectSaveObjectArrayArray":[{"placedObjectSaveObjectArray":[]}],"placedEdgeObjectSaveObjectArrayArray":[{"placedEdgeObjectSaveObjectArray":[]}],"looseSaveObjectArray":[]}
+{"placedObjectSaveObjectArrayArray":[{"placedObjectSaveObjectArray":[{"buildableGridObjectTypeSOName":"AM_PrincessGridObject","origin":{"x":9,"y":7},"dir":2}]}],"placedEdgeObjectSaveObjectArrayArray":[{"placedEdgeObjectSaveObjectArray":[]}],"looseSaveObjectArray":[]}

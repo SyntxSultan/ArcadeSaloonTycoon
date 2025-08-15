@@ -4,8 +4,6 @@ using UnityEngine.UI;
 
 public class CoinPriceUI : MonoBehaviour
 {
-    [SerializeField] private int minCoinPrice = 1;
-    [SerializeField] private int maxCoinPrice = 20;
     [SerializeField] private Slider slider;
     [SerializeField] private TextMeshProUGUI sliderValueText;
 

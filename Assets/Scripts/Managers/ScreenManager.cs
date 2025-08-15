@@ -39,6 +39,11 @@ public class ScreenManager : MonoBehaviour
     [SerializeField] private RectTransform coinPriceUI;
     private Sequence coinPriceSeq;
     
+    [Header("Quest")]
+    [SerializeField] private Button questButton;
+    [SerializeField] private RectTransform questPanel;
+    private Sequence questSeq;
+    
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -62,18 +67,33 @@ public class ScreenManager : MonoBehaviour
         settingsButton.onClick.AddListener(OpenSettingsPopup);
         dailyRewardsButton.onClick.AddListener(OpenDailyRewardsUI);
         coinPriceButton.onClick.AddListener(OpenCoinPriceUI);
+        questButton.onClick.AddListener(OpenQuestUI);
         
         uiOverlay.onClick.AddListener(CloseStoreUI);
         uiOverlay.onClick.AddListener(CloseItemDetailsPopup);
         uiOverlay.onClick.AddListener(CloseCoinPriceUI);
         uiOverlay.onClick.AddListener(CloseDailyRewardsUI);
         uiOverlay.onClick.AddListener(CloseSettingsPopup);
+        uiOverlay.onClick.AddListener(CloseQuestUI);
+    }
+
+    private void OpenQuestUI()
+    {
+        questPanel.gameObject.SetActive(true);
+        uiOverlay.gameObject.SetActive(true);
+    }
+    
+    private void CloseQuestUI()
+    {
+        questPanel.gameObject.SetActive(false);
+        uiOverlay.gameObject.SetActive(false);
     }
 
     private void OpenCoinPriceUI()
     {
         coinPriceUI.gameObject.SetActive(true);
         uiOverlay.gameObject.SetActive(true);
+        CloseSettingsPopup();
         
         IfSequenceActiveKillAndReset(ref coinPriceSeq);
         
@@ -229,6 +249,7 @@ public class ScreenManager : MonoBehaviour
         settingsPopup.gameObject.SetActive(false);
         dailyRewardsUI.gameObject.SetActive(false);
         coinPriceUI.gameObject.SetActive(false);
+        questPanel.gameObject.SetActive(false);
         uiOverlay.gameObject.SetActive(false);
     }
     
