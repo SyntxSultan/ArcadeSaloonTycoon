@@ -3648,6 +3648,17 @@ namespace SoulGames.EasyGridBuilderPro
             }
         }
 
+        public void DeleteGridSave()
+        {
+            if (gridAxis == GridAxis.XZ)
+            {
+                if (PlayerPrefs.HasKey(uniqueSaveName + "_XZ"))
+                {
+                    GridSaveSystem.Delete(uniqueSaveName + "_XZ");
+                }
+            }
+        }
+
         public BuildableFreeObjectTypeSO GetBuildableFreeObjectTypeSOFromName(string buildableFreeObjectTypeSOName) //This take a string and check if it exist in the name of object, if it is then return 'buildableGridObjectTypeSO' object.
         {
             foreach (BuildableFreeObjectTypeSO buildableFreeObjectTypeSO in buildableFreeObjectTypeSOList)

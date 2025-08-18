@@ -44,6 +44,16 @@ namespace SoulGames.EasyGridBuilderPro
             else
                 return null;
         }
+
+        public static void Delete(string fileName)
+        {
+            Init();
+            string fullPath = Path.Combine(saveFolder, $"{fileName}.{SAVE_EXTENSION}");
+            if (File.Exists(fullPath))
+                File.Delete(fullPath);
+            else
+                Debug.LogWarning($"File {fileName}.{SAVE_EXTENSION} does not exist.");
+        }
     }
 
     

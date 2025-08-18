@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using SaveSystem;
 using SoulGames.EasyGridBuilderPro;
 using UnityEngine;
@@ -43,12 +44,54 @@ public class SaveManager : MonoBehaviour
 
     public void LoadSave()
     {
-        saveSystem.Load(saveFile);
-        foreach(EasyGridBuilderPro easyGridBuilderPro in gridList)
+        if (saveSystem.SaveExists(saveFile))
         {
-            easyGridBuilderPro.TriggerGridLoad();
+            saveSystem.Load(saveFile);
+            StartCoroutine(LoadGridsAfterDelay());
+        }
+        else
+        {
+            StartCoroutine(DeleteGridSaveAfterInitialize());
         }
     }
+    
+    private System.Collections.IEnumerator LoadGridsAfterDelay()
+    {
+        yield return new WaitForEndOfFrame();
+    
+        while (gridList == null || gridList.Count == 0 || gridList.Any(grid => grid == null))
+        {
+            gridList = MultiGridManager.Instance.easyGridBuilderProList;
+            yield return new WaitForSeconds(0.1f);
+        }
+    
+        foreach(EasyGridBuilderPro easyGridBuilderPro in gridList)
+        {
+            if (easyGridBuilderPro != null)
+            {
+                easyGridBuilderPro.TriggerGridLoad();
+            }
+        }
+    }
+    private System.Collections.IEnumerator DeleteGridSaveAfterInitialize()
+    {
+        yield return new WaitForEndOfFrame();
+    
+        while (gridList == null || gridList.Count == 0 || gridList.Any(grid => grid == null))
+        {
+            gridList = MultiGridManager.Instance.easyGridBuilderProList;
+            yield return new WaitForSeconds(0.1f);
+        }
+    
+        foreach(EasyGridBuilderPro easyGridBuilderPro in gridList)
+        {
+            if (easyGridBuilderPro != null)
+            {
+                easyGridBuilderPro.DeleteGridSave();
+            }
+        }
+    }
+
 
     public void Save()
     {

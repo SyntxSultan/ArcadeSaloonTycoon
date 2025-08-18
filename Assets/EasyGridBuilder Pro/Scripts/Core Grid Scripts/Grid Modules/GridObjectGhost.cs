@@ -288,6 +288,7 @@ namespace SoulGames.EasyGridBuilderPro
 
         private void HandleVisualColor(BuildableGridObjectTypeSO buildableGridObjectTypeSO)
         {
+            Debug.Log(buildableGridObjectTypeSO.objectName);
             if (currentActiveSystem.NotPlaceableVisualCallerBuildableGridObject() == false)
             {
                 if (buildableGridObjectTypeSO.notPlaceableGhostMaterial != null) //If in 'buildableGridObjectTypeSO' a 'customeVisualMaterial' is provided
