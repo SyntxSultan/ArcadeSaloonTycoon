@@ -7,6 +7,8 @@ namespace SoulGames.EasyGridBuilderPro
     public class BuildableGridObjectTypeSOEditor : Editor
     {
         #region SerializedProperties
+
+        private SerializedProperty gridSize;
         SerializedProperty objectName;
         SerializedProperty objectDescription;
         SerializedProperty objectToolTipDescription;

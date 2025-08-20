@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dc42a22d6c7bb74f9c6fe5bf9978048, type: 3}
   m_Name: Qest1Reward
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: 807b52ccf1011164a949f9a10d9a4a65, type: 3}
-  amount: 15
-  rewardType: 0
+  rewardStructs:
+  - icon: {fileID: 21300000, guid: 807b52ccf1011164a949f9a10d9a4a65, type: 3}
+    rewardType: 0
+    amount: 15

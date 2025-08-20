@@ -14,11 +14,15 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float movementSpeed = 0.01f;
     [SerializeField] private float maxMoveDistance = 10f;
     
+    [SerializeField] private GameObject ripplePrefab;
+    [SerializeField] private Canvas canvas;
+    
     private const float zoomSpeedMouse = 5f;
     private Camera cam;
     private float initialTiltX;
     private float lastFOV;
     private Vector3 initialPosition;
+    private bool isRippleSpawned;
 
     private void Start()
     {
@@ -31,6 +35,23 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
+        var touch = Touchscreen.current.touches[0];
+        var phase = touch.phase.ReadValue();
+
+        Debug.Log(phase);
+        if (!isRippleSpawned && phase == UnityEngine.InputSystem.TouchPhase.Began) 
+        {
+            Vector2 pos = touch.position.ReadValue();
+            var ripple = Instantiate(ripplePrefab, canvas.transform);
+            ripple.GetComponent<RectTransform>().position = pos;
+            isRippleSpawned = true;
+        }
+        else if (phase == UnityEngine.InputSystem.TouchPhase.Ended || 
+                 phase == UnityEngine.InputSystem.TouchPhase.Canceled)
+        {
+            isRippleSpawned = false;
+        }
+        
         HandleTouchInput();
         
 #if UNITY_EDITOR

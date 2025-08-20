@@ -14,7 +14,6 @@ namespace SoulGames.EasyGridBuilderPro
             Up,
             Right,
         }
-
         [Space]
         [Tooltip("Name of the buildable object.")] [Rename("Unique Object Name")]
         public string objectName; //Name of the object
@@ -62,8 +61,8 @@ namespace SoulGames.EasyGridBuilderPro
         public bool enableBuildCondition; //enable use conditions
         [Tooltip("If 'Build Condition' is enabled, provide a Build Conditon SO asset. \n('Build Condition' must be enabled to use this.)")]
         public BuildConditionSO buildConditionSO; //use condition cost
-
-
+        
+        
 
         public static Dir GetNextDirRight(Dir dir) //This function handles how rotation works
         {

@@ -4,7 +4,8 @@ using UnityEngine;
 public enum ItemCategory
 {
     Machine,
-    Decoration
+    Decoration,
+    Automation
 }
 
 public class ItemSO : ScriptableObject
@@ -17,5 +18,6 @@ public class ItemSO : ScriptableObject
     public Vector2Int size;
     public ItemCategory category;
     public BuildableGridObjectTypeSO gridItemData;
+    public ItemUpgradeSO[] upgrades;
 }
 

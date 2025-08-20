@@ -4,7 +4,8 @@ public enum QuestType
 {
     ServeCustomers,
     ReachLevel,
-    EarnMoney
+    EarnMoney,
+    PlayForTime
 }
 
 [CreateAssetMenu(fileName = "New Quest", menuName = "Quest System/Quest")]
@@ -20,7 +21,7 @@ public class Quest : ScriptableObject
     public int currentProgress = 0;
     
     [Header("Rewards")]
-    public Reward[] rewards;
+    public Reward rewards;
     
     [Header("Quest Status")]
     public bool isActive = false;
@@ -37,12 +38,6 @@ public class Quest : ScriptableObject
         
         currentProgress += amount;
         currentProgress = Mathf.Clamp(currentProgress, 0, targetAmount);
-        
-        /*
-        if (CheckCompletion())
-        {
-            CompleteQuest();
-        }*/
     }
     
     public void CompleteQuest()

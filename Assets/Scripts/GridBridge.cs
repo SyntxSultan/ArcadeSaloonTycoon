@@ -40,6 +40,7 @@ public class GridBridge : MonoBehaviour
         CurrencyManager.Instance.WithdrawMoneyFromCachedItem();
         if (AudioManager.Instance) AudioManager.Instance.PlaySFX(SFX.LoseMoney);
         SaveManager.Instance.Save();
+        SaveManager.Instance.SaveGrid();
     }
     public void CancelBuilding()
     {

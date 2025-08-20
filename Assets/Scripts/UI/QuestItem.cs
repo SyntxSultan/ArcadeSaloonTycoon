@@ -36,8 +36,19 @@ public class QuestUIItem : MonoBehaviour
             Destroy(child.gameObject);
         }
         
+        if (currentQuest == null)
+        {
+            Debug.LogError("Current quest is null!");
+            return;
+        }
+
+        if (currentQuest.rewards == null)
+        {
+            Debug.LogError("Current quest rewards are null!");
+            return;       
+        }
         // Create reward items
-        foreach (var reward in currentQuest.rewards)
+        foreach (QuestRewardStruct reward in currentQuest.rewards.rewardStructs)
         {
             GameObject rewardItem = Instantiate(rewardItemPrefab, rewardsContainer);
             QuestRewardItem rewardUI = rewardItem.GetComponent<QuestRewardItem>();

@@ -18,7 +18,8 @@ public enum SFX
     PlaceItem = 4,
     CollectReward = 5,
     GainCoin = 6,
-    CompleteQuest = 7
+    CompleteQuest = 7,
+    CollectTrash = 8
 }
 
 [System.Serializable]

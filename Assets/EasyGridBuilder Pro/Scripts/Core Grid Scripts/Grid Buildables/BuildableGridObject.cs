@@ -143,7 +143,7 @@ namespace SoulGames.EasyGridBuilderPro
             placedObjectTransform.name = placedObjectTransform.name.Replace("(Clone)","").Trim();
             placedObjectTransform.rotation = Quaternion.Euler(0, buildableGridObjectTypeSO.GetRotationAngle(dir), 0);
             placedObjectTransform.localPosition = worldPosition;
-            if (buildableGridObjectTypeSO.setBuiltObjectLayer) SetLayerRecursive(placedObjectTransform.gameObject, LayerNumber(buildableGridObjectTypeSO.builtObjectLayer));
+            if (buildableGridObjectTypeSO.setBuiltObjectLayer) ASTLibrary.SetLayerRecursive(placedObjectTransform.gameObject, LayerNumber(buildableGridObjectTypeSO.builtObjectLayer));
 
             float cellSize = activeGridSystem.GetGridCellSize();
             Vector2Int offset = buildableGridObjectTypeSO.CalculatePlacedObjectSize(cellSize);
@@ -663,15 +663,6 @@ namespace SoulGames.EasyGridBuilderPro
             }
             if (layerNumber > 1) return layerNumber - 1;
             else return 0;
-        }
-
-        private static void SetLayerRecursive(GameObject targetGameObject, int layer)
-        {
-            targetGameObject.layer = layer;
-            foreach (Transform child in targetGameObject.transform)
-            {
-                SetLayerRecursive(child.gameObject, layer);
-            }
         }
 
         public SaveObject GetSaveObject()

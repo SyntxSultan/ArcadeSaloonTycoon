@@ -97,6 +97,10 @@ public class SaveManager : MonoBehaviour
     {
         saveSystem.Save(saveFile);
         timeSinceLastSave = 0f;
+    }
+
+    public void SaveGrid()
+    {
         foreach(EasyGridBuilderPro easyGridBuilderPro in gridList)
         {
             easyGridBuilderPro.TriggerGridSave();

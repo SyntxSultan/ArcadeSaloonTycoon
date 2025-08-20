@@ -77,9 +77,9 @@ public class QuestManager : MonoBehaviour
         }
     }
     
-    void GiveRewards(Reward[] rewards)
+    void GiveRewards(Reward rewards)
     {
-        foreach (var reward in rewards)
+        foreach (var reward in rewards.rewardStructs)
         {
             switch (reward.rewardType)
             {
