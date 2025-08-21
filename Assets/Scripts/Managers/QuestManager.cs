@@ -46,7 +46,6 @@ public class QuestManager : MonoBehaviour
     
     private void ActivateQuest(Quest quest)
     {
-        Debug.Log(quest.questHeader + " activated" );;
         quest.isActive = true;
         activeQuests.Add(quest);
         OnQuestActivated?.Invoke(quest);

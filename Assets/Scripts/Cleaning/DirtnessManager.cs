@@ -8,7 +8,6 @@ public class DirtnessManager : MonoBehaviour
     [SerializeField] private Transform spawnPlane; // Çöplerin spawn olacağı plane
     [SerializeField] private GameObject[] trashPrefabs; // Çöp prefab'ları
     [SerializeField] private int maxTrashCount = 20; // Maksimum çöp sayısı
-    [SerializeField] private float spawnRadius = 5f; // Spawn radius'u
     
     [Header("Spawn Zamanlaması")]
     [SerializeField] private float spawnInterval = 3f; // Kaç saniyede bir spawn
@@ -42,13 +41,18 @@ public class DirtnessManager : MonoBehaviour
     
     void Update()
     {
-        Ray ray = cam.ScreenPointToRay(Pointer.current.position.ReadValue());
-        if (Physics.Raycast(ray, out RaycastHit hit, 200))
+        if (!ASTLibrary.IsPointerOverUI() && Pointer.current != null && Pointer.current.press.wasPressedThisFrame)
         {
-            TrashItem trash = hit.collider.GetComponent<TrashItem>();
-            if (trash != null && trash.isClickable)
+            Vector2 pointerPosition = Pointer.current.position.ReadValue();
+            Ray ray = cam.ScreenPointToRay(pointerPosition);
+            
+            if (Physics.Raycast(ray, out RaycastHit hit, 200))
             {
-                trash.CleanTrash();
+                TrashItem trash = hit.collider.GetComponent<TrashItem>();
+                if (trash != null && trash.isClickable)
+                {
+                    trash.CleanTrash();
+                }
             }
         }
         

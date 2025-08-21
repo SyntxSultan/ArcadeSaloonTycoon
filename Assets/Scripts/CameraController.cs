@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
 [RequireComponent(typeof(Camera))]
 public class CameraController : MonoBehaviour
@@ -14,12 +15,19 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float movementSpeed = 0.01f;
     [SerializeField] private float maxMoveDistance = 10f;
     
+    [SerializeField] private float momentumDecayRate = 0.92f; // Momentum azalma oranı
+    [SerializeField] private float minMomentumThreshold = 0.001f; 
+    
     [SerializeField] private GameObject ripplePrefab;
     [SerializeField] private Canvas canvas;
     
     private const float zoomSpeedMouse = 5f;
     private Camera cam;
     private float initialTiltX;
+    
+    private Vector3 cameraVelocity = Vector3.zero;
+    private bool wasTouchingLastFrame;
+    
     private float lastFOV;
     private Vector3 initialPosition;
     private bool isRippleSpawned;
@@ -35,25 +43,11 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
-        var touch = Touchscreen.current.touches[0];
-        var phase = touch.phase.ReadValue();
+        HandleTouchEffect();
 
-        Debug.Log(phase);
-        if (!isRippleSpawned && phase == UnityEngine.InputSystem.TouchPhase.Began) 
-        {
-            Vector2 pos = touch.position.ReadValue();
-            var ripple = Instantiate(ripplePrefab, canvas.transform);
-            ripple.GetComponent<RectTransform>().position = pos;
-            isRippleSpawned = true;
-        }
-        else if (phase == UnityEngine.InputSystem.TouchPhase.Ended || 
-                 phase == UnityEngine.InputSystem.TouchPhase.Canceled)
-        {
-            isRippleSpawned = false;
-        }
-        
         HandleTouchInput();
-        
+        HandleMomentum();
+
 #if UNITY_EDITOR
         HandleMouseZoom();
 #endif
@@ -62,6 +56,27 @@ public class CameraController : MonoBehaviour
         {
             UpdateTiltBasedOnFOV();
             lastFOV = cam.fieldOfView;
+        }
+    }
+
+    private void HandleTouchEffect()
+    {
+        if (!Touchscreen.current.enabled) return;
+
+        var touch = Touchscreen.current.touches[0];
+        var phase = touch.phase.ReadValue();
+
+        if (!isRippleSpawned && phase == TouchPhase.Began) 
+        {
+            Vector2 pos = touch.position.ReadValue();
+            GameObject ripple = Instantiate(ripplePrefab, canvas.transform);
+            ripple.GetComponent<RectTransform>().position = pos;
+            isRippleSpawned = true;
+        }
+        else if (phase == TouchPhase.Ended || 
+                 phase == TouchPhase.Canceled)
+        {
+            isRippleSpawned = false;
         }
     }
 
@@ -75,9 +90,9 @@ public class CameraController : MonoBehaviour
             var touch = Touchscreen.current.touches[i];
             var phase = touch.phase.ReadValue();
             if (phase is 
-                UnityEngine.InputSystem.TouchPhase.Began or 
-                UnityEngine.InputSystem.TouchPhase.Moved or 
-                UnityEngine.InputSystem.TouchPhase.Stationary)
+                TouchPhase.Began or 
+                TouchPhase.Moved or 
+                TouchPhase.Stationary)
             {
                 touchCount++;
             }
@@ -90,18 +105,26 @@ public class CameraController : MonoBehaviour
         else if (touchCount >= 2)
         {
             HandleTouchZoom();
+            HandleSingleTouchMovement();
+        }
+        else if (wasTouchingLastFrame)
+        {
+            wasTouchingLastFrame = false;
         }
     }
 
     private void HandleSingleTouchMovement()
     {
         var touch = Touchscreen.current.touches[0];
-        
-        if (touch.isInProgress)
+        Debug.Log(touch.phase.ReadValue());
+        if (touch.phase.ReadValue() == TouchPhase.Moved)
         {
+            wasTouchingLastFrame = true;
             Vector2 touchDelta = touch.delta.ReadValue();
             
             Vector3 movement = new Vector3(-touchDelta.x * movementSpeed, 0, -touchDelta.y * movementSpeed);
+            
+            cameraVelocity = movement / Time.deltaTime;
             
             Vector3 newPosition = cam.gameObject.transform.position + movement;
             
@@ -110,6 +133,37 @@ public class CameraController : MonoBehaviour
             newPosition = initialPosition + offset;
             
             cam.gameObject.transform.position = newPosition;
+        }
+        else if (wasTouchingLastFrame)
+        {
+            wasTouchingLastFrame = false;
+        }
+    }
+    
+    private void HandleMomentum()
+    {
+        if (!wasTouchingLastFrame && cameraVelocity.magnitude > minMomentumThreshold)
+        {
+            // Momentum hareketi uygula
+            Vector3 movement = cameraVelocity * Time.deltaTime;
+            
+            Vector3 newPosition = cam.gameObject.transform.position + movement;
+            
+            Vector3 offset = newPosition - initialPosition;
+            offset = Vector3.ClampMagnitude(offset, maxMoveDistance);
+            newPosition = initialPosition + offset;
+            
+            cam.gameObject.transform.position = newPosition;
+            
+            // Velocity'yi yavaş yavaş azalt
+            cameraVelocity *= momentumDecayRate;
+            Debug.Log($"Momentum: {cameraVelocity.magnitude}");
+
+        }
+        else if (cameraVelocity.magnitude <= minMomentumThreshold)
+        {
+            // Çok düşük velocity'de sıfırla
+            cameraVelocity = Vector3.zero;
         }
     }
 

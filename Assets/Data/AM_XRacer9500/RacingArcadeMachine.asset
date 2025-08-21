@@ -20,8 +20,9 @@ MonoBehaviour:
   size: {x: 1, y: 2}
   category: 0
   gridItemData: {fileID: 11400000, guid: 8e5ac05dc5c8f6040bb6f0c480915e9e, type: 2}
+  upgrades: []
   maxCoinCapacity: 50
   coinPerUse: 5
   durability: 65
-  arcadeCategory: 0
-  playTime: 25
+  arcadeCategory: 2
+  playTime: 30

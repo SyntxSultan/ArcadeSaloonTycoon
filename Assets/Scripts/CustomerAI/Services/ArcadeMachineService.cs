@@ -15,12 +15,19 @@ public class ArcadeMachineService : MonoBehaviour, IArcadeService
 
     public Transform FindAvailableArcade()
     {
+        List<Transform> availableArcades = new List<Transform>();
+        
         foreach (Transform arcade in arcadeMachines)
         {
             if (!reservedArcades.Contains(arcade))
-                return arcade;
+                availableArcades.Add(arcade);
         }
-        return null;
+        
+        if (availableArcades.Count == 0)
+            return null;
+            
+        int randomIndex = UnityEngine.Random.Range(0, availableArcades.Count);
+        return availableArcades[randomIndex];
     }
     
     public void ReserveArcade(Transform arcade)

@@ -25,25 +25,37 @@ public class ItemDetailsPopup : MonoBehaviour
     public void SetItemDetails(ItemSO item)
     {
         itemSO = item;
-        MachineItemSO machineSO = item as MachineItemSO;
-        if (machineSO == null)
-        {
-            Debug.LogError("Gelen item bir makine değil");
-            return;
-        }
         
+        switch (item.category)
+        {
+            case ItemCategory.Machine:
+                MachineItemSO machineSO = item as MachineItemSO;
+                maxCoinCapacityText.text = "Max Coin Capacity: " +machineSO.maxCoinCapacity.ToString();
+                coinPerUseText.text = "Coin Per Use: " +machineSO.coinPerUse.ToString();
+                durabilityText.text = "Durability: " +machineSO.durability.ToString();
+                categoryText.text = "Category: " +machineSO.arcadeCategory.ToString();
+                playTimeText.text = "Play Time: " + machineSO.playTime.ToString() + "sec";
+                break;
+            case ItemCategory.Decoration:
+                maxCoinCapacityText.text = "";
+                coinPerUseText.text = "";
+                durabilityText.text = "";
+                categoryText.text = "";
+                playTimeText.text = "";
+                Debug.Log("Decoration case executed");
+
+                break;
+            case ItemCategory.Automation:
+                break;
+        }
+        Debug.Log($"Setting item name: {item.itemName}");
+
         SpawnStars();
         itemNameText.text = item.itemName;
-        maxCoinCapacityText.text = "Max Coin Capacity: " +machineSO.maxCoinCapacity.ToString();
-        coinPerUseText.text = "Coin Per Use: " +machineSO.coinPerUse.ToString();
-        durabilityText.text = "Durability: " +machineSO.durability.ToString();
-        categoryText.text = "Category: " +machineSO.arcadeCategory.ToString();
-        playTimeText.text = "Play Time: " + machineSO.playTime.ToString() + "sec";
-        sizeText.text = $"Size: {machineSO.size.x}x{machineSO.size.y}y";
-        CheckMoneyAndSetUI(machineSO);
-        
+        sizeText.text = $"Size: {item.size.x}x{item.size.y}y";
+        CheckMoneyAndSetUI(item);
         buyButton.onClick.AddListener(OnBuyButtonClicked);
-        SpawnPreviewPrefab(machineSO.prefab);
+        SpawnPreviewPrefab(item.prefab);
     }
 
     private void CheckMoneyAndSetUI(ItemSO item)

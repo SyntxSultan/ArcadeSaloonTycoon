@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d23f0394c174e17a8d0f4bc2b244f93, type: 3}
+  m_Name: Sebil
+  m_EditorClassIdentifier: Assembly-CSharp::DecorationItem
+  itemName: Sebil
+  icon: {fileID: 21300000, guid: fc961faa163a6744c9f80f6fa5e368f2, type: 3}
+  cost: 230
+  starAmount: 2
+  prefab: {fileID: 2938489525429866079, guid: 221cc1a956b0cfd41a01a2c466e4dc53, type: 3}
+  size: {x: 1, y: 1}
+  category: 1
+  gridItemData: {fileID: 11400000, guid: fee33278cb1449a408e55b89c010b64f, type: 2}

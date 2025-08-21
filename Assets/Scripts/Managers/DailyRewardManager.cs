@@ -126,7 +126,6 @@ public class DailyRewardManager : MonoBehaviour
             string body = "Hadi gel ve ödülünü al!";
             
             MobileNotificationHelper.ScheduleNotification(title, body, fireTime);
-            Debug.Log($"Bir sonraki günlük ödül bildirimi zamanlandı: {fireTime}");
         }
     }
     

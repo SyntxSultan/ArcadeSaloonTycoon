@@ -44,6 +44,14 @@ public class ScreenManager : MonoBehaviour
     [SerializeField] private RectTransform questPanel;
     private Sequence questSeq;
     
+    [Header("Upgrade UI")]
+    [SerializeField] private RectTransform upgradePanel;
+    [SerializeField] private Button closeUpgradePanelButton;
+    
+    [Header("Reviews UI")]
+    [SerializeField] private RectTransform reviewsPanel;
+    [SerializeField] private Button closeReviewsPanelButton;
+    
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -240,6 +248,29 @@ public class ScreenManager : MonoBehaviour
             uiOverlay.gameObject.SetActive(false);
         });
     }
+    
+    public void OpenUpgradePanel()
+    {
+        upgradePanel.gameObject.SetActive(true);
+        
+        Vector2 startPos = upgradePanel.anchoredPosition;
+        upgradePanel.anchoredPosition = new Vector2(startPos.x, -316f);
+
+        Sequence seq = DOTween.Sequence();
+        seq.Append(
+            upgradePanel.DOAnchorPosY(303f, 0.5f).SetEase(Ease.OutBack)
+        );
+    }
+    
+    public void CloseUpgradePanel()
+    {
+        DOTween.Sequence().Append(
+            upgradePanel.DOAnchorPosY(-316f, 0.5f).SetEase(Ease.InBack).OnComplete(() =>
+            {
+                upgradePanel.gameObject.SetActive(false);
+            })
+        );
+    }
 
     private void CloseAllUIWithoutAnimation()
     {
@@ -251,6 +282,7 @@ public class ScreenManager : MonoBehaviour
         coinPriceUI.gameObject.SetActive(false);
         questPanel.gameObject.SetActive(false);
         uiOverlay.gameObject.SetActive(false);
+        upgradePanel.gameObject.SetActive(false);
     }
     
     private void IfSequenceActiveKillAndReset(ref Sequence seq)

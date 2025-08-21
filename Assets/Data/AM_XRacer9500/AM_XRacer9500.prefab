@@ -153,7 +153,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.13857837, y: 0.13857837, z: 0.13857837}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8139387537823318086}
@@ -193,9 +193,9 @@ MonoBehaviour:
   rotateObjectForXY: 0
   rotateObjectForXZ: 0
   rotateForXY: 0
-  objectScale: {x: 0, y: 0, z: 0}
-  objectCenter: {x: 0, y: 0, z: 0}
-  objectCustomPivot: {x: 0, y: 0, z: 0}
+  objectScale: {x: 0.01920396, y: 0.016070023, z: 0.0069567184}
+  objectCenter: {x: -0.056325227, y: 0.0940034, z: 0}
+  objectCustomPivot: {x: -0.056325227, y: 0.08596839, z: 0}
 --- !u!1 &3715037593711289355
 GameObject:
   m_ObjectHideFlags: 0
