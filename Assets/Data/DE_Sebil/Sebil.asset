@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Sebil
   m_EditorClassIdentifier: Assembly-CSharp::DecorationItem
   itemName: Sebil
-  icon: {fileID: 21300000, guid: fc961faa163a6744c9f80f6fa5e368f2, type: 3}
+  icon: {fileID: 21300000, guid: 074198b5afcf71f41ac74e0c6b7162ca, type: 3}
   cost: 230
   starAmount: 2
   prefab: {fileID: 2938489525429866079, guid: 221cc1a956b0cfd41a01a2c466e4dc53, type: 3}

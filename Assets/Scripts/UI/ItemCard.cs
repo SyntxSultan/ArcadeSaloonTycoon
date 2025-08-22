@@ -12,7 +12,7 @@ public class ItemCard : MonoBehaviour
     [SerializeField] private GameObject emptyStarPrefab;
 
     private Button itemButton;
-    private ItemSO itemSO;
+    private ItemSO cachedItemSO;
     
     private void Start()
     {
@@ -22,9 +22,9 @@ public class ItemCard : MonoBehaviour
 
     public void InitializeItemCard(ItemSO itemSO)
     {
-        this.itemSO = itemSO;
-        icon.sprite = itemSO.icon;
-        nameText.text = itemSO.itemName;
+        cachedItemSO = itemSO;
+        icon.sprite = itemSO.gridItemData.objectIcon;
+        nameText.text = itemSO.gridItemData.objectName;
         costText.text = $"${itemSO.cost.ToString()}";
         foreach (Transform child in starContainer.transform)
         {
@@ -42,6 +42,6 @@ public class ItemCard : MonoBehaviour
 
     private void OnClickedItem()
     {
-        ScreenManager.Instance.OpenItemDetailsPopup(itemSO);
+        ScreenManager.Instance.OpenItemDetailsPopup(cachedItemSO);
     }
 }

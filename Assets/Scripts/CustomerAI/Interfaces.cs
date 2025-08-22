@@ -25,10 +25,9 @@ public interface IPurchaseService
 
 public interface IArcadeService
 {
-    Transform FindAvailableArcade();
+    ArcadeMachine FindAvailableArcade();
     void ReserveArcade(Transform arcade);
     void ReleaseArcade(Transform arcade);
-    bool IsArcadeAvailable(Transform arcade);
 }
 
 public interface ICustomerState
@@ -56,7 +55,7 @@ public interface ICustomerContext
     
     Transform DeskTransform { get; }
     Transform ExitTransform { get; }
-    Transform CurrentArcade { get; set; }
+    ArcadeMachine CurrentArcade { get; set; }
     int CoinsOwned { get; set; }
     
     void ChangeState(ICustomerState newState);

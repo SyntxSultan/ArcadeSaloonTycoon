@@ -76,6 +76,7 @@ public class ScreenManager : MonoBehaviour
         dailyRewardsButton.onClick.AddListener(OpenDailyRewardsUI);
         coinPriceButton.onClick.AddListener(OpenCoinPriceUI);
         questButton.onClick.AddListener(OpenQuestUI);
+        closeUpgradePanelButton.onClick.AddListener(CloseUpgradePanel);
         
         uiOverlay.onClick.AddListener(CloseStoreUI);
         uiOverlay.onClick.AddListener(CloseItemDetailsPopup);
@@ -268,6 +269,7 @@ public class ScreenManager : MonoBehaviour
             upgradePanel.DOAnchorPosY(-316f, 0.5f).SetEase(Ease.InBack).OnComplete(() =>
             {
                 upgradePanel.gameObject.SetActive(false);
+                UpgradeManager.Instance.Reset();
             })
         );
     }

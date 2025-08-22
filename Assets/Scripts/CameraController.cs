@@ -1,4 +1,5 @@
 using UnityEngine;
+using Unity.Cinemachine;
 using UnityEngine.InputSystem;
 using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
@@ -15,14 +16,14 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float movementSpeed = 0.01f;
     [SerializeField] private float maxMoveDistance = 10f;
     
-    [SerializeField] private float momentumDecayRate = 0.92f; // Momentum azalma oranı
+    [SerializeField] private float momentumDecayRate = 0.92f;
     [SerializeField] private float minMomentumThreshold = 0.001f; 
     
     [SerializeField] private GameObject ripplePrefab;
     [SerializeField] private Canvas canvas;
     
     private const float zoomSpeedMouse = 5f;
-    private Camera cam;
+    private CinemachineCamera virtualCamera;
     private float initialTiltX;
     
     private Vector3 cameraVelocity = Vector3.zero;
@@ -34,17 +35,24 @@ public class CameraController : MonoBehaviour
 
     private void Start()
     {
-        cam = GetComponent<Camera>();
-        initialTiltX = cam.gameObject.transform.eulerAngles.x;
-        initialPosition = cam.gameObject.transform.position;
-        lastFOV = cam.fieldOfView;
+        virtualCamera = GetComponent<CinemachineCamera>();
+        if (virtualCamera == null)
+        {
+            Debug.LogError("CinemachineVirtualCamera component not found!");
+            return;
+        }
+
+        initialTiltX = transform.eulerAngles.x;
+        initialPosition = transform.position;
+        lastFOV = virtualCamera.Lens.FieldOfView;
         UpdateTiltBasedOnFOV();
     }
 
     private void Update()
     {
-        HandleTouchEffect();
+        if (virtualCamera == null) return;
 
+        HandleTouchEffect();
         HandleTouchInput();
         HandleMomentum();
 
@@ -52,10 +60,10 @@ public class CameraController : MonoBehaviour
         HandleMouseZoom();
 #endif
         
-        if (Mathf.Abs(cam.fieldOfView - lastFOV) > 0.001f)
+        if (Mathf.Abs(virtualCamera.Lens.FieldOfView - lastFOV) > 0.001f)
         {
             UpdateTiltBasedOnFOV();
-            lastFOV = cam.fieldOfView;
+            lastFOV = virtualCamera.Lens.FieldOfView;
         }
     }
 
@@ -98,6 +106,7 @@ public class CameraController : MonoBehaviour
             }
         }
         if (ASTLibrary.IsPointerOverUI()) return;
+        
         if (touchCount == 1)
         {
             HandleSingleTouchMovement();
@@ -116,7 +125,7 @@ public class CameraController : MonoBehaviour
     private void HandleSingleTouchMovement()
     {
         var touch = Touchscreen.current.touches[0];
-        Debug.Log(touch.phase.ReadValue());
+        
         if (touch.phase.ReadValue() == TouchPhase.Moved)
         {
             wasTouchingLastFrame = true;
@@ -126,13 +135,13 @@ public class CameraController : MonoBehaviour
             
             cameraVelocity = movement / Time.deltaTime;
             
-            Vector3 newPosition = cam.gameObject.transform.position + movement;
+            Vector3 newPosition = transform.position + movement;
             
             Vector3 offset = newPosition - initialPosition;
             offset = Vector3.ClampMagnitude(offset, maxMoveDistance);
             newPosition = initialPosition + offset;
             
-            cam.gameObject.transform.position = newPosition;
+            transform.position = newPosition;
         }
         else if (wasTouchingLastFrame)
         {
@@ -144,25 +153,20 @@ public class CameraController : MonoBehaviour
     {
         if (!wasTouchingLastFrame && cameraVelocity.magnitude > minMomentumThreshold)
         {
-            // Momentum hareketi uygula
             Vector3 movement = cameraVelocity * Time.deltaTime;
             
-            Vector3 newPosition = cam.gameObject.transform.position + movement;
+            Vector3 newPosition = transform.position + movement;
             
             Vector3 offset = newPosition - initialPosition;
             offset = Vector3.ClampMagnitude(offset, maxMoveDistance);
             newPosition = initialPosition + offset;
             
-            cam.gameObject.transform.position = newPosition;
+            transform.position = newPosition;
             
-            // Velocity'yi yavaş yavaş azalt
             cameraVelocity *= momentumDecayRate;
-            Debug.Log($"Momentum: {cameraVelocity.magnitude}");
-
         }
         else if (cameraVelocity.magnitude <= minMomentumThreshold)
         {
-            // Çok düşük velocity'de sıfırla
             cameraVelocity = Vector3.zero;
         }
     }
@@ -188,7 +192,9 @@ public class CameraController : MonoBehaviour
 
             float delta = prevDistance - currentDistance;
 
-            cam.fieldOfView = Mathf.Clamp(cam.fieldOfView + delta * zoomSpeedTouch, minFOV, maxFOV);
+            var lens = virtualCamera.Lens;
+            lens.FieldOfView = Mathf.Clamp(lens.FieldOfView + delta * zoomSpeedTouch, minFOV, maxFOV);
+            virtualCamera.Lens = lens;
         }
     }
 
@@ -199,20 +205,22 @@ public class CameraController : MonoBehaviour
             
         if (Mathf.Abs(scrollValue.y) > 0.01f)
         {
-            cam.fieldOfView -= scrollValue.y * zoomSpeedMouse;
-            cam.fieldOfView = Mathf.Clamp(cam.fieldOfView, minFOV, maxFOV);
+            var lens = virtualCamera.Lens;
+            lens.FieldOfView -= scrollValue.y * zoomSpeedMouse;
+            lens.FieldOfView = Mathf.Clamp(lens.FieldOfView, minFOV, maxFOV);
+            virtualCamera.Lens = lens;
         }
     }
     #endif
     
     private void UpdateTiltBasedOnFOV()
     {
-        float zoomPercent = (cam.fieldOfView - minFOV) / (maxFOV - minFOV);
+        float zoomPercent = (virtualCamera.Lens.FieldOfView - minFOV) / (maxFOV - minFOV);
 
         float tiltX = Mathf.Lerp(targetTiltX, initialTiltX, zoomPercent);
 
-        Vector3 euler = cam.gameObject.transform.eulerAngles;
+        Vector3 euler = transform.eulerAngles;
         euler.x = tiltX;
-        cam.gameObject.transform.eulerAngles = euler;
+        transform.eulerAngles = euler;
     }
 }

@@ -5,7 +5,8 @@ using UnityEngine;
 public class ArcadeMachineService : MonoBehaviour, IArcadeService
 {
     public static ArcadeMachineService Instance { get; private set; }
-    public List<Transform> arcadeMachines;
+    
+    public List<ArcadeMachine> arcadeMachines;
     private HashSet<Transform> reservedArcades = new HashSet<Transform>();
 
     private void Start()
@@ -13,13 +14,13 @@ public class ArcadeMachineService : MonoBehaviour, IArcadeService
         Instance = this;
     }
 
-    public Transform FindAvailableArcade()
+    public ArcadeMachine FindAvailableArcade()
     {
-        List<Transform> availableArcades = new List<Transform>();
+        List<ArcadeMachine> availableArcades = new List<ArcadeMachine>();
         
-        foreach (Transform arcade in arcadeMachines)
+        foreach (var arcade in arcadeMachines)
         {
-            if (!reservedArcades.Contains(arcade))
+            if (!reservedArcades.Contains(arcade.CustomerPoint))
                 availableArcades.Add(arcade);
         }
         
@@ -38,11 +39,6 @@ public class ArcadeMachineService : MonoBehaviour, IArcadeService
     public void ReleaseArcade(Transform arcade)
     {
         reservedArcades.Remove(arcade);
-    }
-    
-    public bool IsArcadeAvailable(Transform arcade)
-    {
-        return !reservedArcades.Contains(arcade);
     }
 
     public int GetAvailableArcadeCount()

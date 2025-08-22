@@ -53,7 +53,6 @@ public class GameManager : MonoBehaviour, IJsonSaveable
         
         if (currentMinute > lastLoggedMinute && currentMinute >= 1)
         {
-            Debug.Log($"Oyun Süresi: {currentMinute} dakika ({currentPlaytime:F1} saniye)");
             QuestManager.Instance.UpdateQuestProgress(QuestType.PlayForTime, 1);
             lastLoggedMinute = currentMinute;
         }

@@ -30,11 +30,11 @@ public class ItemDetailsPopup : MonoBehaviour
         {
             case ItemCategory.Machine:
                 MachineItemSO machineSO = item as MachineItemSO;
-                maxCoinCapacityText.text = "Max Coin Capacity: " +machineSO.maxCoinCapacity.ToString();
-                coinPerUseText.text = "Coin Per Use: " +machineSO.coinPerUse.ToString();
-                durabilityText.text = "Durability: " +machineSO.durability.ToString();
-                categoryText.text = "Category: " +machineSO.arcadeCategory.ToString();
-                playTimeText.text = "Play Time: " + machineSO.playTime.ToString() + "sec";
+                maxCoinCapacityText.text = "Max Coin Capacity: " + machineSO.maxCoinCapacity.ToString();
+                coinPerUseText.text = "Coin Per Use: "           + machineSO.coinPerUse.ToString();
+                durabilityText.text = "Durability: "             + machineSO.durability.ToString();
+                categoryText.text = "Category: "                 + machineSO.arcadeCategory.ToString();
+                playTimeText.text = "Play Time: "                + machineSO.playTime.ToString() + "sec";
                 break;
             case ItemCategory.Decoration:
                 maxCoinCapacityText.text = "";
@@ -42,20 +42,17 @@ public class ItemDetailsPopup : MonoBehaviour
                 durabilityText.text = "";
                 categoryText.text = "";
                 playTimeText.text = "";
-                Debug.Log("Decoration case executed");
-
                 break;
             case ItemCategory.Automation:
                 break;
         }
-        Debug.Log($"Setting item name: {item.itemName}");
 
         SpawnStars();
-        itemNameText.text = item.itemName;
+        itemNameText.text = item.gridItemData.objectName;
         sizeText.text = $"Size: {item.size.x}x{item.size.y}y";
         CheckMoneyAndSetUI(item);
         buyButton.onClick.AddListener(OnBuyButtonClicked);
-        SpawnPreviewPrefab(item.prefab);
+        SpawnPreviewPrefab(item.gridItemData.ghostPrefab.gameObject);
     }
 
     private void CheckMoneyAndSetUI(ItemSO item)

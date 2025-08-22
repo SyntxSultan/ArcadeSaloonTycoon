@@ -19,7 +19,7 @@ public class CustomerAI : MonoBehaviour, ICustomerContext
     public Transform DeskTransform { get; private set; }
     public Transform ExitTransform { get; private set; }
 
-    public Transform CurrentArcade { get; set; }
+    public ArcadeMachine CurrentArcade { get; set; }
     public int CoinsOwned { get; set; }
     
     private ICustomerState currentState;
@@ -87,7 +87,7 @@ public class CustomerAI : MonoBehaviour, ICustomerContext
         // Clean up any reserved arcade
         if (CurrentArcade != null)
         {
-            ArcadeService?.ReleaseArcade(CurrentArcade);
+            ArcadeService?.ReleaseArcade(CurrentArcade.CustomerPoint);
         }
     }
 }

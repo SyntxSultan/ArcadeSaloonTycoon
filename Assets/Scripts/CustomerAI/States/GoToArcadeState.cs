@@ -4,7 +4,7 @@ public class GoToArcadeState : ICustomerState
     public void Enter(ICustomerContext context)
     {
         context.AnimationService.PlayWalkAnimation();
-        context.MovementService.MoveToTarget(context.CurrentArcade, () => {
+        context.MovementService.MoveToTarget(context.CurrentArcade.CustomerPoint, () => {
             context.ChangeState(new PlayArcadeState());
         });
     }

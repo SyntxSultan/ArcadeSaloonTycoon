@@ -138,7 +138,12 @@ namespace SoulGames.EasyGridBuilderPro
             EasyGridBuilderPro activeGridSystem = system;
             Transform placedObjectTransform = Instantiate(buildableGridObjectTypeSO.objectPrefab[Random.Range(0, buildableGridObjectTypeSO.objectPrefab.Length)], Vector3.zero, Quaternion.identity);
             
-            ArcadeMachineService.Instance.arcadeMachines.Add(placedObjectTransform);
+            var am = placedObjectTransform.GetComponent<ArcadeMachine>();
+            if (am)
+            {
+                Debug.Log("ArcadeMachine added");
+                ArcadeMachineService.Instance.arcadeMachines.Add(am);
+            }
             
             placedObjectTransform.name = placedObjectTransform.name.Replace("(Clone)","").Trim();
             placedObjectTransform.rotation = Quaternion.Euler(0, buildableGridObjectTypeSO.GetRotationAngle(dir), 0);

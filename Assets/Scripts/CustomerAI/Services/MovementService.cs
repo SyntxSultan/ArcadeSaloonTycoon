@@ -79,6 +79,8 @@ public class MovementService : MonoBehaviour, IMovementService
         // Check if destination reached
         if (currentTarget != null && !navMeshAgent.pathPending && navMeshAgent.remainingDistance <= stoppingDistance)
         {
+            Quaternion targetRotation = Quaternion.LookRotation(currentTarget.forward);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
             var callback = onReachedCallback;
             currentTarget = null;
             onReachedCallback = null;
@@ -96,46 +98,3 @@ public class MovementService : MonoBehaviour, IMovementService
         }
     }
 }
-
-/*
-public class MovementService : MonoBehaviour, IMovementService
-{
-    [SerializeField] private float moveSpeed = 3f;
-    [SerializeField] private float stoppingDistance = 0.5f;
-    
-    private Transform currentTarget;
-    private System.Action onReachedCallback;
-    
-    public bool IsMoving { get; private set; }
-    
-    public void MoveToTarget(Transform target, System.Action onReached)
-    {
-        currentTarget = target;
-        onReachedCallback = onReached;
-        IsMoving = true;
-    }
-    
-    public void Stop()
-    {
-        IsMoving = false;
-        currentTarget = null;
-        onReachedCallback = null;
-    }
-    
-    private void Update()
-    {
-        if (IsMoving && currentTarget != null)
-        {
-            Vector3 direction = (currentTarget.position - transform.position).normalized;
-            transform.position += direction * moveSpeed * Time.deltaTime;
-            
-            if (Vector3.Distance(transform.position, currentTarget.position) <= stoppingDistance)
-            {
-                IsMoving = false;
-                onReachedCallback?.Invoke();
-                onReachedCallback = null;
-            }
-        }
-    }
-}
-*/

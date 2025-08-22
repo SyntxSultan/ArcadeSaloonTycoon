@@ -22,10 +22,12 @@ namespace SoulGames.EasyGridBuilderPro
         private EasyGridBuilderPro currentActiveSystem;
         private bool useSelectionModeActivationKey;
         private bool isBuildableSelectionActive;
+        private Camera cam;
 
         private void Start()
         {
             if (MultiGridManager.Instance.activeGridSystem == null) return;
+            cam = Camera.main;
             currentActiveSystem = MultiGridManager.Instance.activeGridSystem;
             mouseColliderLayerMask = MultiGridManager.Instance.mouseColliderLayerMask;
         }
@@ -87,7 +89,7 @@ namespace SoulGames.EasyGridBuilderPro
                 isBuildableSelectionActive = true;
             }
 
-            if (isBuildableSelectionActive && !IsPointerOverUI())
+            if (isBuildableSelectionActive && !ASTLibrary.IsPointerOverUI())
             {
                 if (currentActiveSystem.GetGridMode() == GridMode.None || currentActiveSystem.GetGridMode() == GridMode.Selected)
                 {
@@ -228,38 +230,6 @@ namespace SoulGames.EasyGridBuilderPro
         // }
         
         #region Extras
-        /*
-        public bool IsPointerOverUI() 
-        {
-            PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
-            eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-            List<RaycastResult> results = new List<RaycastResult>();
-            EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
-            foreach (RaycastResult r in results)
-            {
-                if (r.gameObject.GetComponent<RectTransform>() != null) return true;
-            }
-            return false;
-        }
-        */
-        private bool IsPointerOverUI()
-        {
-            // Get the current pointer position from the new Input System
-            Vector2 pointerPosition = Pointer.current.position.ReadValue();
-    
-            PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
-            eventDataCurrentPosition.position = pointerPosition;
-    
-            List<RaycastResult> results = new List<RaycastResult>();
-            EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
-    
-            foreach (RaycastResult r in results)
-            {
-                if (r.gameObject.GetComponent<RectTransform>() != null) 
-                    return true;
-            }
-            return false;
-        }
 
         protected Vector3 GetMouseWorldPosition()
         {
@@ -269,7 +239,7 @@ namespace SoulGames.EasyGridBuilderPro
                 return new Vector3(-99999, -99999, -99999);
             }
 
-            Ray ray = Camera.main.ScreenPointToRay(Pointer.current.position.ReadValue());
+            Ray ray = cam.ScreenPointToRay(Pointer.current.position.ReadValue());
             
             if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f, mouseColliderLayerMask))
             {
@@ -289,7 +259,7 @@ namespace SoulGames.EasyGridBuilderPro
                 return new Vector3(-99999, -99999, -99999);
             }
 
-            Ray ray = Camera.main.ScreenPointToRay(Pointer.current.position.ReadValue());
+            Ray ray = cam.ScreenPointToRay(Pointer.current.position.ReadValue());
             
             if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f))
             {

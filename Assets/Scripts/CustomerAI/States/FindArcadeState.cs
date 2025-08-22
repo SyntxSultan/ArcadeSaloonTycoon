@@ -4,12 +4,12 @@ public class FindArcadeState : ICustomerState
 {
     public void Enter(ICustomerContext context)
     {
-        Transform availableArcade = context.ArcadeService.FindAvailableArcade();
+        ArcadeMachine availableArcade = context.ArcadeService.FindAvailableArcade();
         
         if (availableArcade != null)
         {
             context.CurrentArcade = availableArcade;
-            context.ArcadeService.ReserveArcade(availableArcade);
+            context.ArcadeService.ReserveArcade(availableArcade.CustomerPoint);
             context.ChangeState(new GoToArcadeState());
         }
         else
