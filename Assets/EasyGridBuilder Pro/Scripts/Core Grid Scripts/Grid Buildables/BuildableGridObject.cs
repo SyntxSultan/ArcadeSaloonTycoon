@@ -141,7 +141,6 @@ namespace SoulGames.EasyGridBuilderPro
             var am = placedObjectTransform.GetComponent<ArcadeMachine>();
             if (am)
             {
-                Debug.Log("ArcadeMachine added");
                 ArcadeMachineService.Instance.arcadeMachines.Add(am);
             }
             

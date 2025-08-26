@@ -12,17 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b5b21f1869c4dc43a52857b3276703f, type: 3}
   m_Name: RacingArcadeMachine
   m_EditorClassIdentifier: 
-  itemName: XRacer 9500
-  icon: {fileID: 21300000, guid: 5e462b0a71b44db4b9d9213f8b1c00e7, type: 3}
   cost: 450
   starAmount: 5
-  prefab: {fileID: 2399159389815391040, guid: 2c2e3272b91d8a7418625e44e4a76880, type: 3}
   size: {x: 1, y: 2}
   category: 0
   gridItemData: {fileID: 11400000, guid: 8e5ac05dc5c8f6040bb6f0c480915e9e, type: 2}
-  upgrades: []
   maxCoinCapacity: 50
   coinPerUse: 5
   durability: 65
   arcadeCategory: 2
-  playTime: 30
+  playTime: 10
+  offlineIncome: 0
+  upgrades:
+  - {fileID: 11400000, guid: a4efefb5822c4ec43ba34da4d682ebf4, type: 2}

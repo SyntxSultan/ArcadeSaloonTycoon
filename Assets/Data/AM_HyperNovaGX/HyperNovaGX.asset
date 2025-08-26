@@ -12,17 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b5b21f1869c4dc43a52857b3276703f, type: 3}
   m_Name: HyperNovaGX
   m_EditorClassIdentifier: Assembly-CSharp::MachineItemSO
-  itemName: HyperNova GX
-  icon: {fileID: 21300000, guid: c0ff453890e130c459130b6db207fd64, type: 3}
   cost: 800
   starAmount: 5
-  prefab: {fileID: 5626277828907771532, guid: 06f0c79927b3d5a48bdb3d080cbb7b2a, type: 3}
   size: {x: 1, y: 1}
   category: 0
   gridItemData: {fileID: 11400000, guid: d08c43b7fe5412a489b32c4fb8c7b529, type: 2}
-  upgrades: []
   maxCoinCapacity: 117
   coinPerUse: 13
   durability: 89
   arcadeCategory: 0
   playTime: 35
+  offlineIncome: 0
+  upgrades:
+  - {fileID: 11400000, guid: a3573133d8f2ef849933e40248f7b16e, type: 2}
+  - {fileID: 11400000, guid: 942081b1c4ddd6042bd26d0074bfa558, type: 2}

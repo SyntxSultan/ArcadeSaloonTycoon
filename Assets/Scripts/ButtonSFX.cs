@@ -14,7 +14,7 @@ public class ButtonSFX : MonoBehaviour
         }
         else
         {
-            Debug.LogError("AudioManager is not initialized buttons cant subscribe to click events");
+            //Debug.LogError("AudioManager is not initialized buttons cant subscribe to click events");
         }
     }
 }

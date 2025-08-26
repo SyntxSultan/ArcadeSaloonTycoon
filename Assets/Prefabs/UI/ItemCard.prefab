@@ -359,8 +359,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Arcade Machine '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 2da002de800d73a49a8aa617f6020f15, type: 2}
-  m_sharedMaterial: {fileID: -4042228542971190964, guid: 2da002de800d73a49a8aa617f6020f15, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 9995e161656188344b60f10f9a4d6f6c, type: 2}
+  m_sharedMaterial: {fileID: -5071351125333431656, guid: 9995e161656188344b60f10f9a4d6f6c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -384,7 +384,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 37.05
+  m_fontSize: 35.9
   m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -788,8 +788,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: $999
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 2da002de800d73a49a8aa617f6020f15, type: 2}
-  m_sharedMaterial: {fileID: -4042228542971190964, guid: 2da002de800d73a49a8aa617f6020f15, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 9995e161656188344b60f10f9a4d6f6c, type: 2}
+  m_sharedMaterial: {fileID: -5071351125333431656, guid: 9995e161656188344b60f10f9a4d6f6c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

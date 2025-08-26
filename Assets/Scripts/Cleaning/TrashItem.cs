@@ -4,6 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class TrashItem : MonoBehaviour
 {
+    [HideInInspector] public GameObject OriginalPrefab;
     private DirtnessManager dirtinessManager;
     public bool isClickable = true;
     
@@ -30,8 +31,45 @@ public class TrashItem : MonoBehaviour
         
         isClickable = false;
         
-        onCleanEffects?.PlayFeedbacks();
+        if (onCleanEffects != null)
+        {
+            onCleanEffects.enabled = true;
+            onCleanEffects.PlayFeedbacks();
+            
+            StartCoroutine(WaitForFeedbackAndReturn());
+        }
+        else
+        {
+            // Feedback yoksa direkt pool'a döndür
+            ReturnToPoolImmediate();
+        }
+    }
+    
+    private System.Collections.IEnumerator WaitForFeedbackAndReturn()
+    {
+        yield return new WaitForSeconds(onCleanEffects.TotalDuration);
         
-        dirtinessManager.RemoveTrash(gameObject);
+        ReturnToPoolImmediate();
+    }
+    
+    private void ReturnToPoolImmediate()
+    {
+        dirtinessManager?.RemoveTrash(gameObject);
+        ReturnToPool();
+    }
+    
+    public void ResetItem()
+    {
+        isClickable = true;
+        
+        onCleanEffects.StopFeedbacks();
+        onCleanEffects.enabled = false;
+        
+        StopAllCoroutines();
+    }
+
+    private void ReturnToPool()
+    {
+        TrashPool.Instance?.ReturnTrash(gameObject);
     }
 }

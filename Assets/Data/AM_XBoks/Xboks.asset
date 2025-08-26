@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b5b21f1869c4dc43a52857b3276703f, type: 3}
+  m_Name: Xboks
+  m_EditorClassIdentifier: 
+  cost: 100
+  starAmount: 2
+  size: {x: 1, y: 1}
+  category: 0
+  gridItemData: {fileID: 11400000, guid: e867d94670b6d3544bcd983ebac00fce, type: 2}
+  maxCoinCapacity: 25
+  coinPerUse: 3
+  durability: 45
+  arcadeCategory: 1
+  playTime: 15
+  offlineIncome: 0
+  upgrades:
+  - {fileID: 11400000, guid: a4efefb5822c4ec43ba34da4d682ebf4, type: 2}

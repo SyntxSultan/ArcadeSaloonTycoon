@@ -9,6 +9,12 @@ public class TabSystem : MonoBehaviour
 
     [Header("Panels")]
     public List<GameObject> tabPanels;
+    
+    [Header("Button Colors")]
+    [SerializeField] private Color activeColor = Color.white;
+    [SerializeField] private Color inactiveColor = Color.gray;
+    
+    private int currentActiveTab = -1;
 
     void Start()
     {
@@ -17,7 +23,18 @@ public class TabSystem : MonoBehaviour
             Debug.LogError("Buton ve panel sayılarını eşitlemelisin!");
             return;
         }
+
+        InitializeTabButtons();
+        for (int i = 0; i < tabPanels.Count; i++)
+        {
+            tabPanels[i].SetActive(false);
+            SetButtonColor(i, inactiveColor);
+        }
         ShowTab(0);
+    }
+    
+    private void InitializeTabButtons()
+    {
         for(int i = 0; i < tabButtons.Count; i++)
         {
             int index = i;  
@@ -25,16 +42,28 @@ public class TabSystem : MonoBehaviour
         }
     }
 
-    public void ShowTab(int tabIndex)
-    {
-        for(int i = 0; i < tabPanels.Count; i++)
-        {
-            bool isActive = (i == tabIndex);
-            tabPanels[i].SetActive(isActive);
 
-            ColorBlock colors = tabButtons[i].colors;
-            colors.normalColor = isActive ? Color.white : Color.gray;
-            tabButtons[i].colors = colors;
+    private void ShowTab(int tabIndex)
+    {
+        if (tabIndex == currentActiveTab) return;
+        
+        if (currentActiveTab >= 0)
+        {
+            tabPanels[currentActiveTab].SetActive(false);
+            SetButtonColor(currentActiveTab, inactiveColor);
         }
+
+        tabPanels[tabIndex].SetActive(true);
+        SetButtonColor(tabIndex, activeColor);
+        
+        currentActiveTab = tabIndex;
     }
+
+    private void SetButtonColor(int buttonIndex, Color color)
+    {
+        ColorBlock colors = tabButtons[buttonIndex].colors;
+        colors.normalColor = color;
+        tabButtons[buttonIndex].colors = colors;
+    }
+
 }

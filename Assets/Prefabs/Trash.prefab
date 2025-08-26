@@ -119,7 +119,7 @@ GameObject:
   - component: {fileID: 4570670038511923058}
   - component: {fileID: 3132758011831276715}
   - component: {fileID: 6328672069172884296}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Trash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -175,8 +175,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3992441259b4285b3bad2bf374be7ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TrashItem
+  OriginalPrefab: {fileID: 0}
   isClickable: 1
-  destroyDelay: 0.1
   onCleanEffects: {fileID: 6328672069172884296}
 --- !u!114 &6328672069172884296
 MonoBehaviour:
@@ -244,7 +244,7 @@ MonoBehaviour:
   FeedbacksIntensity: 1
   Events:
     TriggerMMFeedbacksEvents: 0
-    TriggerUnityEvents: 1
+    TriggerUnityEvents: 0
     OnPlay:
       m_PersistentCalls:
         m_Calls: []
@@ -281,14 +281,15 @@ MonoBehaviour:
   DebugActive: 0
   InScriptDrivenPause: 0
   FeedbacksList:
+  - rid: 8389851537044930821
   - rid: 8389851473818157387
   - rid: 8389851473818157388
   - rid: 8389851473818157398
-  - rid: 8389851473818157407
+  - rid: 8389851513913606272
   KeepPlayModeChanges: 0
   PerformanceMode: 0
-  RestoreInitialValuesOnDisable: 0
-  StopFeedbacksOnDisable: 0
+  RestoreInitialValuesOnDisable: 1
+  StopFeedbacksOnDisable: 1
   PlayCount: 0
   references:
     version: 2
@@ -552,7 +553,7 @@ MonoBehaviour:
           ButtonText: 
         Owner: {fileID: 6328672069172884296}
         DebugActive: 0
-        Mode: 0
+        Mode: 1
         ObjectPoolSize: 5
         MutualizePools: 0
         ParentTransform: {fileID: 0}
@@ -562,15 +563,15 @@ MonoBehaviour:
         MainParticlesPrefabWeight: 1
         RandomParticleWeights: 
         ForceSetActiveOnPlay: 0
-        StopOnReset: 0
-        DeclaredDuration: 0
+        StopOnReset: 1
+        DeclaredDuration: 0.57
         ForceStopAction: 0
         StopAction: 0
         PositionMode: 0
         InstantiateParticlesPosition: {fileID: 0}
         TargetWorldPosition: {x: 0, y: 0, z: 0}
         Offset: {x: 0, y: 0, z: 0}
-        NestParticles: 1
+        NestParticles: 0
         ApplyRotation: 0
         ApplyScale: 0
         ForceSimulationSpeed: 0
@@ -651,23 +652,23 @@ MonoBehaviour:
         DebugActive: 0
         TargetGameObject: {fileID: 221884142880000220}
         ExtraTargetGameObjects: []
-        Mode: 0
-    - rid: 8389851473818157407
-      type: {class: MMF_Destroy, ns: MoreMountains.Feedbacks, asm: MoreMountains.Tools}
+        Mode: 2
+    - rid: 8389851513913606272
+      type: {class: MMF_NVPreset, ns: MoreMountains.FeedbacksForThirdParty, asm: MoreMountains.Tools}
       data:
         Active: 1
-        UniqueID: -2113726347
-        Label: Destroy
-        OriginalLabel: Destroy
+        UniqueID: -343144612
+        Label: Haptic Preset
+        OriginalLabel: Haptic Preset
         ChannelMode: 0
         Channel: 0
         MMChannelDefinition: {fileID: 0}
         Chance: 100
         Timing:
-          TimescaleMode: 1
+          TimescaleMode: 0
           ExcludeFromHoldingPauses: 0
           ContributeToTotalDuration: 1
-          InitialDelay: 2
+          InitialDelay: 0
           CooldownDuration: 0
           InterruptsOnStop: 1
           NumberOfRepeats: 0
@@ -726,6 +727,102 @@ MonoBehaviour:
           ButtonText: 
         Owner: {fileID: 6328672069172884296}
         DebugActive: 0
-        TargetGameObject: {fileID: 7747290426589773945}
+        Preset: 0
+        PlayPresetButton:
+          ButtonText: Test Preset
+        HapticSettings:
+          ForceGamepadID: 0
+          GamepadID: 0
+          OnlyPlayIfHapticsSupported: 1
+          OnlyPlayIfAdvancedRequirementsMet: 0
+          OnlyPlayIfAmplitudeModulationSupported: 0
+          OnlyPlayIfFrequencyModulationSupported: 0
+    - rid: 8389851537044930821
+      type: {class: MMF_SetActive, ns: MoreMountains.Feedbacks, asm: MoreMountains.Tools}
+      data:
+        Active: 1
+        UniqueID: -303962650
+        Label: Set Active
+        OriginalLabel: Set Active
+        ChannelMode: 0
+        Channel: 0
+        MMChannelDefinition: {fileID: 0}
+        Chance: 100
+        Timing:
+          TimescaleMode: 0
+          ExcludeFromHoldingPauses: 0
+          ContributeToTotalDuration: 1
+          InitialDelay: 0
+          CooldownDuration: 0
+          InterruptsOnStop: 1
+          NumberOfRepeats: 0
+          RepeatForever: 0
+          DelayBetweenRepeats: 1
+          PlayCount: 0
+          LimitPlayCount: 0
+          MaxPlayCount: 3
+          SetPlayCountToZeroOnReset: 0
+          MMFeedbacksDirectionCondition: 0
+          PlayDirection: 0
+          ConstantIntensity: 0
+          UseIntensityInterval: 0
+          IntensityIntervalMin: 0
+          IntensityIntervalMax: 0
+          Sequence: {fileID: 0}
+          TrackID: 0
+          Quantized: 0
+          TargetBPM: 120
+        AutomatedTargetAcquisition:
+          Mode: 0
+          ChildIndex: 0
+        RandomizeOutput: 0
+        RandomMultiplier: {x: 0.8, y: 1}
+        RandomizeDuration: 0
+        RandomDurationMultiplier: {x: 0.5, y: 2}
+        UseRange: 0
+        RangeDistance: 5
+        UseRangeFalloff: 0
+        RangeFalloff:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        RemapRangeFalloff: {x: 0, y: 1}
+        AutomaticShakerSetupButton:
+          ButtonText: 
+        Owner: {fileID: 6328672069172884296}
+        DebugActive: 0
+        TargetGameObject: {fileID: 221884142880000220}
         ExtraTargetGameObjects: []
-        Mode: 0
+        IgnorePlayDirection: 0
+        SetStateOnInit: 1
+        StateOnInit: 0
+        SetStateOnPlay: 0
+        StateOnPlay: 1
+        SetStateOnStop: 0
+        StateOnStop: 1
+        SetStateOnReset: 0
+        StateOnReset: 1
+        SetStateOnSkip: 0
+        StateOnSkip: 1
+        SetStateOnPlayerComplete: 0
+        StateOnPlayerComplete: 1

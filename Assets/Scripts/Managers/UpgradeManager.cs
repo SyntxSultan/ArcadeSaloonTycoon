@@ -5,28 +5,33 @@ public class UpgradeManager : MonoBehaviour
 {
     public static UpgradeManager Instance { get; private set; }
     
-    public event Action<MachineItemSO> OnUpgradeItemChanged;
+    public event Action<ArcadeMachine> OnUpgradeItemChanged;
     
-    private MachineItemSO machineSO;
+    private ArcadeMachine currentMachine;
 
     private void Awake()
     {
         Instance = this;
     }
 
-    private void Start()
+    public void SetUpgradingMachine(ArcadeMachine machine)
     {
-        
+        currentMachine = machine;
+        OnUpgradeItemChanged?.Invoke(machine);
+        ScreenManager.Instance.OpenUpgradePanel();
     }
-
-    public void SetUpgradingMachine(MachineItemSO machine)
+    
+    public void ApplyUpgrade(ItemUpgradeSO upgradeSO)
     {
-        machineSO = machine;
-        OnUpgradeItemChanged?.Invoke(machineSO);
+        if (currentMachine != null)
+        {
+            currentMachine.ApplyUpgrade(upgradeSO);
+        }
     }
 
     public void Reset()
     {
-        machineSO = null;
+        currentMachine = null;
+        OnUpgradeItemChanged?.Invoke(null);
     }
 }

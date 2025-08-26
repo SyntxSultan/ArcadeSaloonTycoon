@@ -19,5 +19,6 @@ public class MachineItemSO : ItemSO
     /// </summary>
     public int playTime;
     public int offlineIncome;
+    public ItemUpgradeSO[] upgrades;
 }
 

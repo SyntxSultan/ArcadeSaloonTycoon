@@ -3,7 +3,6 @@ using Unity.Cinemachine;
 using UnityEngine.InputSystem;
 using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
-[RequireComponent(typeof(Camera))]
 public class CameraController : MonoBehaviour
 {
     [Header("Zoom Settings")]
@@ -15,6 +14,7 @@ public class CameraController : MonoBehaviour
     [Header("Movement Settings")]
     [SerializeField] private float movementSpeed = 0.01f;
     [SerializeField] private float maxMoveDistance = 10f;
+    [SerializeField] private float movementThreshold = 10f; 
     
     [SerializeField] private float momentumDecayRate = 0.92f;
     [SerializeField] private float minMomentumThreshold = 0.001f; 
@@ -28,6 +28,8 @@ public class CameraController : MonoBehaviour
     
     private Vector3 cameraVelocity = Vector3.zero;
     private bool wasTouchingLastFrame;
+    private Vector2 touchStartPosition;
+    private bool isMovementStarted;
     
     private float lastFOV;
     private Vector3 initialPosition;
@@ -38,7 +40,7 @@ public class CameraController : MonoBehaviour
         virtualCamera = GetComponent<CinemachineCamera>();
         if (virtualCamera == null)
         {
-            Debug.LogError("CinemachineVirtualCamera component not found!");
+            Debug.LogError("Cinemachine Camera component not found!");
             return;
         }
 
@@ -77,8 +79,12 @@ public class CameraController : MonoBehaviour
         if (!isRippleSpawned && phase == TouchPhase.Began) 
         {
             Vector2 pos = touch.position.ReadValue();
-            GameObject ripple = Instantiate(ripplePrefab, canvas.transform);
-            ripple.GetComponent<RectTransform>().position = pos;
+            
+            if (RipplePool.Instance != null)
+            {
+                RipplePool.Instance.GetRipple(pos, canvas.transform);
+            }
+            
             isRippleSpawned = true;
         }
         else if (phase == TouchPhase.Ended || 
@@ -87,6 +93,7 @@ public class CameraController : MonoBehaviour
             isRippleSpawned = false;
         }
     }
+
 
     private void HandleTouchInput()
     {
@@ -125,10 +132,31 @@ public class CameraController : MonoBehaviour
     private void HandleSingleTouchMovement()
     {
         var touch = Touchscreen.current.touches[0];
+        var phase = touch.phase.ReadValue();
         
-        if (touch.phase.ReadValue() == TouchPhase.Moved)
+        if (phase == TouchPhase.Began)
+        {
+            touchStartPosition = touch.position.ReadValue();
+            isMovementStarted = false;
+        }
+        else if (phase == TouchPhase.Moved)
         {
             wasTouchingLastFrame = true;
+            Vector2 currentTouchPosition = touch.position.ReadValue();
+            
+            if (!isMovementStarted)
+            {
+                float distanceFromStart = Vector2.Distance(touchStartPosition, currentTouchPosition);
+                if (distanceFromStart < movementThreshold)
+                {
+                    return;
+                }
+                else
+                {
+                    isMovementStarted = true;
+                }
+            }
+            
             Vector2 touchDelta = touch.delta.ReadValue();
             
             Vector3 movement = new Vector3(-touchDelta.x * movementSpeed, 0, -touchDelta.y * movementSpeed);
@@ -146,6 +174,7 @@ public class CameraController : MonoBehaviour
         else if (wasTouchingLastFrame)
         {
             wasTouchingLastFrame = false;
+            isMovementStarted = false;
         }
     }
     

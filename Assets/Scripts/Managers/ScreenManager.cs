@@ -47,6 +47,7 @@ public class ScreenManager : MonoBehaviour
     [Header("Upgrade UI")]
     [SerializeField] private RectTransform upgradePanel;
     [SerializeField] private Button closeUpgradePanelButton;
+    [SerializeField] private CanvasGroup upgradeContentPanel;
     
     [Header("Reviews UI")]
     [SerializeField] private RectTransform reviewsPanel;
@@ -243,11 +244,13 @@ public class ScreenManager : MonoBehaviour
     {
         IfSequenceActiveKillAndReset(ref itemDetailsPanelSeq);
         
-        itemDetailsPanelSeq.Append(itemDetailsPanel.DOScale(Vector3.zero, 0.15f)).OnComplete(() =>
-        {
-            itemDetailsPanel.gameObject.SetActive(false);
-            uiOverlay.gameObject.SetActive(false);
-        });
+        itemDetailsPanelSeq.Append(itemDetailsPanel.DOScale(Vector3.zero, 0.15f)).OnComplete(OnCloseItemDetailsPopupEnded);
+    }
+
+    private void OnCloseItemDetailsPopupEnded()
+    {
+        itemDetailsPanel.gameObject.SetActive(false);
+        uiOverlay.gameObject.SetActive(false);
     }
     
     public void OpenUpgradePanel()
@@ -255,23 +258,26 @@ public class ScreenManager : MonoBehaviour
         upgradePanel.gameObject.SetActive(true);
         
         Vector2 startPos = upgradePanel.anchoredPosition;
-        upgradePanel.anchoredPosition = new Vector2(startPos.x, -316f);
+        upgradePanel.anchoredPosition = new Vector2(startPos.x, -500f);
 
-        Sequence seq = DOTween.Sequence();
-        seq.Append(
+        DOTween.Sequence().Append(
             upgradePanel.DOAnchorPosY(303f, 0.5f).SetEase(Ease.OutBack)
         );
+        upgradeContentPanel.DOFade(1, 0.5f);
     }
     
-    public void CloseUpgradePanel()
+    private void CloseUpgradePanel()
     {
         DOTween.Sequence().Append(
-            upgradePanel.DOAnchorPosY(-316f, 0.5f).SetEase(Ease.InBack).OnComplete(() =>
-            {
-                upgradePanel.gameObject.SetActive(false);
-                UpgradeManager.Instance.Reset();
-            })
+            upgradePanel.DOAnchorPosY(-500f, 0.5f).SetEase(Ease.InBack).OnComplete(OnCloseUpgradePanelAnimEnded)
         );
+        upgradeContentPanel.DOFade(0.5f, 1f);
+    }
+
+    private void OnCloseUpgradePanelAnimEnded()
+    {
+        upgradePanel.gameObject.SetActive(false);
+        UpgradeManager.Instance?.Reset();
     }
 
     private void CloseAllUIWithoutAnimation()
@@ -285,15 +291,17 @@ public class ScreenManager : MonoBehaviour
         questPanel.gameObject.SetActive(false);
         uiOverlay.gameObject.SetActive(false);
         upgradePanel.gameObject.SetActive(false);
+        upgradeContentPanel.alpha = 0;
     }
     
     private void IfSequenceActiveKillAndReset(ref Sequence seq)
     {
-        if (seq != null && seq.IsActive())
+        if (seq == null) 
+            seq = DOTween.Sequence();
+        else
         {
             seq.Kill();
+            seq = DOTween.Sequence();
         }
-
-        seq = DOTween.Sequence();
     }
 }

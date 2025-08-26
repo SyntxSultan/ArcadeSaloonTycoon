@@ -18,7 +18,7 @@ public class PlayArcadeState : ICustomerState
     private float GetPlayDuration(ICustomerContext context)
     {
         int coins = context.CoinsOwned;
-        int coinPerUse = context.CurrentArcade.MachineData.coinPerUse;
+        int coinPerUse = context.CurrentArcade.CurrentCoinPerUse;
         float playTimePerUse = context.CurrentArcade.MachineData.playTime;
 
         if (coinPerUse <= 0) return 0f;
@@ -33,7 +33,6 @@ public class PlayArcadeState : ICustomerState
             totalDuration += playTimePerUse * fraction;
         }
 
-        Debug.Log($"CoinsOwned: {coins}, FullPlays: {fullPlays}, Remaining: {remaining}, TotalDuration: {totalDuration}");
         return totalDuration;
     }
 

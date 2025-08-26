@@ -5,9 +5,8 @@ using UnityEngine.InputSystem;
 public class DirtnessManager : MonoBehaviour
 {
     [Header("Spawn Ayarları")]
-    [SerializeField] private Transform spawnPlane; // Çöplerin spawn olacağı plane
-    [SerializeField] private GameObject[] trashPrefabs; // Çöp prefab'ları
-    [SerializeField] private int maxTrashCount = 20; // Maksimum çöp sayısı
+    [SerializeField] private Transform spawnPlane;
+    [SerializeField] private int maxTrashCount = 20; 
     
     [Header("Spawn Zamanlaması")]
     [SerializeField] private float spawnInterval = 3f; // Kaç saniyede bir spawn
@@ -17,10 +16,11 @@ public class DirtnessManager : MonoBehaviour
     [SerializeField] private LayerMask obstacleLayerMask = -1; // Çakışma kontrolü için layer mask
     [SerializeField] private float collisionCheckRadius = 0.5f; // Çakışma kontrolü radius'u
     
-    private List<GameObject> activeTrashList = new List<GameObject>(); // Aktif çöp listesi
+    [Header("Raycast Optimization")]
+    [SerializeField] private LayerMask trashLayerMask = 9;
+    
     private float nextSpawnTime;
     
-    // Events
     public System.Action OnTrashCountChanged;
     
     private Camera cam;
@@ -36,25 +36,17 @@ public class DirtnessManager : MonoBehaviour
         
         nextSpawnTime = Time.time + spawnInterval;
         
+        if (TrashPool.Instance == null)
+        {
+            Debug.LogError("TrashPool bulunamadı! Lütfen TrashPool prefab'ını sahneye ekleyin.");
+        }
+        
         OnTrashCountChanged?.Invoke();
     }
     
     void Update()
     {
-        if (!ASTLibrary.IsPointerOverUI() && Pointer.current != null && Pointer.current.press.wasPressedThisFrame)
-        {
-            Vector2 pointerPosition = Pointer.current.position.ReadValue();
-            Ray ray = cam.ScreenPointToRay(pointerPosition);
-            
-            if (Physics.Raycast(ray, out RaycastHit hit, 200))
-            {
-                TrashItem trash = hit.collider.GetComponent<TrashItem>();
-                if (trash != null && trash.isClickable)
-                {
-                    trash.CleanTrash();
-                }
-            }
-        }
+        HandleInput();
         
         if (autoSpawn && Time.time >= nextSpawnTime && CanSpawnTrash())
         {
@@ -62,23 +54,44 @@ public class DirtnessManager : MonoBehaviour
             nextSpawnTime = Time.time + spawnInterval;
         }
     }
+
+    private void HandleInput()
+    {
+        if (Pointer.current == null) return;
+        if (!Pointer.current.press.wasPressedThisFrame) return;
+        if (ASTLibrary.IsPointerOverUI()) return;
+
+        Ray ray = cam.ScreenPointToRay(Pointer.current.position.ReadValue());
     
+        if (Physics.Raycast(ray, out RaycastHit hit, 100f, trashLayerMask))
+        {
+            if (hit.collider.TryGetComponent(out TrashItem trash))
+            {
+                if (trash.isClickable)
+                {
+                    trash.CleanTrash();
+                }
+            }
+        }
+    }
+
     private bool CanSpawnTrash()
     {
-        return activeTrashList.Count < maxTrashCount;
+        return TrashPool.Instance != null && TrashPool.Instance.GetActiveTrashCount() < maxTrashCount;
     }
     
     private void SpawnTrash()
     {
-        if (!CanSpawnTrash() || trashPrefabs == null || trashPrefabs.Length == 0)
+        if (!CanSpawnTrash())
             return;
             
         Vector3 spawnPosition = GetRandomSpawnPosition();
         
         if (IsPositionBlocked(spawnPosition)) return;
         
-        GameObject trashPrefab = trashPrefabs[Random.Range(0, trashPrefabs.Length)];
-        GameObject newTrash = Instantiate(trashPrefab, spawnPosition, Random.rotation);
+        GameObject newTrash = TrashPool.Instance.GetRandomTrash(spawnPosition, Random.rotation);
+        
+        if (newTrash == null) return;
         
         TrashItem trashItem = newTrash.GetComponent<TrashItem>();
         if (trashItem == null)
@@ -87,9 +100,7 @@ public class DirtnessManager : MonoBehaviour
         }
         trashItem.Initialize(this);
         
-        activeTrashList.Add(newTrash);
         OnTrashCountChanged?.Invoke();
-        
     }
     
     private Vector3 GetRandomSpawnPosition()
@@ -110,40 +121,30 @@ public class DirtnessManager : MonoBehaviour
         
         foreach (Collider col in colliders)
         {
-            // Spawn plane'i ve mevcut çöpleri göz ardı et
             if (col.transform == spawnPlane || col.CompareTag("Trash"))
                 continue;
                 
-            return true; // Engel var
+            return true;
         }
         
-        return false; // Engel yok
+        return false;
     }
     
     public void RemoveTrash(GameObject trash)
     {
-        if (activeTrashList.Contains(trash))
-        {
-            activeTrashList.Remove(trash);
-            OnTrashCountChanged?.Invoke();
-        }
+        TrashPool.Instance?.ReturnTrash(trash);
+        OnTrashCountChanged?.Invoke();
     }
     
     public void CleanAllTrash()
     {
-        for (int i = activeTrashList.Count - 1; i >= 0; i--)
-        {
-            if (activeTrashList[i] != null)
-            {
-                Destroy(activeTrashList[i]);
-            }
-        }
-        activeTrashList.Clear();
+        TrashPool.Instance?.ReturnAllTrash();
         OnTrashCountChanged?.Invoke();
     }
     
     public float GetCleanlinessPercentage()
     {
-        return (1f - (float)activeTrashList.Count / maxTrashCount) * 100f;
+        int activeTrashCount = TrashPool.Instance?.GetActiveTrashCount() ?? 0;
+        return (1f - (float)activeTrashCount / maxTrashCount) * 100f;
     }
 }

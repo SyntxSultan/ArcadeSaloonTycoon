@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba8b91201a95f424ebbc36bbf91f88cb, type: 3}
+  m_Name: NullUpgrade
+  m_EditorClassIdentifier: Assembly-CSharp::ItemUpgradeSO
+  upgradeName: Upgrade Yok
+  upgradeIcon: {fileID: 21300000, guid: b4b775dbdf96cdf4c83d1bddd40c4b8b, type: 3}
+  upgradeDescription: "Daha \xF6nemli \u015Feyler var"
+  upgradeCost: 99999
+  upgradeValue: 0
+  upgradeType: 0

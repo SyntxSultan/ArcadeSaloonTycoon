@@ -37,12 +37,10 @@ public class GameManager : MonoBehaviour, IJsonSaveable
             SaveManager.Instance.LoadSave();
         }
         startTime = Time.realtimeSinceStartup;
-
     }
     
     private void Update()
     {
-        // Her frame'de oyun süresini kontrol et
         CheckPlaytime();
     }
 
@@ -62,9 +60,7 @@ public class GameManager : MonoBehaviour, IJsonSaveable
     {
         return Time.realtimeSinceStartup - startTime;
     }
-
-
-
+    
     public void SetSaloonName(string salonNewName)
     {
         saloonName = salonNewName;

@@ -46,7 +46,7 @@ public class DailyRewardManager : MonoBehaviour
         
         if (GetNextClaimableDay() >= 0)
         {
-            ScreenManager.Instance.OpenDailyRewardsUI();
+            //ScreenManager.Instance.OpenDailyRewardsUI();
         }
     }
     
@@ -198,7 +198,6 @@ public class DailyRewardManager : MonoBehaviour
         PlayerPrefs.DeleteKey(CLAIMED_DAYS_KEY);
         PlayerPrefs.Save();
         OnRewardsReset?.Invoke();
-        Debug.Log("Günlük ödül serisi sıfırlandı.");
     }
 
     public int GetNextClaimableDay()

@@ -14,6 +14,7 @@ public class CurrencyManager : MonoBehaviour, IJsonSaveable
     [SerializeField] private int moneyPerCoin = 10;
 
     public int GetCoin() => coin;
+    public int GetMoney() => money;
     
     private ItemSO cachedItem;
 

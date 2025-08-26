@@ -416,8 +416,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Music Volume: '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 2da002de800d73a49a8aa617f6020f15, type: 2}
-  m_sharedMaterial: {fileID: -4042228542971190964, guid: 2da002de800d73a49a8aa617f6020f15, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1d42b85ee202a4d4c85c24ff5406f2da, type: 2}
+  m_sharedMaterial: {fileID: -795961145776857615, guid: 1d42b85ee202a4d4c85c24ff5406f2da, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

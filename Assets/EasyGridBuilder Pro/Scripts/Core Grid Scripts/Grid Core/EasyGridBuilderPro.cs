@@ -2958,7 +2958,10 @@ namespace SoulGames.EasyGridBuilderPro
         {
             Vector3 mousePosition = GetMouseWorldPosition();
             bool valid = false;
-            if (gridAxis == GridAxis.XZ)
+
+            try
+            {
+                if (gridAxis == GridAxis.XZ)
             {
                 gridXZ.GetXZ(mousePosition, out int x, out int z);
                 Vector2Int placedObjectOrigin = new Vector2Int(x, z); //create a new variable 'placedObjectOrigin' and pass vector2 int 'x' and 'z'
@@ -3074,6 +3077,12 @@ namespace SoulGames.EasyGridBuilderPro
                 
                 return valid;
             }
+            }
+            catch (NullReferenceException)
+            {
+                return false;
+            }
+            
         }
 
         public bool NotPlaceableVisualCallerBuildableEdgeObject()

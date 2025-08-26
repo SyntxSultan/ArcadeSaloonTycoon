@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using MoreMountains.Tools;
 
 public enum MusicTrack
 {
@@ -22,7 +23,7 @@ public enum SFX
     CollectTrash = 8
 }
 
-[System.Serializable]
+[Serializable]
 public class MusicItem {
     public MusicTrack id;
     public AudioClip clip;
@@ -30,7 +31,7 @@ public class MusicItem {
     public bool loop = true;
 }
 
-[System.Serializable]
+[Serializable]
 public class SfxItem {
     public SFX id;
     public AudioClip clip;
@@ -85,7 +86,7 @@ public class AudioManager : MonoBehaviour {
             var src = go.AddComponent<AudioSource>();
             src.playOnAwake = false;
             src.loop = false;
-            src.spatialBlend = 0f; // 2D only
+            src.spatialBlend = 0f;
             sfxPool.Add(src);
         }
 
@@ -158,15 +159,16 @@ public class AudioManager : MonoBehaviour {
     #endregion
 
     #region SFX
-    public void PlaySFX(SFX id, float volumeScale = 1f, float pitch = 1f) {
-        if (id == SFX.None || !sfxDict.ContainsKey(id)) {
+    public void PlaySFX(SFX id, float volumeScale = 1f, float pitch = 1f) 
+    {
+        if (id == SFX.None || !sfxDict.ContainsKey(id)) 
+        {
             Debug.LogWarning($"AudioManager: SFX {id} not configured.");
             return;
         }
         var item = sfxDict[id];
         var src = GetFreeSFXSource();
         if (src == null) {
-            // Eğer pool doluysa en eskisini kullan
             src = sfxPool[0];
         }
         src.clip = item.clip;
@@ -186,25 +188,34 @@ public class AudioManager : MonoBehaviour {
     }
     #endregion
 
-    public void SetMusicVolume(float linear) {
+    public void SetMusicVolume(float linear) 
+    {
         musicVolume = Mathf.Clamp01(linear);
-        if (musicSource != null && musicSource.clip != null) {
-            // try get base volume
+        if (musicSource != null && musicSource.clip != null) 
+        {
             float baseVol = 1f;
             foreach (var m in musicItems) if (m.clip == musicSource.clip) { baseVol = m.baseVolume; break; }
             musicSource.volume = baseVol * musicVolume;
         }
         PlayerPrefs.SetFloat(PREF_MUSIC, musicVolume);
     }
-    public void SetSFXVolume(float linear) {
+    public void SetSFXVolume(float linear) 
+    {
         sfxVolume = Mathf.Clamp01(linear);
+        if (MMSoundManager.Instance != null)
+        {
+            MMSoundManager.Instance.SetVolumeSfx(linear);
+        }
+        else Debug.LogWarning("MMSoundManager is not initialized");
         PlayerPrefs.SetFloat(PREF_SFX, sfxVolume);
     }
-    public float GetMusicVolume() => musicVolume;
-    public float GetSFXVolume() => sfxVolume;
-
-    void LoadVolumes() {
+    
+    private void LoadVolumes() 
+    {
         musicVolume = PlayerPrefs.GetFloat(PREF_MUSIC, 1f);
         sfxVolume = PlayerPrefs.GetFloat(PREF_SFX, 1f);
     }
+    
+    public float GetMusicVolume() => musicVolume;
+    public float GetSFXVolume() => sfxVolume;
 }
