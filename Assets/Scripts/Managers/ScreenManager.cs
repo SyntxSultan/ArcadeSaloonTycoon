@@ -51,7 +51,10 @@ public class ScreenManager : MonoBehaviour
     
     [Header("Reviews UI")]
     [SerializeField] private RectTransform reviewsPanel;
-    [SerializeField] private Button closeReviewsPanelButton;
+    [SerializeField] private Button openReviewsPanelButton;
+    
+    [Header("Offline Income UI")]
+    [SerializeField] private RectTransform offlineIncomePanel;
     
     private void Awake()
     {
@@ -73,11 +76,12 @@ public class ScreenManager : MonoBehaviour
     {
         storeOpenButton.onClick.AddListener(OpenStoreUI);
         closeStorePanelButton.onClick.AddListener(CloseStoreUI);
+        closeUpgradePanelButton.onClick.AddListener(CloseUpgradePanel);
         settingsButton.onClick.AddListener(OpenSettingsPopup);
         dailyRewardsButton.onClick.AddListener(OpenDailyRewardsUI);
         coinPriceButton.onClick.AddListener(OpenCoinPriceUI);
         questButton.onClick.AddListener(OpenQuestUI);
-        closeUpgradePanelButton.onClick.AddListener(CloseUpgradePanel);
+        openReviewsPanelButton.onClick.AddListener(OpenReviewsUI);
         
         uiOverlay.onClick.AddListener(CloseStoreUI);
         uiOverlay.onClick.AddListener(CloseItemDetailsPopup);
@@ -85,6 +89,31 @@ public class ScreenManager : MonoBehaviour
         uiOverlay.onClick.AddListener(CloseDailyRewardsUI);
         uiOverlay.onClick.AddListener(CloseSettingsPopup);
         uiOverlay.onClick.AddListener(CloseQuestUI);
+        uiOverlay.onClick.AddListener(CloseReviewsUI);
+    }
+
+    private void OpenReviewsUI()
+    {
+        uiOverlay.gameObject.SetActive(true);
+        reviewsPanel.gameObject.SetActive(true);
+    }
+
+    public void CloseReviewsUI()
+    {
+        uiOverlay.gameObject.SetActive(false);
+        reviewsPanel.gameObject.SetActive(false);
+    }
+
+    public void OpenOfflineIncomeUI()
+    {
+        uiOverlay.gameObject.SetActive(true);
+        offlineIncomePanel.gameObject.SetActive(true);
+        DOTween.Sequence().Append(offlineIncomePanel.DOShakeScale(0.5f));
+    }
+    public void CloseOfflineIncomeUI()
+    {
+        uiOverlay.gameObject.SetActive(false);
+        DOTween.Sequence().Append(offlineIncomePanel.DOScale(Vector3.zero, 0.5f)).OnComplete(()=> offlineIncomePanel.gameObject.SetActive(false));
     }
 
     private void OpenQuestUI()
@@ -291,6 +320,7 @@ public class ScreenManager : MonoBehaviour
         questPanel.gameObject.SetActive(false);
         uiOverlay.gameObject.SetActive(false);
         upgradePanel.gameObject.SetActive(false);
+        offlineIncomePanel.gameObject.SetActive(false);
         upgradeContentPanel.alpha = 0;
     }
     

@@ -60,5 +60,6 @@ public class PlayArcadeState : ICustomerState
             context.ArcadeService.ReleaseArcade(context.CurrentArcade.CustomerPoint);
             context.CurrentArcade = null;
         }
+        ReviewSystem.MakeReview("Boring", "I feel bored in this place. Buy some new arcades.", 4, LikedEnum.Like);
     }
 }
