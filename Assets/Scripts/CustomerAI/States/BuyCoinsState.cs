@@ -49,6 +49,7 @@ public class BuyCoinsState : ICustomerState
 
     public void Exit(ICustomerContext context)
     {
+        LevelSystem.Instance.GainXP(10);
         context.AnimationService.StopInteractAnimation();
         context.ProgressBarService.HideProgressBar();
     }

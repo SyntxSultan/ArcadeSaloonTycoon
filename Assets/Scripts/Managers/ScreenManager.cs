@@ -55,14 +55,12 @@ public class ScreenManager : MonoBehaviour
     
     [Header("Offline Income UI")]
     [SerializeField] private RectTransform offlineIncomePanel;
+
+    [Header("LevelUI")] 
+    [SerializeField] private RectTransform levelUpPopup;
     
     private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
         Instance = this;
         CloseAllUIWithoutAnimation();
     }
@@ -90,6 +88,19 @@ public class ScreenManager : MonoBehaviour
         uiOverlay.onClick.AddListener(CloseSettingsPopup);
         uiOverlay.onClick.AddListener(CloseQuestUI);
         uiOverlay.onClick.AddListener(CloseReviewsUI);
+        uiOverlay.onClick.AddListener(CloseLevelUpPopup);
+    }
+
+    public void OpenLevelUpPopup()
+    {
+        uiOverlay.gameObject.SetActive(true);
+        levelUpPopup.gameObject.SetActive(true);
+    }
+
+    private void CloseLevelUpPopup()
+    {
+        uiOverlay.gameObject.SetActive(false);
+        levelUpPopup.gameObject.SetActive(false);
     }
 
     private void OpenReviewsUI()

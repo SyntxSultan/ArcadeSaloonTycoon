@@ -60,6 +60,14 @@ public class PlayArcadeState : ICustomerState
             context.ArcadeService.ReleaseArcade(context.CurrentArcade.CustomerPoint);
             context.CurrentArcade = null;
         }
-        ReviewSystem.MakeReview("Boring", "I feel bored in this place. Buy some new arcades.", 4, LikedEnum.Like);
+        int random = Random.Range(1, 3);
+        if (random == 1)
+        {
+            ReviewSystem.MakeReview("Boring", "I feel bored in this place. Buy some new arcades.", 2, LikedEnum.Dislike);
+        }
+        else
+        {
+            ReviewSystem.MakeReview("Best Place In The World", "This place is awesome. I will definitely come back.", 4, LikedEnum.Like);
+        }
     }
 }

@@ -15,11 +15,9 @@ public class CurrencyUI : MonoBehaviour
     private void UpdateMoneyText(int money)
     {
         moneyTextbox.text = $"{money.ToString()}";
-        Debug.Log(money.ToString());
     }
     private void UpdateCoinText(int coin)
     {
         coinTextbox.text = $"{coin.ToString()}";
-        Debug.Log(coin.ToString());
     }
 }

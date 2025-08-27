@@ -28,7 +28,6 @@ public class Review
 
 public class ReviewSystem : MonoBehaviour
 {
-    // Singleton so you can call ReviewSystem.MakeReview(...) from anywhere.
     public static ReviewSystem Instance { get; private set; }
 
     private List<Review> reviews = new List<Review>();
