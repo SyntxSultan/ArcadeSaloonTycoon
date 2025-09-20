@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: abd41887d597f8b49af40412b5a3d1a2
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 326608
+  packageName: TableForge - ScriptableObject Management Tool
+  packageVersion: 1.0.2
+  assetPath: Assets/TableForge/Editor/Core/Serialization/CellSerialization/Implementations/SimpleCells/GradientCellSerializer.cs
+  uploadId: 779710

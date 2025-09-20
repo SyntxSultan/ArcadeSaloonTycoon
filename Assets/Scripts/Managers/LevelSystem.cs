@@ -23,6 +23,7 @@ public class LevelSystem : MonoBehaviour, IJsonSaveable
 
     public event Action<int> OnLevelUp; // new level
     public event Action<int, int> OnXpGained; // amount, currentXP
+    public event Action ForceSetValues;
 
     [Header("Initial")]
     [SerializeField] private int startLevel = 1;
@@ -126,6 +127,7 @@ public class LevelSystem : MonoBehaviour, IJsonSaveable
     {
         currentLevel = Mathf.Clamp(level, 1, maxLevel);
         currentXP = Mathf.Clamp(xp, 0, GetRequiredXPForLevel(currentLevel) - 1);
+        ForceSetValues?.Invoke();
     }
 
     public JToken CaptureAsJToken()
@@ -139,12 +141,18 @@ public class LevelSystem : MonoBehaviour, IJsonSaveable
 
     public void RestoreFromJToken(JToken state)
     {
-        currentLevel = state.ToObject<int>();
-        currentXP = state.ToObject<int>();
-        Debug.Log("Restored level: " + currentLevel + " xp: " + currentXP + "");
+        JObject stateObj = (JObject)state;
+        if (stateObj.TryGetValue("level", out JToken levelToken))
+        {
+            currentLevel = levelToken.Value<int>();
+        }
+        if (stateObj.TryGetValue("xp", out JToken xpToken))
+        {
+            currentXP = xpToken.Value<int>();
+        }
         SetLevel(currentLevel, currentXP);
     }
-
+    
     [Button("Gain 10 XP")]
     public void Gain10XP()
     {

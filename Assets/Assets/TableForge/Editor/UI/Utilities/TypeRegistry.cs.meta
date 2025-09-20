@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: aeaa809f3dc703e46a212949f020c624
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 326608
+  packageName: TableForge - ScriptableObject Management Tool
+  packageVersion: 1.0.2
+  assetPath: Assets/TableForge/Editor/UI/Utilities/TypeRegistry.cs
+  uploadId: 779710

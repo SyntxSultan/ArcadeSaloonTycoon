@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 60a938dea35db8d4a937d28781c9be2e
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 326608
+  packageName: TableForge - ScriptableObject Management Tool
+  packageVersion: 1.0.2
+  assetPath: Assets/TableForge/Editor/Core/Utilities/HashCodeUtil.cs
+  uploadId: 779710

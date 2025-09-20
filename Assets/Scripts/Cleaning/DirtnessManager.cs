@@ -19,6 +19,8 @@ public class DirtnessManager : MonoBehaviour
     [Header("Raycast Optimization")]
     [SerializeField] private LayerMask trashLayerMask = 9;
     
+    [SerializeField] private int xpPerClean = 5;
+    
     private float nextSpawnTime;
     
     public System.Action OnTrashCountChanged;
@@ -70,6 +72,7 @@ public class DirtnessManager : MonoBehaviour
                 if (trash.isClickable)
                 {
                     trash.CleanTrash();
+                    LevelSystem.Instance.GainXP(xpPerClean);
                 }
             }
         }

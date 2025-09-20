@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b79e36b3a8534235852035ac7e993606, type: 3}
+  m_Name: ItemSO
+  m_EditorClassIdentifier: TableForge.Editor::TableForge.Editor.UI.TableMetadata
+  expandedTables:
+    values: 
+  transposedTables:
+    values: 00000000
+  hiddenFields:
+    values: 
+  itemsTypeName: MachineItemSO, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+    PublicKeyToken=null
+  bindingTypeName: 
+  itemGUIDs:
+    values:
+    - 1eae48111f8a0f3409b556d09edcc185
+    - 7c86b56bb1d0d6846adf095776d1c73c
+    - 0efd333b265ab8946be08d5bad5f52b8
+    - d10fcd0bdd3986949acffc03fcfd7426
+    - d1ae21061bcacff4ca2ad29d790a8e96
+    - 181b166d518b5bf499aa517ecb307e92
+  cellAnchorMetadata:
+    mKeys: 988e7475f8874f8f8e3785437af75ffaf75cb88e97184f26
+    mValues:
+    - position: 1
+      size: {x: 0, y: 0}
+    - position: 2
+      size: {x: 163, y: 0}
+    - position: 3
+      size: {x: 0, y: 0}
+    - position: 4
+      size: {x: 0, y: 0}
+    - position: 5
+      size: {x: 0, y: 0}
+    - position: 6
+      size: {x: 0, y: 0}
+  functions:
+    mKeys: 
+    mValues: []

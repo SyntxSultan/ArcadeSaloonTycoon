@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81e1a7f6e926fea4db2efb870f766673, type: 3}
+  m_Name: TestSkill1
+  m_EditorClassIdentifier: Assembly-CSharp::SkillSO
+  skillName: Test Skill 1
+  skillIcon: {fileID: 21300000, guid: b96dd480b9c3fa84e9d42b2f9a95163e, type: 3}
+  skillDescription: 'Test skill created for testing skill system is working properly '
+  skillPointCost: 1
+  skillMoneyCost: 10
+  prerequisites: []

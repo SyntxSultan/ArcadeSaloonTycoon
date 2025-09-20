@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 27d4c2fb3e976f045baf8a6e8cf08e1e
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 326608
+  packageName: TableForge - ScriptableObject Management Tool
+  packageVersion: 1.0.2
+  assetPath: Assets/TableForge/Editor/Core/Exceptions/InvalidCellValueException.cs
+  uploadId: 779710

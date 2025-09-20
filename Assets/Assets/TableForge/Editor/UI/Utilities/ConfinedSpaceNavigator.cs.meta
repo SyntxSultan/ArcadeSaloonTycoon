@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 8f5c250b16de7e041b2823c6991d4953
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 326608
+  packageName: TableForge - ScriptableObject Management Tool
+  packageVersion: 1.0.2
+  assetPath: Assets/TableForge/Editor/UI/Utilities/ConfinedSpaceNavigator.cs
+  uploadId: 779710

@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class LevelUI : MonoBehaviour
 {
+    [SerializeField] private LevelSystem levelSystem;
     [SerializeField] private TextMeshProUGUI levelText;
     [SerializeField] private Slider levelProgressSlider;
 
@@ -17,15 +18,17 @@ public class LevelUI : MonoBehaviour
 
         RefreshAll();
 
-        LevelSystem.Instance.OnLevelUp += LevelSystem_OnLevelUp;
-        LevelSystem.Instance.OnXpGained += LevelSystem_OnXpGained;
+        levelSystem.OnLevelUp += LevelSystem_OnLevelUp;
+        levelSystem.OnXpGained += LevelSystem_OnXpGained;
+        levelSystem.ForceSetValues += ForceRefresh;
     }
 
     private void OnDestroy()
     {
         if (LevelSystem.Instance == null) return;
-        LevelSystem.Instance.OnLevelUp -= LevelSystem_OnLevelUp;
-        LevelSystem.Instance.OnXpGained -= LevelSystem_OnXpGained;
+        levelSystem.OnLevelUp -= LevelSystem_OnLevelUp;
+        levelSystem.OnXpGained -= LevelSystem_OnXpGained;
+        levelSystem.ForceSetValues -= ForceRefresh;
     }
 
     private void LevelSystem_OnXpGained(int amount, int currentXP)
@@ -47,11 +50,16 @@ public class LevelUI : MonoBehaviour
 
     private void RefreshLevelText()
     {
-        levelText.text = $"Lv. {LevelSystem.Instance.GetCurrentLevel()}";
+        levelText.text = $"Lv. {levelSystem.GetCurrentLevel()}";
     }
 
     private void RefreshProgress()
     {
-        levelProgressSlider.value = Mathf.Clamp01(LevelSystem.Instance.GetNormalizedProgressToNextLevel());
+        levelProgressSlider.value = Mathf.Clamp01(levelSystem.GetNormalizedProgressToNextLevel());
+    }
+    
+    private void ForceRefresh()
+    {
+        RefreshAll();
     }
 }

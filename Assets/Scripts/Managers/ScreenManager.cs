@@ -1,348 +1,379 @@
 using DG.Tweening;
-using UnityEngine;
-using UnityEngine.UI;
+ using UnityEngine;
+ using UnityEngine.UI;
 
-public class ScreenManager : MonoBehaviour
-{
-    public static ScreenManager Instance { get; private set; }
+ public class ScreenManager : MonoBehaviour
+ {
+     public static ScreenManager Instance { get; private set; }
 
-    [SerializeField] private Button uiOverlay;
-    
-    [Header("Enter Name UI")]
-    [SerializeField] private EnterNameScreen enterSaloonNameUI;
-    
-    [Header("Store UI")]
-    [SerializeField] private RectTransform storeUIPanel;
-    [SerializeField] private Button storeOpenButton;
-    [SerializeField] private Button closeStorePanelButton;
-    
-    [Header("Item Details UI")]
-    [SerializeField] private RectTransform itemDetailsPanel;
-    [SerializeField] private Button closeItemDetailsButton;
-    private Sequence itemDetailsPanelSeq;
-    
-    [Header("Build Confirm Popup")]
-    [SerializeField] private RectTransform buildingUI;
-    
-    [Header("Settings Popup")]
-    [SerializeField] private Button settingsButton;
-    [SerializeField] private RectTransform settingsPopup;
-    private Sequence settingsPopupSeq;
-    
-    [Header("Daily Rewards UI")]
-    [SerializeField] private Button dailyRewardsButton;
-    [SerializeField] private RectTransform dailyRewardsUI;
-    private Sequence dailyRewardsSeq;
-    
-    [Header("Coin Price UI")]
-    [SerializeField] private Button coinPriceButton;   
-    [SerializeField] private RectTransform coinPriceUI;
-    private Sequence coinPriceSeq;
-    
-    [Header("Quest")]
-    [SerializeField] private Button questButton;
-    [SerializeField] private RectTransform questPanel;
-    private Sequence questSeq;
-    
-    [Header("Upgrade UI")]
-    [SerializeField] private RectTransform upgradePanel;
-    [SerializeField] private Button closeUpgradePanelButton;
-    [SerializeField] private CanvasGroup upgradeContentPanel;
-    
-    [Header("Reviews UI")]
-    [SerializeField] private RectTransform reviewsPanel;
-    [SerializeField] private Button openReviewsPanelButton;
-    
-    [Header("Offline Income UI")]
-    [SerializeField] private RectTransform offlineIncomePanel;
+     [SerializeField] private Button uiOverlay;
+     
+     [Header("Enter Name UI")]
+     [SerializeField] private EnterNameScreen enterSaloonNameUI;
+     
+     [Header("Store UI")]
+     [SerializeField] private RectTransform storeUIPanel;
+     [SerializeField] private Button storeOpenButton;
+     [SerializeField] private Button closeStorePanelButton;
+     
+     [Header("Item Details UI")]
+     [SerializeField] private RectTransform itemDetailsPanel;
+     [SerializeField] private Button closeItemDetailsButton;
+     private Sequence itemDetailsPanelSeq;
+     
+     [Header("Build Confirm Popup")]
+     [SerializeField] private RectTransform buildingUI;
+     
+     [Header("Settings Popup")]
+     [SerializeField] private Button settingsButton;
+     [SerializeField] private RectTransform settingsPopup;
+     private Sequence settingsPopupSeq;
+     
+     [Header("Daily Rewards UI")]
+     [SerializeField] private Button dailyRewardsButton;
+     [SerializeField] private RectTransform dailyRewardsUI;
+     private Sequence dailyRewardsSeq;
+     
+     [Header("Coin Price UI")]
+     [SerializeField] private Button coinPriceButton;   
+     [SerializeField] private RectTransform coinPriceUI;
+     private Sequence coinPriceSeq;
+     
+     [Header("Quest")]
+     [SerializeField] private Button questButton;
+     [SerializeField] private RectTransform questPanel;
+     private Sequence questSeq;
+     
+     [Header("Upgrade UI")]
+     [SerializeField] private RectTransform upgradePanel;
+     [SerializeField] private Button closeUpgradePanelButton;
+     [SerializeField] private CanvasGroup upgradeContentPanel;
+     
+     [Header("Reviews UI")]
+     [SerializeField] private RectTransform reviewsPanel;
+     [SerializeField] private Button openReviewsPanelButton;
+     
+     [Header("Offline Income UI")]
+     [SerializeField] private RectTransform offlineIncomePanel;
 
-    [Header("LevelUI")] 
-    [SerializeField] private RectTransform levelUpPopup;
-    
-    private void Awake()
-    {
-        Instance = this;
-        CloseAllUIWithoutAnimation();
-    }
-    
-    private void Start()
-    {
-        BindButtons();
-    }
+     [Header("LevelUI")] 
+     [SerializeField] private RectTransform levelUpPopup;
+     
+     [Header("Skills")]
+     [SerializeField] private Button openSkillsButton;
+     [SerializeField] private RectTransform skillsPanel;
+     private Sequence skillsSeq;
+     
+     private void Awake()
+     {
+         Instance = this;
+         CloseAllUIWithoutAnimation();
+     }
+     
+     private void Start()
+     {
+         BindButtons();
+     }
 
-    private void BindButtons()
-    {
-        storeOpenButton.onClick.AddListener(OpenStoreUI);
-        closeStorePanelButton.onClick.AddListener(CloseStoreUI);
-        closeUpgradePanelButton.onClick.AddListener(CloseUpgradePanel);
-        settingsButton.onClick.AddListener(OpenSettingsPopup);
-        dailyRewardsButton.onClick.AddListener(OpenDailyRewardsUI);
-        coinPriceButton.onClick.AddListener(OpenCoinPriceUI);
-        questButton.onClick.AddListener(OpenQuestUI);
-        openReviewsPanelButton.onClick.AddListener(OpenReviewsUI);
-        
-        uiOverlay.onClick.AddListener(CloseStoreUI);
-        uiOverlay.onClick.AddListener(CloseItemDetailsPopup);
-        uiOverlay.onClick.AddListener(CloseCoinPriceUI);
-        uiOverlay.onClick.AddListener(CloseDailyRewardsUI);
-        uiOverlay.onClick.AddListener(CloseSettingsPopup);
-        uiOverlay.onClick.AddListener(CloseQuestUI);
-        uiOverlay.onClick.AddListener(CloseReviewsUI);
-        uiOverlay.onClick.AddListener(CloseLevelUpPopup);
-    }
+     private void BindButtons()
+     {
+         storeOpenButton.onClick.AddListener(OpenStoreUI);
+         closeStorePanelButton.onClick.AddListener(CloseStoreUI);
+         
+         closeUpgradePanelButton.onClick.AddListener(CloseUpgradePanel);
+         
+         settingsButton.onClick.AddListener(OpenSettingsPopup);
+         
+         dailyRewardsButton.onClick.AddListener(OpenDailyRewardsUI);
+         
+         coinPriceButton.onClick.AddListener(OpenCoinPriceUI);
+         
+         questButton.onClick.AddListener(OpenQuestUI);
+         
+         openReviewsPanelButton.onClick.AddListener(OpenReviewsUI);
+         
+         openSkillsButton.onClick.AddListener(OpenSkillsUI);
+         
+         uiOverlay.onClick.AddListener(CloseStoreUI);
+         uiOverlay.onClick.AddListener(CloseItemDetailsPopup);
+         uiOverlay.onClick.AddListener(CloseCoinPriceUI);
+         uiOverlay.onClick.AddListener(CloseDailyRewardsUI);
+         uiOverlay.onClick.AddListener(CloseSettingsPopup);
+         uiOverlay.onClick.AddListener(CloseQuestUI);
+         uiOverlay.onClick.AddListener(CloseReviewsUI);
+         uiOverlay.onClick.AddListener(CloseLevelUpPopup);
+         uiOverlay.onClick.AddListener(CloseSkillsUI);
+     }
 
-    public void OpenLevelUpPopup()
-    {
-        uiOverlay.gameObject.SetActive(true);
-        levelUpPopup.gameObject.SetActive(true);
-    }
+     public void CloseSkillsUI()
+     {
+         uiOverlay.gameObject.SetActive(false);
+         skillsSeq.Append(skillsPanel.DOScale(Vector3.zero, 0.5f)).OnComplete(() => skillsPanel.gameObject.SetActive(false));
+     }
 
-    private void CloseLevelUpPopup()
-    {
-        uiOverlay.gameObject.SetActive(false);
-        levelUpPopup.gameObject.SetActive(false);
-    }
+     private void OpenSkillsUI()
+     {
+         uiOverlay.gameObject.SetActive(true);
+         skillsPanel.gameObject.SetActive(true);
+         skillsPanel.localScale = Vector3.one;
+         // IfSequenceActiveKillAndReset(ref skillsSeq);
+         // skillsSeq.Append(skillsPanel.DOShakeScale(0.5f, 0.5f));
+     }
 
-    private void OpenReviewsUI()
-    {
-        uiOverlay.gameObject.SetActive(true);
-        reviewsPanel.gameObject.SetActive(true);
-    }
+     public void OpenLevelUpPopup()
+     {
+         CloseAllUIWithoutAnimation();
+         uiOverlay.gameObject.SetActive(true);
+         levelUpPopup.gameObject.SetActive(true);
+     }
 
-    public void CloseReviewsUI()
-    {
-        uiOverlay.gameObject.SetActive(false);
-        reviewsPanel.gameObject.SetActive(false);
-    }
+     private void CloseLevelUpPopup()
+     {
+         uiOverlay.gameObject.SetActive(false);
+         levelUpPopup.gameObject.SetActive(false);
+     }
 
-    public void OpenOfflineIncomeUI()
-    {
-        uiOverlay.gameObject.SetActive(true);
-        offlineIncomePanel.gameObject.SetActive(true);
-        DOTween.Sequence().Append(offlineIncomePanel.DOShakeScale(0.5f));
-    }
-    public void CloseOfflineIncomeUI()
-    {
-        uiOverlay.gameObject.SetActive(false);
-        DOTween.Sequence().Append(offlineIncomePanel.DOScale(Vector3.zero, 0.5f)).OnComplete(()=> offlineIncomePanel.gameObject.SetActive(false));
-    }
+     private void OpenReviewsUI()
+     {
+         uiOverlay.gameObject.SetActive(true);
+         reviewsPanel.gameObject.SetActive(true);
+     }
 
-    private void OpenQuestUI()
-    {
-        questPanel.gameObject.SetActive(true);
-        uiOverlay.gameObject.SetActive(true);
-    }
-    
-    private void CloseQuestUI()
-    {
-        questPanel.gameObject.SetActive(false);
-        uiOverlay.gameObject.SetActive(false);
-    }
+     public void CloseReviewsUI()
+     {
+         uiOverlay.gameObject.SetActive(false);
+         reviewsPanel.gameObject.SetActive(false);
+     }
 
-    private void OpenCoinPriceUI()
-    {
-        coinPriceUI.gameObject.SetActive(true);
-        uiOverlay.gameObject.SetActive(true);
-        CloseSettingsPopup();
-        
-        IfSequenceActiveKillAndReset(ref coinPriceSeq);
-        
-        coinPriceSeq.Append(coinPriceUI.DOJumpAnchorPos(
-            new Vector2(0, 100),
-            10f,
-            1,
-            0.5f
-            ));
-    }
-    private void CloseCoinPriceUI()
-    {
-        coinPriceUI.gameObject.SetActive(false);
-        uiOverlay.gameObject.SetActive(false);
-    }
-    public void OpenDailyRewardsUI()
-    {
-        dailyRewardsUI.gameObject.SetActive(true);
-        uiOverlay.gameObject.SetActive(true);
-        
-        IfSequenceActiveKillAndReset(ref dailyRewardsSeq);
-        
-        dailyRewardsUI.localScale = Vector3.one;
+     public void OpenOfflineIncomeUI()
+     {
+         uiOverlay.gameObject.SetActive(true);
+         offlineIncomePanel.gameObject.SetActive(true);
+         DOTween.Sequence().Append(offlineIncomePanel.DOShakeScale(0.5f));
+     }
+     public void CloseOfflineIncomeUI()
+     {
+         uiOverlay.gameObject.SetActive(false);
+         DOTween.Sequence().Append(offlineIncomePanel.DOScale(Vector3.zero, 0.5f)).OnComplete(()=> offlineIncomePanel.gameObject.SetActive(false));
+     }
 
-        dailyRewardsSeq.Append(dailyRewardsUI.DOPunchScale(
-            new Vector3(0.15f, 0.15f, 0),
-            0.35f,
-            4,
-            0.5f));
-    }
+     private void OpenQuestUI()
+     {
+         questPanel.gameObject.SetActive(true);
+         uiOverlay.gameObject.SetActive(true);
+     }
+     
+     private void CloseQuestUI()
+     {
+         questPanel.gameObject.SetActive(false);
+         uiOverlay.gameObject.SetActive(false);
+     }
 
-    private void CloseDailyRewardsUI()
-    {
-        IfSequenceActiveKillAndReset(ref dailyRewardsSeq);
-        
-        dailyRewardsSeq.Append(dailyRewardsUI.DOScale(Vector3.zero, 0.15f)).OnComplete(() =>
-        {
-            dailyRewardsUI.gameObject.SetActive(false);
-            uiOverlay.gameObject.SetActive(false);
-        });
-    }
+     private void OpenCoinPriceUI()
+     {
+         coinPriceUI.gameObject.SetActive(true);
+         uiOverlay.gameObject.SetActive(true);
+         CloseSettingsPopup();
+         
+         IfSequenceActiveKillAndReset(ref coinPriceSeq);
+         
+         coinPriceSeq.Append(coinPriceUI.DOJumpAnchorPos(
+             new Vector2(0, 100),
+             10f,
+             1,
+             0.5f
+             ));
+     }
+     private void CloseCoinPriceUI()
+     {
+         coinPriceUI.gameObject.SetActive(false);
+         uiOverlay.gameObject.SetActive(false);
+     }
+     public void OpenDailyRewardsUI()
+     {
+         dailyRewardsUI.gameObject.SetActive(true);
+         uiOverlay.gameObject.SetActive(true);
+         
+         IfSequenceActiveKillAndReset(ref dailyRewardsSeq);
+         
+         dailyRewardsUI.localScale = Vector3.one;
 
-    private void OpenSettingsPopup()
-    {
-        settingsPopup.gameObject.SetActive(true);
-        uiOverlay.gameObject.SetActive(true);
-        
-        settingsPopup.localScale = Vector3.one;
-        
-        IfSequenceActiveKillAndReset(ref settingsPopupSeq);
-        
-        settingsPopupSeq.Append(settingsPopup.DOPunchScale(
-            new Vector3(0.15f, 0.15f, 0),
-            0.35f,
-            4,
-            0.5f));
-    }
-    
-    private void CloseSettingsPopup()
-    {
-        IfSequenceActiveKillAndReset(ref settingsPopupSeq);
-            
-        settingsPopupSeq.Append(settingsPopup.DOScale(Vector3.zero, 0.15f)).OnComplete(() => 
-            settingsPopup.gameObject.SetActive(false)
-        );
-    }
+         dailyRewardsSeq.Append(dailyRewardsUI.DOPunchScale(
+             new Vector3(0.15f, 0.15f, 0),
+             0.35f,
+             4,
+             0.5f));
+     }
 
-    private void OpenStoreUI()
-    {
-        storeUIPanel.gameObject.SetActive(true);
+     private void CloseDailyRewardsUI()
+     {
+         IfSequenceActiveKillAndReset(ref dailyRewardsSeq);
+         
+         dailyRewardsSeq.Append(dailyRewardsUI.DOScale(Vector3.zero, 0.15f)).OnComplete(() =>
+         {
+             dailyRewardsUI.gameObject.SetActive(false);
+             uiOverlay.gameObject.SetActive(false);
+         });
+     }
 
-        Vector2 startPos = storeUIPanel.anchoredPosition;
-        storeUIPanel.anchoredPosition = new Vector2(startPos.x, -316f);
+     private void OpenSettingsPopup()
+     {
+         settingsPopup.gameObject.SetActive(true);
+         uiOverlay.gameObject.SetActive(true);
+         
+         settingsPopup.localScale = Vector3.one;
+         
+         IfSequenceActiveKillAndReset(ref settingsPopupSeq);
+         
+         settingsPopupSeq.Append(settingsPopup.DOPunchScale(
+             new Vector3(0.15f, 0.15f, 0),
+             0.35f,
+             4,
+             0.5f));
+     }
+     
+     private void CloseSettingsPopup()
+     {
+         IfSequenceActiveKillAndReset(ref settingsPopupSeq);
+             
+         settingsPopupSeq.Append(settingsPopup.DOScale(Vector3.zero, 0.15f)).OnComplete(() => 
+             settingsPopup.gameObject.SetActive(false)
+         );
+     }
 
-        Sequence seq = DOTween.Sequence();
-        seq.Append(
-            storeUIPanel.DOAnchorPosY(303f, 0.5f).SetEase(Ease.OutBack)
-        );
-    }
+     private void OpenStoreUI()
+     {
+         storeUIPanel.gameObject.SetActive(true);
 
-    private void CloseStoreUI()
-    {
-        DOTween.Sequence().Append(
-            storeUIPanel.DOAnchorPosY(-316f, 0.5f).SetEase(Ease.InBack).OnComplete(() =>
-            {
-                storeUIPanel.gameObject.SetActive(false);
-            })
-        );
-    }
-    
-    public void ShowEnterNameScreen()
-    {
-        enterSaloonNameUI.gameObject.SetActive(true);
-    }
-    
-    public void HideEnterNameScreen()
-    {
-        enterSaloonNameUI.gameObject.SetActive(false);
-    }
+         Vector2 startPos = storeUIPanel.anchoredPosition;
+         storeUIPanel.anchoredPosition = new Vector2(startPos.x, -316f);
 
-    public void ShowBuildingUI()
-    {
-        buildingUI.gameObject.SetActive(true);
-        DOTween.Sequence().Append(
-            buildingUI.DOAnchorPosX(-100, 0.5f).SetEase(Ease.OutBack));
-    }
+         Sequence seq = DOTween.Sequence();
+         seq.Append(
+             storeUIPanel.DOAnchorPosY(303f, 0.5f).SetEase(Ease.OutBack)
+         );
+     }
 
-    public void HideBuildingUI()
-    {
-        DOTween.Sequence().Append(
-            buildingUI.DOAnchorPosX(100, 0.15f).SetEase(Ease.InBack).OnComplete(()=>
-                buildingUI.gameObject.SetActive(false)));
-        
-    }
+     private void CloseStoreUI()
+     {
+         DOTween.Sequence().Append(
+             storeUIPanel.DOAnchorPosY(-316f, 0.5f).SetEase(Ease.InBack).OnComplete(() =>
+             {
+                 storeUIPanel.gameObject.SetActive(false);
+             })
+         );
+     }
+     
+     public void ShowEnterNameScreen()
+     {
+         enterSaloonNameUI.gameObject.SetActive(true);
+     }
+     
+     public void HideEnterNameScreen()
+     {
+         enterSaloonNameUI.gameObject.SetActive(false);
+     }
 
-    public void OpenItemDetailsPopup(ItemSO itemSO)
-    {
-        itemDetailsPanel.gameObject.SetActive(true);
-        uiOverlay.gameObject.SetActive(true);
-        
-        itemDetailsPanel.gameObject.GetComponent<ItemDetailsPopup>().SetItemDetails(itemSO);
-        
-        CloseStoreUI();
-        
-        itemDetailsPanel.localScale = Vector3.one;
-        
-        IfSequenceActiveKillAndReset(ref itemDetailsPanelSeq);
-        
-        itemDetailsPanelSeq.Append(itemDetailsPanel.DOPunchScale(
-            new Vector3(0.15f, 0.15f, 0),
-            0.35f,                       
-            4,                          
-            0.5f                       
-        ));
-    }
+     public void ShowBuildingUI()
+     {
+         buildingUI.gameObject.SetActive(true);
+         DOTween.Sequence().Append(
+             buildingUI.DOAnchorPosX(-100, 0.5f).SetEase(Ease.OutBack));
+     }
 
-    public void CloseItemDetailsPopup()
-    {
-        IfSequenceActiveKillAndReset(ref itemDetailsPanelSeq);
-        
-        itemDetailsPanelSeq.Append(itemDetailsPanel.DOScale(Vector3.zero, 0.15f)).OnComplete(OnCloseItemDetailsPopupEnded);
-    }
+     public void HideBuildingUI()
+     {
+         DOTween.Sequence().Append(
+             buildingUI.DOAnchorPosX(100, 0.15f).SetEase(Ease.InBack).OnComplete(()=>
+                 buildingUI.gameObject.SetActive(false)));
+         
+     }
 
-    private void OnCloseItemDetailsPopupEnded()
-    {
-        itemDetailsPanel.gameObject.SetActive(false);
-        uiOverlay.gameObject.SetActive(false);
-    }
-    
-    public void OpenUpgradePanel()
-    {
-        upgradePanel.gameObject.SetActive(true);
-        
-        Vector2 startPos = upgradePanel.anchoredPosition;
-        upgradePanel.anchoredPosition = new Vector2(startPos.x, -500f);
+     public void OpenItemDetailsPopup(ItemSO itemSO)
+     {
+         itemDetailsPanel.gameObject.SetActive(true);
+         uiOverlay.gameObject.SetActive(true);
+         
+         itemDetailsPanel.gameObject.GetComponent<ItemDetailsPopup>().SetItemDetails(itemSO);
+         
+         CloseStoreUI();
+         
+         itemDetailsPanel.localScale = Vector3.one;
+         
+         IfSequenceActiveKillAndReset(ref itemDetailsPanelSeq);
+         
+         itemDetailsPanelSeq.Append(itemDetailsPanel.DOPunchScale(
+             new Vector3(0.15f, 0.15f, 0),
+             0.35f,                       
+             4,                          
+             0.5f                       
+         ));
+     }
 
-        DOTween.Sequence().Append(
-            upgradePanel.DOAnchorPosY(303f, 0.5f).SetEase(Ease.OutBack)
-        );
-        upgradeContentPanel.DOFade(1, 0.5f);
-    }
-    
-    private void CloseUpgradePanel()
-    {
-        DOTween.Sequence().Append(
-            upgradePanel.DOAnchorPosY(-500f, 0.5f).SetEase(Ease.InBack).OnComplete(OnCloseUpgradePanelAnimEnded)
-        );
-        upgradeContentPanel.DOFade(0.5f, 1f);
-    }
+     public void CloseItemDetailsPopup()
+     {
+         IfSequenceActiveKillAndReset(ref itemDetailsPanelSeq);
+         
+         itemDetailsPanelSeq.Append(itemDetailsPanel.DOScale(Vector3.zero, 0.15f)).OnComplete(OnCloseItemDetailsPopupEnded);
+     }
 
-    private void OnCloseUpgradePanelAnimEnded()
-    {
-        upgradePanel.gameObject.SetActive(false);
-        UpgradeManager.Instance?.Reset();
-    }
+     private void OnCloseItemDetailsPopupEnded()
+     {
+         itemDetailsPanel.gameObject.SetActive(false);
+         uiOverlay.gameObject.SetActive(false);
+     }
+     
+     public void OpenUpgradePanel()
+     {
+         upgradePanel.gameObject.SetActive(true);
+         
+         Vector2 startPos = upgradePanel.anchoredPosition;
+         upgradePanel.anchoredPosition = new Vector2(startPos.x, -500f);
 
-    private void CloseAllUIWithoutAnimation()
-    {
-        storeUIPanel.gameObject.SetActive(false);
-        itemDetailsPanel.gameObject.SetActive(false);
-        buildingUI.gameObject.SetActive(false);
-        settingsPopup.gameObject.SetActive(false);
-        dailyRewardsUI.gameObject.SetActive(false);
-        coinPriceUI.gameObject.SetActive(false);
-        questPanel.gameObject.SetActive(false);
-        uiOverlay.gameObject.SetActive(false);
-        upgradePanel.gameObject.SetActive(false);
-        offlineIncomePanel.gameObject.SetActive(false);
-        upgradeContentPanel.alpha = 0;
-    }
-    
-    private void IfSequenceActiveKillAndReset(ref Sequence seq)
-    {
-        if (seq == null) 
-            seq = DOTween.Sequence();
-        else
-        {
-            seq.Kill();
-            seq = DOTween.Sequence();
-        }
-    }
-}
+         DOTween.Sequence().Append(
+             upgradePanel.DOAnchorPosY(303f, 0.5f).SetEase(Ease.OutBack)
+         );
+         upgradeContentPanel.DOFade(1, 0.5f);
+     }
+     
+     private void CloseUpgradePanel()
+     {
+         DOTween.Sequence().Append(
+             upgradePanel.DOAnchorPosY(-500f, 0.5f).SetEase(Ease.InBack).OnComplete(OnCloseUpgradePanelAnimEnded)
+         );
+         upgradeContentPanel.DOFade(0.5f, 1f);
+     }
+
+     private void OnCloseUpgradePanelAnimEnded()
+     {
+         upgradePanel.gameObject.SetActive(false);
+         UpgradeManager.Instance?.Reset();
+     }
+
+     private void CloseAllUIWithoutAnimation()
+     {
+         storeUIPanel.gameObject.SetActive(false);
+         itemDetailsPanel.gameObject.SetActive(false);
+         buildingUI.gameObject.SetActive(false);
+         settingsPopup.gameObject.SetActive(false);
+         dailyRewardsUI.gameObject.SetActive(false);
+         coinPriceUI.gameObject.SetActive(false);
+         questPanel.gameObject.SetActive(false);
+         uiOverlay.gameObject.SetActive(false);
+         upgradePanel.gameObject.SetActive(false);
+         offlineIncomePanel.gameObject.SetActive(false);
+         skillsPanel.gameObject.SetActive(false);
+         upgradeContentPanel.alpha = 0;
+     }
+     
+     private void IfSequenceActiveKillAndReset(ref Sequence seq)
+     {
+         if (seq == null) 
+             seq = DOTween.Sequence();
+         else
+         {
+             seq.Kill();
+             seq = DOTween.Sequence();
+         }
+     }
+ }

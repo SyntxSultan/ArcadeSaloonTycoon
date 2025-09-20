@@ -165,4 +165,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RippleEffect
   image2: {fileID: 7491197296949763447}
-  duration: 1
+  duration: 0.5

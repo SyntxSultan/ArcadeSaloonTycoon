@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: d2c77ee9ce953f742b797f062c5b789f
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 326608
+  packageName: TableForge - ScriptableObject Management Tool
+  packageVersion: 1.0.2
+  assetPath: Assets/TableForge/Editor/UI/Windows/TableVisualizerWindow/CellSelection/SelectionStrategies/SelectionStrategyFactory.cs
+  uploadId: 779710
